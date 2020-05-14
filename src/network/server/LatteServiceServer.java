@@ -1,6 +1,8 @@
 package network.server;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -39,11 +41,15 @@ public class LatteServiceServer {
 			while(true) {
 				try {
 					socket = server.accept();
-					
 //					System.out.println("[" + socket.getInetAddress() + "] connect");
 					
-					Device user = new Device(socket);
-					service.add(user);
+					BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+					String deviceID = input.readLine();
+					
+//					Device user = new Device(socket);
+					// 해당 ID를 가지는 Device가 이미 존재하는지 확인하여
+					// Device 객체를 새로 생성하거나 기존의 객체에서 socket만 새로 변경
+					Device user = service.add(deviceID, socket);
 					executor.submit(user);
 					
 				} catch (SocketTimeoutException e) {
@@ -98,6 +104,7 @@ public class LatteServiceServer {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+        System.out.println("서버가 종료되었습니다.");
 		
 	}
 
