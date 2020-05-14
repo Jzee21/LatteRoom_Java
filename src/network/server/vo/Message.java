@@ -13,24 +13,17 @@ public class Message {
 	
 	
 	// constructor
-	private Message() {
-        this.deviceID = Device.getDeviceID();
-    }
-	
 	public Message(SensorData data) {
-        this();
         this.dataType = "SensorData";
         this.jsonData = Message.gson.toJson(data);
     }
 	
 	public Message(Alert data) {
-        this();
         this.dataType = "Alert";
         this.jsonData = Message.gson.toJson(data);
     }
 	
 	public Message(String sensorID) {
-		this();
 		this.dataType = "Request";
 		this.jsonData = sensorID;
 	}
