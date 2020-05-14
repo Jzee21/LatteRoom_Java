@@ -11,12 +11,7 @@ public class Alert {
 
     
     // constructor
-    private Alert() {
-    	this.deviceID = Device.getDeviceID();
-    }
-
     public Alert(int hour, int min, String weeks, boolean flag) {
-        this();
         this.hour = hour;
         this.min = min;
         this.weeks = weeks;
