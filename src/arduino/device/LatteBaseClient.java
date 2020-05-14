@@ -9,7 +9,9 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -74,11 +76,11 @@ public class LatteBaseClient extends Application {
 		return DEVICE_ID;
 	}
 	
-	public static List<Sensor> getSensorList() {
-		List<Sensor> sensorList = new ArrayList<Sensor>();
-		sensorList.add(sensorTemp);
-		sensorList.add(heat);
-		sensorList.add(cool);
+	public static Map<String, Sensor> getSensorList() {
+		Map<String, Sensor> sensorList = new HashMap<String, Sensor>();
+		sensorList.put(sensorTemp.getDeviceID(), sensorTemp);
+		sensorList.put(heat.getDeviceID(), heat);
+		sensorList.put(cool.getDeviceID(), cool);
 		
 		return sensorList;
 	}
@@ -150,8 +152,7 @@ public class LatteBaseClient extends Application {
 				}
 				
 				// 
-				send(new Message(LatteBaseClient.getDeviceId()
-						, "DEVICE_ID", ""));
+				send(LatteBaseClient.getDeviceId());
 				send(new Message(LatteBaseClient.getDeviceId()
 						, "SENSOR_LIST"
 						, LatteBaseClient.gson.toJson(LatteBaseClient.getSensorList())));
