@@ -16,6 +16,10 @@ public class SensorData {
 		this.time = new Date(System.currentTimeMillis());
 	}
 	
+	public SensorData(String sensorID) {
+		this.sensorID = sensorID;
+	}
+	
 	public SensorData(String sensorID, String states) {
 		this();
 		this.sensorID = sensorID;
