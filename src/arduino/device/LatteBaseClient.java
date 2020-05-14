@@ -3,18 +3,13 @@ package arduino.device;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.List;
+import java.net.InetSocketAddress;
 import java.util.Map;
+import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -28,26 +23,20 @@ import gnu.io.SerialPortEventListener;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
 
 public class LatteBaseClient extends Application {
 
 	private static final String DEVICE_ID = "";
+	private static final String DEVICE_TYPE = "DEVICE";		// App : "USER"
 	
 	private static final String COMPORT_NAMES = "COM12";
 	private static final String SERVER_ADDR = "localhost";
 	private static final int SERVER_PORT = 55566;
 	
 	private BorderPane root;
-	private FlowPane bottom, right;
-	
-	private Button connBtn, disconnBtn;
-	private TextField inputField;
 	private TextArea textarea;
 	
 	private ServerListener toServer = new ServerListener();
@@ -58,7 +47,7 @@ public class LatteBaseClient extends Application {
 	private static Sensor heat = new Sensor("HEAT", "HEAT");
 	private static Sensor cool = new Sensor("COOL", "COOL");
 	
-	private static Gson gson=  new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").create();
+	private static Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").create();
 	
 	
 	// ======================================================
@@ -76,6 +65,10 @@ public class LatteBaseClient extends Application {
 		return DEVICE_ID;
 	}
 	
+	public static String getDeviceType() {
+		return DEVICE_TYPE;
+	}
+
 	public static Map<String, Sensor> getSensorList() {
 		Map<String, Sensor> sensorList = new HashMap<String, Sensor>();
 		sensorList.put(sensorTemp.getDeviceID(), sensorTemp);
@@ -153,6 +146,7 @@ public class LatteBaseClient extends Application {
 				
 				// 
 				send(LatteBaseClient.getDeviceId());
+				send(LatteBaseClient.getDeviceType());
 				send(new Message(LatteBaseClient.getDeviceId()
 						, "SENSOR_LIST"
 						, LatteBaseClient.gson.toJson(LatteBaseClient.getSensorList())));

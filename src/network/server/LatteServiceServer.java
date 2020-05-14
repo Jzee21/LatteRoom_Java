@@ -45,12 +45,12 @@ public class LatteServiceServer {
 					
 					BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 					String deviceID = input.readLine();
-					
+					String deviceType = input.readLine();
+
 //					Device user = new Device(socket);
-					// 해당 ID를 가지는 Device가 이미 존재하는지 확인하여
-					// Device 객체를 새로 생성하거나 기존의 객체에서 socket만 새로 변경
-					Device user = service.add(deviceID, socket);
-					executor.submit(user);
+//					Device user = service.add(deviceID, socket);
+					Device device = service.add(deviceID, deviceType, socket);
+					executor.submit(device);
 					
 				} catch (SocketTimeoutException e) {
 					if(Thread.interrupted()) {

@@ -3,16 +3,22 @@ package network.server.vo;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import network.server.dao.Device;
+import network.server.service.ServerService;
 
 public class Message {
 	private String deviceID;
+	private String deviceType;
 	private String dataType;
 	private String jsonData;
-	private static Gson gson=  new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").create();
+	private static Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").create();
 	
 	
 	// constructor
+	private Message() {
+        this.deviceID = ServerService.getDeviceId();
+        this.deviceType = ServerService.getDeviceType();
+    }
+	
 	public Message(SensorData data) {
         this.dataType = "SensorData";
         this.jsonData = Message.gson.toJson(data);
@@ -58,6 +64,14 @@ public class Message {
 		this.deviceID = deviceID;
 	}
 	
+	public String getDeviceType() {
+		return deviceType;
+	}
+
+	public void setDeviceType(String deviceType) {
+		this.deviceType = deviceType;
+	}
+
 	public String getDataType() {
 		return dataType;
 	}

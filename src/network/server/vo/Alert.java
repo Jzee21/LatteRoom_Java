@@ -1,7 +1,5 @@
 package network.server.vo;
 
-import network.server.dao.Device;
-
 public class Alert {
 	private String deviceID;
     private int hour;           // 시간

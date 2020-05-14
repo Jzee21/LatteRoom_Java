@@ -5,15 +5,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.Map;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import network.server.service.ServerService;
 import network.server.vo.Message;
-import network.server.vo.Sensor;
-import network.server.vo.SensorData;
 
 public class Device implements Runnable {
 	
@@ -24,7 +21,7 @@ public class Device implements Runnable {
 	private BufferedReader input;
 	private PrintWriter output;
 	private ServerService service = ServerService.getInstance();
- 	private Gson gson=  new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").create();
+ 	private Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").create();
 	
  	
  	// constructor
