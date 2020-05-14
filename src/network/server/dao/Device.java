@@ -25,11 +25,6 @@ public class Device implements Runnable {
 	
  	
  	// constructor
-	public Device(Socket socket) {
-		this.socket = socket;
-		this.deviceID = "" + this.hashCode();
-	}
-	
 	public Device(String deviceID, Socket socket) {
 		this.deviceID = deviceID;
 		this.socket = socket;
