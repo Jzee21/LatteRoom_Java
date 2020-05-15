@@ -164,22 +164,41 @@ public class ServerService {
 				 // do nothing
 			}
 			
+			hopeTemp.setRecentData(data);
+			
 		} else if (data.getSensorID().toUpperCase().equals("HEAT")) {
+			hopeTemp.setRecentData(data);
 			
 			
 		} else if (data.getSensorID().toUpperCase().equals("COOL")) {
-			
+			hopeTemp.setRecentData(data);
 			
 		} else if (data.getSensorID().toUpperCase().equals("BED")) {
-			
+			hopeBed.setRecentData(data);
 			
 		} else if (data.getSensorID().toUpperCase().equals("LIGHT")) {
-			
+			hopeLight.setRecentData(data);
 			
 		}
 		
 		Sensor target = sensorList.get(data.getSensorID());
 		target.setRecentData(data.getStates(), data.getStateDetail());
+	}
+	
+	public void triggerAlert() {
+//		private List<String> typeBED = new ArrayList<String>();
+//		private List<String> typeLIGHT = new ArrayList<String>();
+		
+		Device target;
+		for(String key : this.typeBED) {
+			target = this.deviceList.get(key);
+			target.send(new Message(hopeBed.getRecentData()));
+		}
+		for(String key : this.typeLIGHT) {
+			target = this.deviceList.get(key);
+			target.send(new Message(hopeLight.getRecentData()));
+		}
+		
 	}
 	
 	public void dataHandler(Device receiver, String jsonData) {
