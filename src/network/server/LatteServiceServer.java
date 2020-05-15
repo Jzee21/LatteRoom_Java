@@ -71,7 +71,7 @@ public class LatteServiceServer {
 			for(String key : service.getList().keySet()) {
 				Device t = service.get(key);
 				t.close();
-				service.remove(t);
+//				service.remove(t);
 			}
 			if(server != null && !server.isClosed()) {
 				server.close();
