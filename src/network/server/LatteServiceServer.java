@@ -46,10 +46,14 @@ public class LatteServiceServer {
 					BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 					String deviceID = input.readLine();
 					String deviceType = input.readLine();
+					
+					System.out.println(deviceID);
+					System.out.println(deviceType);
 
 //					Device user = new Device(socket);
 //					Device user = service.add(deviceID, socket);
 					Device device = service.add(deviceID, deviceType, socket);
+					System.out.println(deviceID + " ] created");
 					executor.submit(device);
 					
 				} catch (SocketTimeoutException e) {

@@ -6,10 +6,13 @@ public class Sensor {
 	private String deviceID;
 	private String sensorID;
 	private String sensorType;
-	private SensorData recentData = new SensorData(this.sensorID);
+	private SensorData recentData;
 	
 	
 	// constructor
+	public Sensor() {
+	}
+	
 	public Sensor(String sensorType) {
 		this.sensorType = sensorType;
 	}
@@ -19,30 +22,12 @@ public class Sensor {
 		this.sensorType = sensorType;
 	}
 	
-	
-	// custom method
-	public String getStates() {
-        return this.recentData.getStates();
-    }
-
-    public String getStateDetail() {
-        return this.recentData.getStateDetail();
-    }
-    
-    // 지정된 센서에 최신 데이터 업데이트 (states)
-    public SensorData setRecentData(String states) {
-//        this.recentData = new SensorData(this.sensorID, states);
-    	this.recentData.update(states);
-        return this.recentData;
-    }
-
-    // 지정된 센서에 최신 데이터 업데이트 (states, stateDetail)
-    public SensorData setRecentData(String states, String stateDetail) {
-//        this.recentData = new SensorData(this.sensorID, states, stateDetail);
-        this.recentData.update(states, stateDetail);
-        return this.recentData;
-    }
-	
+	public Sensor(String deviceID, String sensorID, String sensorType) {
+		this();
+		this.deviceID = deviceID;
+		this.sensorID = sensorID;
+		this.sensorType = sensorType;
+	}
 	
 	// get, set
 	public String getDeviceID() {
@@ -70,15 +55,43 @@ public class Sensor {
 	}
 	
 	public SensorData getRecentData() {
+		if(this.recentData == null)
+			this.recentData = new SensorData(this.sensorID);
 		return recentData;
 	}
 	
-//	public void setRecentData(SensorData recentData) {
-//		this.recentData = recentData;
-//	}
+	public SensorData setRecentData(SensorData recentData) {
+		this.recentData = recentData;
+		return this.recentData;
+	}
 	
-	public SensorData setRecentData(SensorData data) {
-        this.recentData = data;
+	
+	
+	// custom method
+	public String getStates() {
+        return this.recentData.getStates();
+    }
+
+
+	public String getStateDetail() {
+        return this.recentData.getStateDetail();
+    }
+    
+    // 지정된 센서에 최신 데이터 업데이트 (states)
+    public SensorData setRecentData(String states) {
+//        this.recentData = new SensorData(this.sensorID, states);
+    	if(this.recentData == null)
+    		this.recentData = new SensorData(this.sensorID);
+    	this.recentData.update(states);
+        return this.recentData;
+    }
+
+    // 지정된 센서에 최신 데이터 업데이트 (states, stateDetail)
+    public SensorData setRecentData(String states, String stateDetail) {
+//        this.recentData = new SensorData(this.sensorID, states, stateDetail);
+    	if(this.recentData == null)
+    		this.recentData = new SensorData(this.sensorID);
+        this.recentData.update(states, stateDetail);
         return this.recentData;
     }
 	

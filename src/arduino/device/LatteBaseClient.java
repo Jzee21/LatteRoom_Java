@@ -7,7 +7,9 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.InetSocketAddress;
 import java.util.Map;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -29,7 +31,7 @@ import javafx.stage.Stage;
 
 public class LatteBaseClient extends Application {
 
-	private static final String DEVICE_ID = "";
+	private static final String DEVICE_ID = "TestClient";
 	private static final String DEVICE_TYPE = "DEVICE";		// App : "USER"
 	
 	private static final String COMPORT_NAMES = "COM12";
@@ -69,13 +71,19 @@ public class LatteBaseClient extends Application {
 		return DEVICE_TYPE;
 	}
 
-	public static Map<String, Sensor> getSensorList() {
-		Map<String, Sensor> sensorList = new HashMap<String, Sensor>();
-		sensorList.put(sensorTemp.getDeviceID(), sensorTemp);
-		sensorList.put(heat.getDeviceID(), heat);
-		sensorList.put(cool.getDeviceID(), cool);
-		
-		return sensorList;
+//	public static Map<String, Sensor> getSensorList() {
+//		Map<String, Sensor> sensorList = new HashMap<String, Sensor>();
+//		sensorList.put(sensorTemp.getSensorID(), sensorTemp);
+//		sensorList.put(heat.getSensorID(), heat);
+//		sensorList.put(cool.getSensorID(), cool);
+//		return sensorList;
+//	}
+	public static List<String> getSensorList() {
+		List<String> sensorList = new ArrayList<String>();
+		sensorList.add(gson.toJson(sensorTemp));
+		sensorList.add(gson.toJson(heat));
+		sensorList.add(gson.toJson(cool));
+		return sensorList;		
 	}
 	
 	

@@ -83,7 +83,7 @@ public class Message {
 
 	@Override
 	public String toString() {
-		return "Message [deviceID=" + deviceID + ", voType=" + dataType + ", jsonData=" + jsonData + "]";
+		return "Message [deviceID=" + deviceID + ", dataType=" + dataType + ", jsonData=" + jsonData + "]";
 	}
 	
 }

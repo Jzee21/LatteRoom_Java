@@ -96,13 +96,15 @@ public class Device implements Runnable {
 	@Override
 	public void run() {
 		
+//		System.out.println(this.deviceID + " ] running");
+		
 		try {
 			this.input = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
 			this.output = new PrintWriter(socket.getOutputStream());
 		} catch (IOException e) {
 			this.close();
 		} // try
-		System.out.println("[" + socket.getInetAddress().toString() + "] connected");
+		System.out.println("[" + socket.getInetAddress().toString() + "][" + deviceID + "] connected");
 		
 		String line = "";
 		while(true) {
@@ -114,6 +116,7 @@ public class Device implements Runnable {
 					
 					System.out.println(line);
 					service.dataHandler(this, line);
+					System.out.println(deviceID + "] handler end");
 					
 				}
 			} catch (IOException e) {

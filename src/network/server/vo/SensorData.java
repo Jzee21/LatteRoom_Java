@@ -16,6 +16,7 @@ public class SensorData {
 	}
 	
 	public SensorData(String sensorID) {
+		this();
 		this.sensorID = sensorID;
 	}
 	
