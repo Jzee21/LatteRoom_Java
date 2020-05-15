@@ -6,16 +6,18 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.InetSocketAddress;
-import java.util.List;
-import java.util.ArrayList;
 import java.util.Map;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import arduino.device.TempDevice.SerialListener;
+import arduino.device.TempDevice.ServerListener;
 import arduino.device.vo.*;
 import gnu.io.CommPortIdentifier;
 import gnu.io.NoSuchPortException;
@@ -29,12 +31,13 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
-public class LatteBaseClient extends Application {
+public class TempDevice extends Application {
 
-	private static final String DEVICE_ID = "TestClient";
+	private static final String DEVICE_ID = "LATTE01";
 	private static final String DEVICE_TYPE = "DEVICE";		// App : "USER"
 	
-	private static final String COMPORT_NAMES = "COM12";
+	private static final String COMPORT_NAMES = "COM11";
+//	private static final String SERVER_ADDR = "70.12.60.105";
 	private static final String SERVER_ADDR = "localhost";
 	private static final int SERVER_PORT = 55566;
 	
@@ -43,9 +46,9 @@ public class LatteBaseClient extends Application {
 	
 	private ServerListener toServer = new ServerListener();
 	private SerialListener toArduino = new SerialListener();
-	private SampleSharedObject temp;
+	private TempSharedObject sharedObject;
 	
-	private static Sensor sensorTemp = new Sensor("sensorTemp", "TEMP");
+	private static Sensor temp = new Sensor("TEMP", "TEMP");
 	private static Sensor heat = new Sensor("HEAT", "HEAT");
 	private static Sensor cool = new Sensor("COOL", "COOL");
 	
@@ -70,20 +73,13 @@ public class LatteBaseClient extends Application {
 	public static String getDeviceType() {
 		return DEVICE_TYPE;
 	}
-
-//	public static Map<String, Sensor> getSensorList() {
-//		Map<String, Sensor> sensorList = new HashMap<String, Sensor>();
-//		sensorList.put(sensorTemp.getSensorID(), sensorTemp);
-//		sensorList.put(heat.getSensorID(), heat);
-//		sensorList.put(cool.getSensorID(), cool);
-//		return sensorList;
-//	}
+	
 	public static List<String> getSensorList() {
 		List<String> sensorList = new ArrayList<String>();
-		sensorList.add(gson.toJson(sensorTemp));
+		sensorList.add(gson.toJson(temp));
 		sensorList.add(gson.toJson(heat));
 		sensorList.add(gson.toJson(cool));
-		return sensorList;		
+		return sensorList;
 	}
 	
 	
@@ -96,7 +92,7 @@ public class LatteBaseClient extends Application {
 		toArduino.initialize();
 
 		// SharedObject
-		temp = new SampleSharedObject();
+		sharedObject = new TempSharedObject(toServer, toArduino);
 		
 		
 		// UI ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -111,7 +107,7 @@ public class LatteBaseClient extends Application {
 		
 		Scene scene = new Scene(root);
 		primaryStage.setScene(scene);
-		primaryStage.setTitle("Test");
+		primaryStage.setTitle("DeviceTemp");
 		primaryStage.setOnCloseRequest((e) -> {
 			toServer.disconnect();
 			toArduino.close();
@@ -153,11 +149,11 @@ public class LatteBaseClient extends Application {
 				}
 				
 				// 
-				send(LatteBaseClient.getDeviceId());
-				send(LatteBaseClient.getDeviceType());
-				send(new Message(LatteBaseClient.getDeviceId()
+				send(TempDevice.getDeviceId());
+				send(TempDevice.getDeviceType());
+				send(new Message(TempDevice.getDeviceId()
 						, "SENSOR_LIST"
-						, LatteBaseClient.gson.toJson(LatteBaseClient.getSensorList())));
+						, TempDevice.gson.toJson(TempDevice.getSensorList())));
 				
 				
 				String line = "";
@@ -171,17 +167,11 @@ public class LatteBaseClient extends Application {
 						} else {
 							displayText("Server ] " + line);
 							
-							// Message jsonData = gson.fromJson(line, Message.class);
+							// ì„œë²„ì—�ì„œ ë‚ ì•„ì˜¨ í�¬ë§�ì˜¨ë�„ë¥¼ ê³µìœ ê°�ì²´ì—� ì €ìž¥
+							Message messate = gson.fromJson(line, Message.class);
+							int hopeTemp = Integer.parseInt(gson.fromJson(messate.getJsonData(), SensorData.class).getStates());
+							sharedObject.setHopeStates(hopeTemp);
 							
-							int data = 20;	// 데이터는 line에서 받아요
-							// int data = jsonData.states;
-							
-							// 서버에서 날아온 희망온도를 공유객체에 저장해요
-							temp.setData(data);
-							
-							
-							// Arduino로 전송하는 메서드
-							 toArduino.send(line);
 						}
 					} catch (IOException e) {
 //						e.printStackTrace();
@@ -215,7 +205,14 @@ public class LatteBaseClient extends Application {
 		
 		public void send(Message msg) {
 			serverOut.println(gson.toJson(msg));
+//			serverOut.println("서버야 좀 받아라~!");
 			serverOut.flush();
+			displayText("서버로 보냈다!!! "+msg);
+		}
+		
+		public void send(String sensorID, String states) {
+			Message message = new Message(new SensorData(sensorID, states));
+			send(message);
 		}
 		
 	}
@@ -290,20 +287,45 @@ public class LatteBaseClient extends Application {
 			if (oEvent.getEventType() == SerialPortEvent.DATA_AVAILABLE) {
 				try {
 					String inputLine = serialIn.readLine();
+//					displayText("Serial ] " + inputLine);
+					float eventTemp = Float.parseFloat(inputLine);
+					displayText("Serial ] " + eventTemp);
 					
-					// 아두이노에서 받은 데이터를 사용하기 쉽게 자르거나 객체화 해요
-					// Message jsonData = gson.fromJson(line, Message.class);
+					if(temp.getRecentData() == null) {
+						int currentTemp = (int)eventTemp;
+						// í˜„ìž¬ recentData, sharedObject.states ê°’ ì—†ì�„ ë•Œ
+						temp.setRecentData(
+								new SensorData(temp.getSensorID(), String.valueOf(currentTemp)));
+						sharedObject.setStates(currentTemp);
+						
+						Message message = new Message(temp.getRecentData());
+						
+						displayText("" + currentTemp + "\n--Message]"+message.toString()+"\n");
+						System.out.println(message);
+						toServer.send(message);
+						return;
+					}
 					
-					// 아두이노에서 받은 데이터를 공유객체의 희망온도랑 비교해요
-//					if(temp.getData() > jsonData.states) {
-//						
-//					}
+					int currentTemp = sharedObject.getStates();
 					
-					// 데이터를 필요한 곳으로 전달해요
-//					toServer.send(inputLine);
-					send(inputLine);
-					
-					displayText("Serial ] " + inputLine);
+					if(currentTemp + 0.6 < eventTemp) {
+						currentTemp++;
+						// sensorì�˜ recentData ê°±ì‹ 
+						temp.setRecentData(String.valueOf(currentTemp));
+						sharedObject.setStates(currentTemp);
+						
+						Message message = new Message(temp.getRecentData());
+						displayText(message.toString());
+						toServer.send(gson.toJson(message));
+					} else if(currentTemp - 0.6 > eventTemp) {
+						currentTemp--;
+						// sensorì�˜ recentData ê°±ì‹ 
+						temp.setRecentData(String.valueOf(currentTemp));
+						sharedObject.setStates(currentTemp);
+						
+						Message message = new Message(temp.getRecentData());
+						toServer.send(gson.toJson(message));
+					}
 				} catch (Exception e) {
 //					System.err.println(e.toString() + "  : prb de lecture");
 				}
@@ -317,20 +339,76 @@ public class LatteBaseClient extends Application {
 
 }
 
-class SampleSharedObject {
-	// Temperature
-	private int data;
-	private Object MONITOR = new Object();
+class TempSharedObject {
+	// Temperature & Heat & Cool
+	private int hopeStates = 28;
+	private int states;
+	private String heat = "OFF";
+	private String cool = "OFF";
 	
-	public int getData() {
-		synchronized (MONITOR) {
-			return this.data;
-		}
+	private ServerListener toServer;
+	private SerialListener toArduino;
+	
+	TempSharedObject(ServerListener toServer, SerialListener toArduino) {
+		this.toServer = toServer;
+		this.toArduino = toArduino;
 	}
 	
-	public void setData(int data) {
-		synchronized (MONITOR) {
-			this.data = data;
+	public synchronized int getHopeStates() {
+		return this.hopeStates;
+	}
+	
+	public synchronized void setHopeStates(int hopeStates) {
+		this.hopeStates = hopeStates;
+		control();
+	}
+	
+	public synchronized int getStates() {
+		return states;
+	}
+	
+	public synchronized void setStates(int states) {
+		this.states = states;
+		control();
+	}
+	
+	private synchronized void control() {
+		if (hopeStates > states) {
+			if(cool.equals("ON")) {
+//				toArduino.send("COOLOFF");
+				toServer.send("COOL","OFF");
+				cool = "OFF";
+			}
+			
+			if(heat.equals("OFF")) {
+//				toArduino.send("HEATON");
+				toServer.send("HEAT","ON");
+				heat = "ON";
+			}
+		} else if (hopeStates < states) {
+			if(heat.equals("ON")) {
+//				toArduino.send("HEATOFF");
+				toServer.send("HEAT", "OFF");
+				heat = "ON";
+			}
+			
+			if(cool.equals("OFF")) {
+//				toArduino.send("COOLON");
+				toServer.send("COOL", "ON");
+				cool = "ON";
+			}
+		} else {
+			if(heat.equals("ON")) {
+//				toArduino.send("HEATOFF");
+				toServer.send("HEAT", "OFF");
+				heat = "OFF";
+			}
+			
+			if(cool.equals("ON")) {
+//				toArduino.send("COOLOFF");
+				toServer.send("COOL","OFF");
+				cool = "OFF";
+			}
 		}
 	}
 	
