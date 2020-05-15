@@ -127,11 +127,14 @@ public class TestClient extends Application{
 				return;
 			}
 			
+			output.println(deviceID);
+			output.flush();
+			
 			String line = "";
 			while(true) {
 				try {
 					line = input.readLine();
-					System.out.println(line);
+//					System.out.println(line);
 					if(line == null) {
 						displayText("server error. disconnected");
 						throw new IOException();

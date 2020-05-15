@@ -9,7 +9,6 @@ import org.quartz.impl.StdSchedulerFactory;
 
 import network.server.vo.Alert;
 
-
 public class AlertScheduler {
 	
 	private String settedTime;

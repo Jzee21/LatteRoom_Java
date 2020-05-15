@@ -46,7 +46,9 @@ public class LatteServiceServer {
 					BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 					String deviceID = input.readLine();
 					String deviceType = input.readLine();
-					
+
+//					Device user = new Device(socket);
+//					Device user = service.add(deviceID, socket);
 					Device device = service.add(deviceID, deviceType, socket);
 					executor.submit(device);
 					
@@ -69,7 +71,7 @@ public class LatteServiceServer {
 			for(String key : service.getList().keySet()) {
 				Device t = service.get(key);
 				t.close();
-				service.remove(t);
+//				service.remove(t);
 			}
 			if(server != null && !server.isClosed()) {
 				server.close();
@@ -102,6 +104,7 @@ public class LatteServiceServer {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+        System.out.println("서버가 종료되었습니다.");
 		
 	}
 

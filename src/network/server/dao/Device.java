@@ -17,6 +17,7 @@ public class Device implements Runnable {
 //	public static String deviceID = "A0001";
 //	public static String deviceID = "" + Client.hashCode();
 	private String deviceID;
+	private String deviceType;
 	private Socket socket;
 	private BufferedReader input;
 	private PrintWriter output;
@@ -25,13 +26,9 @@ public class Device implements Runnable {
 	
  	
  	// constructor
-	public Device(Socket socket) {
-		this.socket = socket;
-		this.deviceID = "" + this.hashCode();
-	}
-	
-	public Device(String deviceID, Socket socket) {
+	public Device(String deviceID, String deviceType, Socket socket) {
 		this.deviceID = deviceID;
+		this.deviceType = deviceType;
 		this.socket = socket;
 	}
 	
@@ -45,6 +42,14 @@ public class Device implements Runnable {
 		this.deviceID = deviceID;
 	}
 	
+	public String getDeviceType() {
+		return deviceType;
+	}
+	
+	public void setDeviceType(String deviceType) {
+		this.deviceType = deviceType;
+	}
+	
 	public Socket getSocket() {
 		return socket;
 	}
@@ -53,21 +58,25 @@ public class Device implements Runnable {
 		this.socket = socket;
 	}
 	
+	
+	// network method
 	public void close() {
-		String addr = socket.getInetAddress().toString();
-		try {
-			if(socket != null && !socket.isClosed()) {
-				socket.close();
-				input.close();
-				output.close();
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		} // try
-		this.socket = null;
-		this.input = null;
-		this.output = null;
-		System.out.println("[" + addr + "] closed");
+		if(socket != null) {
+			String addr = socket.getInetAddress().toString();
+			try {
+				if(socket != null && !socket.isClosed()) {
+					socket.close();
+					input.close();
+					output.close();
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			} // try
+			this.socket = null;
+			this.input = null;
+			this.output = null;
+			System.out.println("[" + addr + "] closed");
+		}
 	}
 	
 	public void send(String msg) {
@@ -104,10 +113,7 @@ public class Device implements Runnable {
 				} else {
 					
 					System.out.println(line);
-//					service.add(gson.fromJson(line, Message.class));
-					service.dataHandler(line);
-					System.out.println("send");
-					send(line);
+					service.dataHandler(this, line);
 					
 				}
 			} catch (IOException e) {

@@ -6,7 +6,7 @@ public class Sensor {
 	private String deviceID;
 	private String sensorID;
 	private String sensorType;
-	private SensorData recentData;
+	private SensorData recentData = new SensorData(this.sensorID);
 	
 	
 	// constructor
