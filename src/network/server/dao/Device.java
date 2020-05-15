@@ -17,6 +17,7 @@ public class Device implements Runnable {
 //	public static String deviceID = "A0001";
 //	public static String deviceID = "" + Client.hashCode();
 	private String deviceID;
+	private String deviceType;
 	private Socket socket;
 	private BufferedReader input;
 	private PrintWriter output;
@@ -25,8 +26,9 @@ public class Device implements Runnable {
 	
  	
  	// constructor
-	public Device(String deviceID, Socket socket) {
+	public Device(String deviceID, String deviceType, Socket socket) {
 		this.deviceID = deviceID;
+		this.deviceType = deviceType;
 		this.socket = socket;
 	}
 	
@@ -38,6 +40,14 @@ public class Device implements Runnable {
 	
 	public void setDeviceID(String deviceID) {
 		this.deviceID = deviceID;
+	}
+	
+	public String getDeviceType() {
+		return deviceType;
+	}
+	
+	public void setDeviceType(String deviceType) {
+		this.deviceType = deviceType;
 	}
 	
 	public Socket getSocket() {

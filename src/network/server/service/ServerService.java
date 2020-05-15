@@ -61,7 +61,7 @@ public class ServerService {
 			if((device = userList.get(deviceID)) == null) {
 				/* First connection check : true
 				 * Create new Device.class			*/
-				device = new Device(deviceID, socket);
+				device = new Device(deviceID, deviceType, socket);
 				userList.put(deviceID, device);
 			} else {
 				/* First connection check : false
@@ -72,7 +72,7 @@ public class ServerService {
 			if((device = deviceList.get(deviceID)) == null) {
 				/* First connection check : true
 				 * Create new Device.class			*/
-				device = new Device(deviceID, socket);
+				device = new Device(deviceID, deviceType, socket);
 				deviceList.put(deviceID, device);
 			} else {
 				/* First connection check : false
