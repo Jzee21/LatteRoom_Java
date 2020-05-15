@@ -10,7 +10,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import network.server.dao.AlertScheduler;
 import network.server.dao.Device;
+import network.server.vo.Alert;
 import network.server.vo.Message;
 import network.server.vo.Sensor;
 import network.server.vo.SensorData;
@@ -24,16 +26,29 @@ public class ServerService {
 	private Map<String, Device> deviceList = new ConcurrentHashMap<String, Device>();
 	private Map<String, Device> userList = new ConcurrentHashMap<String, Device>();
 	private Map<String, Sensor> sensorList = new ConcurrentHashMap<String, Sensor>();
+	private List<SensorData> dataList = new ArrayList<SensorData>();
+	private List<SensorData> controlList = new ArrayList<SensorData>();
 	private List<String> typeHEAT = new ArrayList<String>();		// List<DeviceID>
 	private List<String> typeCOOL = new ArrayList<String>();
 	private List<String> typeTEMP = new ArrayList<String>();
 	private List<String> typeBED = new ArrayList<String>();
 	private List<String> typeLIGHT = new ArrayList<String>();
 	
+	private Sensor hopeTemp	= new Sensor("HopeTemp");
+	private Sensor hopeLight = new Sensor("HopeLight");
+	private Sensor hopeBed	= new Sensor("HopeBed");
+	private Alert  hopeAlert = new Alert(0, 0, "", false);
+	
+	private AlertScheduler alertScheduler = new AlertScheduler();
+	
 	private Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").create();
 	
 	// Singleton
-	private ServerService() {}
+	private ServerService() {
+		this.hopeTemp.setRecentData("22");
+		this.hopeLight.setRecentData("OFF", "50");
+		this.hopeBed.setRecentData("0");
+	}
 	
 	private static class InstanceHandler {
 		public static final ServerService INSTANCE = new ServerService();
@@ -132,16 +147,67 @@ public class ServerService {
 		} // for
 	}
 	
+	public void deviceControl(SensorData data) {
+		
+		Sensor sensor = this.sensorList.get(data.getSensorID());
+		Device target = this.deviceList.get(sensor.getDeviceID());
+		target.send(new Message(data));
+		
+	}
+	
+	public void checkSensorData(SensorData data) {
+		if(data.getSensorID().toUpperCase().equals("TEMP")) {
+			int hope = Integer.parseInt(this.hopeTemp.getStates());
+			int curr = Integer.parseInt(data.getStates());
+			
+			if(hope > curr) {
+				 // do nothing
+			}
+			
+		} else if (data.getSensorID().toUpperCase().equals("HEAT")) {
+			
+			
+		} else if (data.getSensorID().toUpperCase().equals("COOL")) {
+			
+			
+		} else if (data.getSensorID().toUpperCase().equals("BED")) {
+			
+			
+		} else if (data.getSensorID().toUpperCase().equals("LIGHT")) {
+			
+			
+		}
+		
+		Sensor target = sensorList.get(data.getSensorID());
+		target.setRecentData(data.getStates(), data.getStateDetail());
+	}
+	
 	public void dataHandler(Device receiver, String jsonData) {
 		Message data = gson.fromJson(jsonData, Message.class);
 		System.out.println(data.getDeviceID() + " : " + data.getJsonData());
 		
 		if (data.getDataType().equals("SENSOR_LIST")) {
-			setDeviceSensorList(receiver, data);
+			this.setDeviceSensorList(receiver, data);
+			
+		} else if (data.getDataType().equals("Request")) {
+			Sensor target = this.sensorList.get(data.getJsonData());
+			receiver.send(new Message(target.getRecentData()));
 			
 		} else if (data.getDataType().equals("SensorData")) {
-//			SensorData sensorData = gson.fromJson(data.getJsonData(), SensorData.class);
-			SensorData sensorData = data.getSensorData();
+			SensorData receiveData = data.getSensorData();
+			
+			if(receiver.getDeviceType().equals("USER")) {
+				// "USER" : Request Device Control
+				this.controlList.add(receiveData);
+				this.deviceControl(receiveData);
+			} else {
+				// "DEVICE" : Update recently SensorData
+				this.dataList.add(receiveData);
+				this.checkSensorData(receiveData);
+			}
+			
+		} else if (data.getDataType().equals("Alert")) {
+			alertScheduler.set(data.getAlertData());
 		}
 		
 	}
