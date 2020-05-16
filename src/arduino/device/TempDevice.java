@@ -167,7 +167,6 @@ public class TempDevice extends Application {
 						} else {
 							displayText("Server ] " + line);
 							
-							// ì„œë²„ì—�ì„œ ë‚ ì•„ì˜¨ í�¬ë§�ì˜¨ë�„ë¥¼ ê³µìœ ê°�ì²´ì—� ì €ìž¥
 							Message messate = gson.fromJson(line, Message.class);
 							int hopeTemp = Integer.parseInt(gson.fromJson(messate.getJsonData(), SensorData.class).getStates());
 							sharedObject.setHopeStates(hopeTemp);

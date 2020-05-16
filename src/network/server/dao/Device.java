@@ -115,8 +115,8 @@ public class Device implements Runnable {
 				} else {
 					
 					System.out.println(line);
-					service.dataHandler(this, line);
-					System.out.println(deviceID + "] handler end");
+//					service.dataHandler(this, line);
+//					System.out.println(deviceID + "] handler end");
 					
 				}
 			} catch (IOException e) {

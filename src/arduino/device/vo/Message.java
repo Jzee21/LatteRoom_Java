@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import arduino.device.LatteBaseClient;
+import arduino.device.vo.*;
 
 public class Message {
 	private String deviceID;
@@ -22,6 +23,12 @@ public class Message {
 	public Message(SensorData data) {
         this();
         this.dataType = "SensorData";
+        this.jsonData = Message.gson.toJson(data);
+    }
+	
+	public Message(Alert data) {
+        this();
+        this.dataType = "Alert";
         this.jsonData = Message.gson.toJson(data);
     }
 	

@@ -1,9 +1,11 @@
-package network.server.vo;
+package arduino.test.vo;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import network.server.service.ServerService;
+import arduino.device.LatteBaseClient;
+import arduino.device.vo.*;
+import arduino.test.client.TestClient;
 
 public class Message {
 	private String deviceID;
@@ -15,8 +17,8 @@ public class Message {
 	
 	// constructor
 	private Message() {
-//        this.deviceID = ServerService.getDeviceId();
-//        this.deviceType = ServerService.getDeviceType();
+        this.deviceID = LatteBaseClient.getDeviceId();
+        this.deviceType = LatteBaseClient.getDeviceType();
     }
 	
 	public Message(SensorData data) {
@@ -43,14 +45,17 @@ public class Message {
 		this.jsonData = data;
 	}
 	
-	
+	public Message(TestClient client, SensorData data) {
+		this.deviceID = client.getDeviceID();
+		this.deviceType = client.getDeviceType();
+		this.dataType = "SensorData";
+		this.jsonData = Message.gson.toJson(data);
+	}
+
+
 	// custom method
 	public SensorData getSensorData() {
 		return Message.gson.fromJson(this.jsonData, SensorData.class);
-	}
-	
-	public Alert getAlertData() {
-		return Message.gson.fromJson(this.jsonData, Alert.class);
 	}
 	
 	public String getRequestData() {
@@ -62,11 +67,11 @@ public class Message {
 	public String getDeviceID() {
 		return deviceID;
 	}
-	
+
 	public void setDeviceID(String deviceID) {
 		this.deviceID = deviceID;
 	}
-	
+
 	public String getDeviceType() {
 		return deviceType;
 	}
@@ -82,19 +87,18 @@ public class Message {
 	public void setDataType(String dataType) {
 		this.dataType = dataType;
 	}
-	
+
 	public String getJsonData() {
 		return jsonData;
 	}
-	
+
 	public void setJsonData(String jsonData) {
 		this.jsonData = jsonData;
 	}
-	
-	
+
 	@Override
 	public String toString() {
-		return "Message [deviceID=" + deviceID + ", voType=" + dataType + ", jsonData=" + jsonData + "]";
+		return "Message [deviceID=" + deviceID + ", dataType=" + dataType + ", jsonData=" + jsonData + "]";
 	}
 	
 }
