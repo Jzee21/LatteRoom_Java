@@ -6,16 +6,16 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.InetSocketAddress;
-import java.util.List;
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import arduino.device.LightDevice.SerialListener;
+import arduino.device.LightDevice.ServerListener;
 import arduino.device.vo.*;
 import gnu.io.CommPortIdentifier;
 import gnu.io.NoSuchPortException;
@@ -29,13 +29,14 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
-public class LatteBaseClient extends Application {
+public class LightDevice extends Application implements TestClient {
 
-	private static final String DEVICE_ID = "TestClient";
+	private static final String DEVICE_ID = "LATTE03";
 	private static final String DEVICE_TYPE = "DEVICE";		// App : "USER"
 	
-	private static final String COMPORT_NAMES = "COM12";
-	private static final String SERVER_ADDR = "localhost";
+	private static final String COMPORT_NAMES = "COM5";
+	private static final String SERVER_ADDR = "70.12.60.105";
+//	private static final String SERVER_ADDR = "localhost";
 	private static final int SERVER_PORT = 55566;
 	
 	private BorderPane root;
@@ -43,11 +44,10 @@ public class LatteBaseClient extends Application {
 	
 	private ServerListener toServer = new ServerListener();
 	private SerialListener toArduino = new SerialListener();
-	private SampleSharedObject temp;
+	private LightSharedObject sharedObject;
 	
-	private static Sensor sensorTemp = new Sensor("sensorTemp", "TEMP");
-	private static Sensor heat = new Sensor("HEAT", "HEAT");
-	private static Sensor cool = new Sensor("COOL", "COOL");
+	private Sensor lightSensor = new Sensor(this, "LIGHT", "LIGHT");
+	
 	
 	private static Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").create();
 	
@@ -63,35 +63,25 @@ public class LatteBaseClient extends Application {
 		return gson;
 	}
 	
-	public static String getDeviceId() {
+	@Override
+	public String getDeviceID() {
+		// TODO Auto-generated method stub
 		return DEVICE_ID;
 	}
-	
-	public static String getDeviceType() {
+
+	@Override
+	public String getDeviceType() {
+		// TODO Auto-generated method stub
 		return DEVICE_TYPE;
 	}
 
-//	public static Map<String, Sensor> getSensorList() {
-//		Map<String, Sensor> sensorList = new HashMap<String, Sensor>();
-//		sensorList.put(sensorTemp.getSensorID(), sensorTemp);
-//		sensorList.put(heat.getSensorID(), heat);
-//		sensorList.put(cool.getSensorID(), cool);
-//		return sensorList;
-//	}
-//	public static List<String> getSensorList() {
-//		List<String> sensorList = new ArrayList<String>();
-//		sensorList.add(gson.toJson(sensorTemp));
-//		sensorList.add(gson.toJson(heat));
-//		sensorList.add(gson.toJson(cool));
-//		return sensorList;		
-//	}
-	public static List<Sensor> getSensorList() {
+	@Override
+	public String getSensorList() {
 		List<Sensor> sensorList = new ArrayList<Sensor>();
-		sensorList.add(sensorTemp);
-		sensorList.add(heat);
-		sensorList.add(cool);
-		return sensorList;		
+		sensorList.add(lightSensor);
+		return gson.toJson(sensorList);
 	}
+	
 	
 	
 	// ======================================================
@@ -99,11 +89,11 @@ public class LatteBaseClient extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		
 		// Logic
-		toServer.connect();
+		toServer.initialize();
 		toArduino.initialize();
 
 		// SharedObject
-		temp = new SampleSharedObject();
+		sharedObject = new LightSharedObject(this, toServer, toArduino);
 		
 		
 		// UI ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -118,9 +108,9 @@ public class LatteBaseClient extends Application {
 		
 		Scene scene = new Scene(root);
 		primaryStage.setScene(scene);
-		primaryStage.setTitle("Test");
+		primaryStage.setTitle("DeviceTemp");
 		primaryStage.setOnCloseRequest((e) -> {
-			toServer.disconnect();
+			toServer.close();
 			toArduino.close();
 		});
 		primaryStage.show();
@@ -143,7 +133,7 @@ public class LatteBaseClient extends Application {
 		private ExecutorService executor;
 		
 		
-		public void connect() {
+		public void initialize() {
 			
 			executor = Executors.newFixedThreadPool(1);
 			
@@ -155,16 +145,16 @@ public class LatteBaseClient extends Application {
 					serverOut = new PrintWriter(socket.getOutputStream());
 				} catch (IOException e) {
 //					e.printStackTrace();
-					disconnect();
+					close();
 					return;
 				}
 				
 				// 
-				send(getDeviceId());
+				send(getDeviceID());
 				send(getDeviceType());
-				send(new Message(LatteBaseClient.getDeviceId()
+				send(new Message(getDeviceID()
 						, "SENSOR_LIST"
-						, gson.toJson(LatteBaseClient.getSensorList())));
+						, getSensorList()));
 				
 				
 				String line = "";
@@ -178,21 +168,27 @@ public class LatteBaseClient extends Application {
 						} else {
 							displayText("Server ] " + line);
 							
-							// Message jsonData = gson.fromJson(line, Message.class);
+							Message message = gson.fromJson(line, Message.class);
 							
-//							int data = 20;	// 데이터는 line에서 받아요
-							// int data = jsonData.states;
+							try {
+							SensorData data = gson.fromJson(message.getJsonData(), SensorData.class);
 							
-							// 서버에서 날아온 희망온도를 공유객체에 저장해요
-//							temp.setData(data);
+							lightSensor.setRecentData(data.getStateDetail());
 							
+							if(data.getStates().equals("ON")) {
+				                toArduino.send(data.getStateDetail());
+								
+			                }else if(data.getStates().equals("OFF")) {
+			                	toArduino.send("0");
+			                }
+							}catch(Exception e2) {
+								displayText(e2.toString());
+							}
 							
-							// Arduino로 전송하는 메서드
-//							 toArduino.send(line);
 						}
 					} catch (IOException e) {
 //						e.printStackTrace();
-						disconnect();
+						close();
 						break;
 					}
 				} // while()
@@ -200,7 +196,7 @@ public class LatteBaseClient extends Application {
 			executor.submit(runnable);
 		} // startClient()
 		
-		public void disconnect() {
+		public void close() {
 			try {
 				if(socket != null && !socket.isClosed()) {
 					socket.close();
@@ -223,9 +219,16 @@ public class LatteBaseClient extends Application {
 		public void send(Message msg) {
 			serverOut.println(gson.toJson(msg));
 			serverOut.flush();
+			displayText("Message전송! "+msg);
 		}
 		
-	}
+		public void send(String sensorID, String states) {
+			Message message = new Message(new SensorData(sensorID, states));
+			send(message);
+		}
+		
+	} // ServerListener
+	
 	
 	
 	// ======================================================
@@ -297,20 +300,8 @@ public class LatteBaseClient extends Application {
 			if (oEvent.getEventType() == SerialPortEvent.DATA_AVAILABLE) {
 				try {
 					String inputLine = serialIn.readLine();
+					displayText("get : " + inputLine);
 					
-					// 아두이노에서 받은 데이터를 사용하기 쉽게 자르거나 객체화 해요
-					// Message jsonData = gson.fromJson(line, Message.class);
-					
-					// 아두이노에서 받은 데이터를 공유객체의 희망온도랑 비교해요
-//					if(temp.getData() > jsonData.states) {
-//						
-//					}
-					
-					// 데이터를 필요한 곳으로 전달해요
-//					toServer.send(inputLine);
-					send(inputLine);
-					
-					displayText("Serial ] " + inputLine);
 				} catch (Exception e) {
 //					System.err.println(e.toString() + "  : prb de lecture");
 				}
@@ -318,27 +309,45 @@ public class LatteBaseClient extends Application {
 			// Ignore all the other eventTypes, but you should consider the other ones.
 		}
 		
-		
-		
-	}
+	} // SerialListener
 
-}
+} // TempDevice
 
-class SampleSharedObject {
-	// Temperature
-	private int data;
-	private Object MONITOR = new Object();
+class LightSharedObject {
+	// Temperature & Heat & Cool
+	private int hopeStates = 23;
+	private int states = 1000;
+	private TestClient client;
+	private ServerListener toServer;
+	private SerialListener toArduino;
 	
-	public int getData() {
-		synchronized (MONITOR) {
-			return this.data;
-		}
+	
+	LightSharedObject(TestClient client, ServerListener toServer, SerialListener toArduino) {
+		this.client = client;
+		this.toServer = toServer;
+		this.toArduino = toArduino;
 	}
 	
-	public void setData(int data) {
-		synchronized (MONITOR) {
-			this.data = data;
-		}
+	public synchronized int getHopeStates() {
+		return this.hopeStates;
+	}
+	
+	public synchronized void setHopeStates(int hopeStates) {
+		this.hopeStates = hopeStates;
+		control();
+	}
+	
+	public synchronized int getStates() {
+		return states;
+	}
+	
+	public synchronized void setStates(int states) {
+		this.states = states;
+		control();
+	}
+	
+	private synchronized void control() {
+		
 	}
 	
 }

@@ -2,7 +2,7 @@ package network.server.vo;
 
 import network.server.dao.Device;
 
-public class Sensor {
+public class Sensor implements Cloneable {
 	private String deviceID;
 	private String sensorID;
 	private String sensorType;
@@ -94,5 +94,21 @@ public class Sensor {
         this.recentData.update(states, stateDetail);
         return this.recentData;
     }
+
+	@Override
+	public String toString() {
+		return "Sensor [deviceID=" + deviceID + ", sensorID=" + sensorID + ", sensorType=" + sensorType
+				+ ", recentData=" + recentData + "]";
+	}
+	
+	public Sensor clone() {
+		Sensor copy = null;
+		try {
+			copy = (Sensor) super.clone();
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+		}
+		return copy;
+	}
 	
 }

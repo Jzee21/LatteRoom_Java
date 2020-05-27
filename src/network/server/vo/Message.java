@@ -15,8 +15,8 @@ public class Message {
 	
 	// constructor
 	private Message() {
-//        this.deviceID = ServerService.getDeviceId();
-//        this.deviceType = ServerService.getDeviceType();
+        this.deviceID = ServerService.getDeviceId();
+        this.deviceType = ServerService.getDeviceType();
     }
 	
 	public Message(SensorData data) {
@@ -94,7 +94,7 @@ public class Message {
 	
 	@Override
 	public String toString() {
-		return "Message [deviceID=" + deviceID + ", voType=" + dataType + ", jsonData=" + jsonData + "]";
+		return "Message [deviceID=" + deviceID + ", dataType=" + dataType + ", jsonData=" + jsonData + "]";
 	}
 	
 }

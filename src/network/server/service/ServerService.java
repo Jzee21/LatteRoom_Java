@@ -2,6 +2,7 @@ package network.server.service;
 
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
@@ -10,12 +11,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import network.server.dao.AlertScheduler;
-import network.server.dao.Device;
-import network.server.vo.Alert;
-import network.server.vo.Message;
-import network.server.vo.Sensor;
-import network.server.vo.SensorData;
+import network.server.dao.*;
+import network.server.vo.*;
 
 
 public class ServerService {
@@ -26,6 +23,7 @@ public class ServerService {
 	private Map<String, Device> deviceList = new ConcurrentHashMap<String, Device>();
 	private Map<String, Device> userList = new ConcurrentHashMap<String, Device>();
 	private Map<String, Sensor> sensorList = new ConcurrentHashMap<String, Sensor>();
+//	Map<String, Sensor> cuMap = new ConcurrentHashMap<String, Sensor>();
 	private List<SensorData> dataList = new ArrayList<SensorData>();
 	private List<SensorData> controlList = new ArrayList<SensorData>();
 	private List<String> typeHEAT = new ArrayList<String>();		// List<DeviceID>
@@ -113,56 +111,65 @@ public class ServerService {
 		return this.deviceList;
 	}
 	
-	@SuppressWarnings("unchecked")
 	public void setDeviceSensorList(Device device, Message data) {
-		System.out.println("server - start - setDeviceSensorList()");
 		
-		List<String> list = new ArrayList<String>();
-		try {
-			list = (List<String>) gson.fromJson(data.getJsonData(), list.getClass());
-		} catch (Exception e) {
-			System.out.println("Error - setDeviceSensorList()");
+		Sensor[] list = gson.fromJson(data.getJsonData(), Sensor[].class);
+		for(Sensor s : list) {
+			this.sensorList.put(s.getSensorID(), s);
+			
+			if(s.getSensorType().toUpperCase().equals("TEMP")) {
+				typeTEMP.add(data.getDeviceID());
+			} else if(s.getSensorType().toUpperCase().equals("HEAT")) {
+				typeHEAT.add(data.getDeviceID());
+			} else if(s.getSensorType().toUpperCase().equals("COOL")) {
+				typeCOOL.add(data.getDeviceID());
+			} else if(s.getSensorType().toUpperCase().equals("BED")) {
+				typeBED.add(data.getDeviceID());
+			} else if(s.getSensorType().toUpperCase().equals("LIGHT")) {
+				typeLIGHT.add(data.getDeviceID());
+			}
 		}
-		System.out.println(list.size());
 		
-		for(String s : list) {
-			System.out.println(s);
-			Sensor sensor = gson.fromJson(s, Sensor.class);
-			System.out.println(sensor.getRecentData());
-		}
-		
-//		Map<String, Sensor> map = new HashMap<String, Sensor>();
-//		try {
-//			map = (Map<String, Sensor>) gson.fromJson(data.getJsonData(), map.getClass());
-//		} catch (Exception e) {
-//			System.out.println("Error - setDeviceSensorList()");
-//		}
-//		System.out.println(map.size());
-//		
-//		for (String key : map.keySet()) {
-//			Sensor s = map.get(key);
-//			System.out.println(s.getRecentData());
+//		for(String key : this.sensorList.keySet()) {
+//			System.out.println(this.sensorList.get(key));
 //		}
 		
-		System.out.println("server - finish - setDeviceSensorList()");
 		
 	}
 	
 	public void deviceControl(SensorData data) {
 		
+		Device target = null;
+		List<String> targetList = null;
+		
 		if (data.getSensorID().equals("TEMP")) {
 			hopeTemp.setRecentData(data);
-			Device target = this.deviceList.get(hopeTemp.getDeviceID());
-			target.send(new Message(data));
+			targetList = this.typeTEMP;
+			System.out.println("온도조절 대상 + " + targetList.size());
+			System.out.println(data.getStateDetail());
 		} else if (data.getSensorID().equals("LIGHT")) {
 			hopeLight.setRecentData(data);
-			Device target = this.deviceList.get(hopeLight.getDeviceID());
-			target.send(new Message(data));
+			targetList = this.typeLIGHT;
+			System.out.println("밝기조절 대상 + " + targetList.size());
+			System.out.println(data.getStateDetail());
+//			target = this.deviceList.get(hopeLight.getDeviceID());
 		} else if (data.getSensorID().equals("BED")) {
 			hopeBed.setRecentData(data);
-			Device target = this.deviceList.get(hopeBed.getDeviceID());
-			target.send(new Message(data));
+			targetList = this.typeBED;
+//			target = this.deviceList.get(hopeBed.getDeviceID());
 		}
+		
+		if(targetList != null) {
+			for (String key : targetList) {
+				target = this.deviceList.get(key);
+				target.send(new Message(data));
+			}
+		}
+		
+//		if(target != null) {
+//			System.out.println(target.getDeviceID() + " send");
+//			target.send(new Message(data));
+//		}
 		
 //		Sensor sensor = this.sensorList.get(data.getSensorID());
 //		Device target = this.deviceList.get(sensor.getDeviceID());
@@ -171,33 +178,42 @@ public class ServerService {
 	}
 	
 	public void checkSensorData(SensorData data) {
-		if(data.getSensorID().toUpperCase().equals("TEMP")) {
-			int hope = Integer.parseInt(this.hopeTemp.getStates());
-			int curr = Integer.parseInt(data.getStates());
-			
-			if(hope > curr) {
-				 // do nothing
-			}
-			
-			hopeTemp.setRecentData(data);
-			
-		} else if (data.getSensorID().toUpperCase().equals("HEAT")) {
-			hopeTemp.setRecentData(data);
-			
-			
-		} else if (data.getSensorID().toUpperCase().equals("COOL")) {
-			hopeTemp.setRecentData(data);
-			
-		} else if (data.getSensorID().toUpperCase().equals("BED")) {
-			hopeBed.setRecentData(data);
-			
-		} else if (data.getSensorID().toUpperCase().equals("LIGHT")) {
-			hopeLight.setRecentData(data);
-			
-		}
+//		if(data.getSensorID().toUpperCase().equals("TEMP")) {
+//			int hope = Integer.parseInt(this.hopeTemp.getStates());
+//			int curr = Integer.parseInt(data.getStates());
+//			
+//			if(hope > curr) {
+//				 // do nothing
+//			}
+//			
+//			hopeTemp.setRecentData(data);
+//			
+//		} else if (data.getSensorID().toUpperCase().equals("HEAT")) {
+//			hopeTemp.setRecentData(data);
+//			
+//			
+//		} else if (data.getSensorID().toUpperCase().equals("COOL")) {
+//			hopeTemp.setRecentData(data);
+//			
+//		} else if (data.getSensorID().toUpperCase().equals("BED")) {
+//			hopeBed.setRecentData(data);
+//			
+//		} else if (data.getSensorID().toUpperCase().equals("LIGHT")) {
+//			hopeLight.setRecentData(data);
+//			
+//		}
 		
 		Sensor target = sensorList.get(data.getSensorID());
-		target.setRecentData(data.getStates(), data.getStateDetail());
+		if(target != null) {
+			target.setRecentData(data.getStates(), data.getStateDetail());
+			System.out.println("update : " + target.toString());
+		}
+		
+		for(String key : userList.keySet()) {
+			Device app = userList.get(key);
+			app.send(new Message(data));
+		}
+		
 	}
 	
 	public void triggerAlert() {
@@ -232,11 +248,23 @@ public class ServerService {
 			this.setDeviceSensorList(receiver, data);
 			
 		} else if (data.getDataType().equals("Request")) {
-			Sensor target = this.sensorList.get(data.getJsonData());
-			if(target != null)
-				receiver.send(new Message(target.getRecentData()));
-			else
-				System.out.println("Not exist Sensor : " + data.getJsonData());
+			
+			System.out.println("Request ] " + receiver.getDeviceID());
+			
+			if(data.getJsonData().toUpperCase().equals("ALERT")) {
+				Alert target = this.hopeAlert;
+				receiver.send(new Message(target));
+			} else {
+				Sensor target = this.sensorList.get(data.getJsonData());
+				if(target != null) {
+					System.out.println("send to " + receiver.getDeviceID());
+//					(deviceList.get(target.getDeviceID())).send(new Message(target.getRecentData()));
+					receiver.send(new Message(target.getRecentData()));
+				}
+				else
+					System.out.println("Not exist Sensor : " + data.getJsonData());
+			}
+			
 			
 		} else if (data.getDataType().equals("SensorData")) {
 			SensorData receiveData = data.getSensorData();

@@ -1,19 +1,24 @@
 package arduino.device.vo;
 
-import arduino.device.LatteBaseClient;
+import arduino.device.TestClient;
 
 public class Sensor {
 	private String deviceID;
 	private String sensorID;
 	private String sensorType;
-	private SensorData recentData = new SensorData(this.sensorID);
+	private SensorData recentData;
 	
 	
 	// constructor
 	public Sensor(String id, String type) {
-		this.deviceID = LatteBaseClient.getDeviceId();
 		this.sensorID = id;
 		this.sensorType = type;
+		this.recentData = new SensorData(this.sensorID);
+	}
+	
+	public Sensor(TestClient client, String id, String type) {
+		this(id, type);
+		this.deviceID = client.getDeviceID();
 	}
 	
 	
@@ -78,5 +83,11 @@ public class Sensor {
         this.recentData = data;
         return this.recentData;
     }
+
+	@Override
+	public String toString() {
+		return "Sensor [deviceID=" + deviceID + ", sensorID=" + sensorID + ", sensorType=" + sensorType
+				+ ", recentData=" + recentData + "]";
+	}
 	
 }

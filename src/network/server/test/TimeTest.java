@@ -9,6 +9,15 @@ public class TimeTest {
 		Date now = new Date(System.currentTimeMillis());
 		System.out.println(now.toString());
 		System.out.println(now.toLocaleString());
+		
+		int data = 100;
+		float data2 = 100.5f;
+		
+		System.out.println(data + 0.6);
+		
+		if(data + 0.6 > data2) {
+			System.out.println("big");
+		}
 
 	}
 

@@ -47,13 +47,13 @@ public class LatteServiceServer {
 					String deviceID = input.readLine();
 					String deviceType = input.readLine();
 					
-					System.out.println(deviceID);
-					System.out.println(deviceType);
+//					System.out.println(deviceID);
+//					System.out.println(deviceType);
 
 //					Device user = new Device(socket);
 //					Device user = service.add(deviceID, socket);
 					Device device = service.add(deviceID, deviceType, socket);
-					System.out.println(deviceID + " ] created");
+//					System.out.println(deviceID + " ] created");
 					executor.submit(device);
 					
 				} catch (SocketTimeoutException e) {
@@ -61,7 +61,7 @@ public class LatteServiceServer {
 						break;
 					} else continue;
 				} catch (IOException e) {
-//					e.printStackTrace();
+					e.printStackTrace();
 					break;
 				}
 			}

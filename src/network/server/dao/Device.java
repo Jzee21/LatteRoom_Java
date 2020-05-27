@@ -88,8 +88,13 @@ public class Device implements Runnable {
 	
 	public void send(Message message) {
 		if(this.socket != null && !socket.isClosed()) {
-			output.println(gson.toJson(message));
-			output.flush();
+			System.out.println("\t보내는 메세지 : " + message.toString());
+			try {
+				output.println(gson.toJson(message));
+				output.flush();
+			} catch (Exception e) {
+				System.out.println("\tSend Error");
+			}
 		}
     }
 	
@@ -104,7 +109,7 @@ public class Device implements Runnable {
 		} catch (IOException e) {
 			this.close();
 		} // try
-		System.out.println("[" + socket.getInetAddress().toString() + "][" + deviceID + "] connected");
+		System.out.println("[" + deviceID + "][" + socket.getInetAddress().toString() + "] connected");
 		
 		String line = "";
 		while(true) {
@@ -115,7 +120,7 @@ public class Device implements Runnable {
 				} else {
 					
 					System.out.println(line);
-//					service.dataHandler(this, line);
+					service.dataHandler(this, line);
 //					System.out.println(deviceID + "] handler end");
 					
 				}

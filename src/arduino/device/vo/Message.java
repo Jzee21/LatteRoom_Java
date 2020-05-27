@@ -3,8 +3,8 @@ package arduino.device.vo;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import arduino.device.LatteBaseClient;
-import arduino.device.vo.*;
+import arduino.device.TempDevice;
+import arduino.device.TestClient;
 
 public class Message {
 	private String deviceID;
@@ -16,9 +16,14 @@ public class Message {
 	
 	// constructor
 	private Message() {
-        this.deviceID = LatteBaseClient.getDeviceId();
-        this.deviceType = LatteBaseClient.getDeviceType();
+//        this.deviceID = TempDevice.getDeviceID();
+//        this.deviceType = TempDevice.getDeviceType();
     }
+	
+	public Message(TestClient client) {
+		this.deviceID = client.getDeviceID();
+		this.deviceType = client.getDeviceType();
+	}
 	
 	public Message(SensorData data) {
         this();
@@ -42,6 +47,24 @@ public class Message {
 		this.deviceID = id;
 		this.dataType = type;
 		this.jsonData = data;
+	}
+	
+	public Message(TestClient client, String data) {
+		this(client);
+		this.dataType = "SensorData";
+		this.jsonData = data;
+	}
+	
+	public Message(TestClient client, SensorData data) {
+		this(client);
+		this.dataType = "SensorData";
+        this.jsonData = Message.gson.toJson(data);
+	}
+	
+	public Message(String id, SensorData data) {
+		this.deviceID = id;
+		this.dataType = "SensorData";
+        this.jsonData = Message.gson.toJson(data);
 	}
 
 

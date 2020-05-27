@@ -6,9 +6,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.InetSocketAddress;
-import java.util.Map;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -31,14 +29,13 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
-public class TempDevice extends Application {
+public class TempDevice extends Application implements TestClient {
 
 	private static final String DEVICE_ID = "LATTE01";
 	private static final String DEVICE_TYPE = "DEVICE";		// App : "USER"
 	
-	private static final String COMPORT_NAMES = "COM11";
-//	private static final String SERVER_ADDR = "70.12.60.105";
-	private static final String SERVER_ADDR = "localhost";
+	private static final String COMPORT_NAMES = "COM4";
+	private static final String SERVER_ADDR = "70.12.60.105";
 	private static final int SERVER_PORT = 55566;
 	
 	private BorderPane root;
@@ -48,9 +45,9 @@ public class TempDevice extends Application {
 	private SerialListener toArduino = new SerialListener();
 	private TempSharedObject sharedObject;
 	
-	private static Sensor temp = new Sensor("TEMP", "TEMP");
-	private static Sensor heat = new Sensor("HEAT", "HEAT");
-	private static Sensor cool = new Sensor("COOL", "COOL");
+	private Sensor temp = new Sensor(this, "TEMP", "TEMP");
+	private Sensor heat = new Sensor(this, "HEAT", "HEAT");
+	private Sensor cool = new Sensor(this, "COOL", "COOL");
 	
 	private static Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").create();
 	
@@ -66,20 +63,25 @@ public class TempDevice extends Application {
 		return gson;
 	}
 	
-	public static String getDeviceId() {
+	@Override
+	public String getDeviceID() {
+		// TODO Auto-generated method stub
 		return DEVICE_ID;
 	}
-	
-	public static String getDeviceType() {
+
+	@Override
+	public String getDeviceType() {
+		// TODO Auto-generated method stub
 		return DEVICE_TYPE;
 	}
-	
-	public static List<String> getSensorList() {
-		List<String> sensorList = new ArrayList<String>();
-		sensorList.add(gson.toJson(temp));
-		sensorList.add(gson.toJson(heat));
-		sensorList.add(gson.toJson(cool));
-		return sensorList;
+
+	@Override
+	public String getSensorList() {
+		List<Sensor> sensorList = new ArrayList<Sensor>();
+		sensorList.add(temp);
+		sensorList.add(heat);
+		sensorList.add(cool);
+		return gson.toJson(sensorList);
 	}
 	
 	
@@ -92,7 +94,8 @@ public class TempDevice extends Application {
 		toArduino.initialize();
 
 		// SharedObject
-		sharedObject = new TempSharedObject(toServer, toArduino);
+		sharedObject = new TempSharedObject(this, toServer, toArduino);
+//		sharedObject = new TempSharedObject(this, toServer);
 		
 		
 		// UI ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -149,11 +152,11 @@ public class TempDevice extends Application {
 				}
 				
 				// 
-				send(TempDevice.getDeviceId());
-				send(TempDevice.getDeviceType());
-				send(new Message(TempDevice.getDeviceId()
+				send(getDeviceID());
+				send(getDeviceType());
+				send(new Message(getDeviceID()
 						, "SENSOR_LIST"
-						, TempDevice.gson.toJson(TempDevice.getSensorList())));
+						, getSensorList()));
 				
 				
 				String line = "";
@@ -204,9 +207,9 @@ public class TempDevice extends Application {
 		
 		public void send(Message msg) {
 			serverOut.println(gson.toJson(msg));
-//			serverOut.println("서버야 좀 받아라~!");
+//			serverOut.println("ì„œë²„ì•¼ ì¢€ ë°›ì•„ë�¼~!");
 			serverOut.flush();
-			displayText("서버로 보냈다!!! "+msg);
+			displayText("sendMessage} "+msg);
 		}
 		
 		public void send(String sensorID, String states) {
@@ -214,7 +217,8 @@ public class TempDevice extends Application {
 			send(message);
 		}
 		
-	}
+	} // ServerListener
+	
 	
 	
 	// ======================================================
@@ -289,41 +293,35 @@ public class TempDevice extends Application {
 //					displayText("Serial ] " + inputLine);
 					float eventTemp = Float.parseFloat(inputLine);
 					displayText("Serial ] " + eventTemp);
-					
-					if(temp.getRecentData() == null) {
-						int currentTemp = (int)eventTemp;
-						// í˜„ìž¬ recentData, sharedObject.states ê°’ ì—†ì�„ ë•Œ
-						temp.setRecentData(
-								new SensorData(temp.getSensorID(), String.valueOf(currentTemp)));
-						sharedObject.setStates(currentTemp);
-						
-						Message message = new Message(temp.getRecentData());
-						
-						displayText("" + currentTemp + "\n--Message]"+message.toString()+"\n");
-						System.out.println(message);
-						toServer.send(message);
+
+					int currentTemp = sharedObject.getStates();
+					if(currentTemp==1000) {
+						sharedObject.setStates((int)(eventTemp+4));
+						temp.setRecentData(String.valueOf((int)(eventTemp+4)));
+						toServer.send(new Message(DEVICE_ID, temp.getRecentData()));
 						return;
 					}
 					
-					int currentTemp = sharedObject.getStates();
-					
-					if(currentTemp + 0.6 < eventTemp) {
-						currentTemp++;
-						// sensorì�˜ recentData ê°±ì‹ 
+					if(currentTemp + 0.8 < eventTemp) {
+						displayText("\t" + (currentTemp) + " < " + eventTemp);
+						currentTemp++; 
 						temp.setRecentData(String.valueOf(currentTemp));
 						sharedObject.setStates(currentTemp);
 						
 						Message message = new Message(temp.getRecentData());
 						displayText(message.toString());
 						toServer.send(gson.toJson(message));
-					} else if(currentTemp - 0.6 > eventTemp) {
+					} else if(currentTemp - 0.2 > eventTemp) {
+						displayText("\t" + (currentTemp) + " > " + eventTemp);
 						currentTemp--;
-						// sensorì�˜ recentData ê°±ì‹ 
 						temp.setRecentData(String.valueOf(currentTemp));
 						sharedObject.setStates(currentTemp);
 						
 						Message message = new Message(temp.getRecentData());
+						displayText(message.toString());
 						toServer.send(gson.toJson(message));
+					} else {
+						displayText("\t" + (currentTemp) + " / " + eventTemp);
 					}
 				} catch (Exception e) {
 //					System.err.println(e.toString() + "  : prb de lecture");
@@ -332,23 +330,24 @@ public class TempDevice extends Application {
 			// Ignore all the other eventTypes, but you should consider the other ones.
 		}
 		
-		
-		
-	}
+	} // SerialListener
 
-}
+} // TempDevice
 
 class TempSharedObject {
 	// Temperature & Heat & Cool
-	private int hopeStates = 28;
-	private int states;
+	private int hopeStates = 23;
+	private int states = 1000;
 	private String heat = "OFF";
 	private String cool = "OFF";
 	
+	private TestClient client;
 	private ServerListener toServer;
 	private SerialListener toArduino;
+
 	
-	TempSharedObject(ServerListener toServer, SerialListener toArduino) {
+	TempSharedObject(TestClient client, ServerListener toServer, SerialListener toArduino) {
+		this.client = client;
 		this.toServer = toServer;
 		this.toArduino = toArduino;
 	}
@@ -374,38 +373,39 @@ class TempSharedObject {
 	private synchronized void control() {
 		if (hopeStates > states) {
 			if(cool.equals("ON")) {
-//				toArduino.send("COOLOFF");
-				toServer.send("COOL","OFF");
+				toArduino.send("COOLOFF");
+				toServer.send(new Message(client.getDeviceID(), "COOL", "OFF"));
 				cool = "OFF";
 			}
 			
 			if(heat.equals("OFF")) {
-//				toArduino.send("HEATON");
-				toServer.send("HEAT","ON");
+				toArduino.send("HEATON");
+				toServer.send(new Message(client.getDeviceID(), "HEAT", "ON"));
 				heat = "ON";
 			}
 		} else if (hopeStates < states) {
 			if(heat.equals("ON")) {
-//				toArduino.send("HEATOFF");
-				toServer.send("HEAT", "OFF");
-				heat = "ON";
+				toArduino.send("HEATOFF");
+				toServer.send(new Message(client.getDeviceID(), "HEAT", "OFF"));
+				heat = "OFF";
 			}
 			
 			if(cool.equals("OFF")) {
-//				toArduino.send("COOLON");
-				toServer.send("COOL", "ON");
+				toArduino.send("COOLON");
+				toServer.send(new Message(client.getDeviceID(), "COOL", "ON"));
 				cool = "ON";
 			}
 		} else {
 			if(heat.equals("ON")) {
-//				toArduino.send("HEATOFF");
-				toServer.send("HEAT", "OFF");
+//				toArduino.send("BOTHOFF");
+				toArduino.send("HEATOFF");
+				toServer.send(new Message(client.getDeviceID(), "HEAT", "OFF"));
 				heat = "OFF";
 			}
 			
 			if(cool.equals("ON")) {
-//				toArduino.send("COOLOFF");
-				toServer.send("COOL","OFF");
+				toArduino.send("COOLOFF");
+				toServer.send(new Message(client.getDeviceID(), "COOL", "OFF"));
 				cool = "OFF";
 			}
 		}
