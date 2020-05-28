@@ -1,4 +1,4 @@
-package network.server.test;
+package network.server.test.design.factory;
 
 import java.net.Socket;
 

@@ -1,4 +1,4 @@
-package network.server.test;
+package network.server.test.design.procon;
 
 import java.util.LinkedList;
 
