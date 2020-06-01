@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -66,9 +67,9 @@ public class DatagramClient extends Application {
 		tf.setPrefSize(500, 50);
 		tf.setOnAction((e) -> {
 			String text = tf.getText();
-//			send(text);
-			send(new Message("TEST", "TEST", text));
-			
+			send(text);
+//			send(new Message("TEST", "TEST", text));
+			text = "";
 			tf.clear();
 		});
 		
@@ -101,7 +102,8 @@ public class DatagramClient extends Application {
 					try {
 						ds.receive(dp);
 						int dataLen = dp.getLength();
-						String line = new String(dp.getData(), 0, dataLen);
+//						String line = new String(dp.getData(), 0, dataLen);
+						String line = new String(dp.getData(), StandardCharsets.UTF_8);
 //						System.out.println("[data (" + dataLen + ")] " + line);
 						displayText("[Echo data (" + dataLen + ")] " + line);
 						
@@ -132,7 +134,7 @@ public class DatagramClient extends Application {
 	
 	private void send(String text) {
 		try {
-			byte[] buf = text.getBytes();
+			byte[] buf = text.getBytes(StandardCharsets.UTF_8);
 //			displayText("Data Length : " + buf.length);
 //			int loopTime = (buf.length)/SIZE+1;
 //			if((buf.length)%SIZE == 0) loopTime--;
@@ -142,8 +144,8 @@ public class DatagramClient extends Application {
 //				ds.send(dp);
 //			}
 //			displayText("1024 * " + (buf.length)/SIZE);
-			dp = new DatagramPacket(buf, buf.length, InetAddress.getByName(ADDR), PORT);
-			ds.send(dp);
+//			dp = new DatagramPacket(buf, buf.length, InetAddress.getByName(ADDR), PORT);
+			ds.send(new DatagramPacket(buf, buf.length, InetAddress.getByName(ADDR), PORT));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
