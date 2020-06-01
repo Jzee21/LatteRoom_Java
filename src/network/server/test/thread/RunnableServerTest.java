@@ -1,4 +1,4 @@
-package network.server.test;
+package network.server.test.thread;
 
 import java.io.BufferedReader;
 import java.io.IOException;

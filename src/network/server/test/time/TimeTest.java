@@ -1,4 +1,4 @@
-package network.server.test;
+package network.server.test.time;
 
 import java.sql.Date;
 
