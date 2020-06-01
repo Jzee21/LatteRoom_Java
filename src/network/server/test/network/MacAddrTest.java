@@ -23,7 +23,8 @@ public class MacAddrTest {
 		   
 			StringBuilder sb = new StringBuilder();
 			for (int i = 0; i < mac.length; i++) {
-				sb.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : ""));
+//				sb.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : ""));
+				sb.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "" : ""));
 			}
 				result = sb.toString();
 		} catch (UnknownHostException e) {
@@ -59,8 +60,8 @@ public class MacAddrTest {
 	
 	private static int byteArrayToInt(byte[] bytes) {
 		//						Mac Addr : 24-F5-AA-EC-52-62
-		final int size = Integer.SIZE / 8;		// aaec5262
-//		final int size = 6;						// 24f5aaec
+//		final int size = Integer.SIZE / 8;		// aaec5262
+		final int size = 6;						// 24f5aaec
 		System.out.println("int size : " + size);
 		ByteBuffer buff = ByteBuffer.allocate(size);
 		final byte[] newBytes = new byte[size];
@@ -81,6 +82,7 @@ public class MacAddrTest {
 		
 		System.out.println("Mac Addr : " + test.getLocalMacAddress());
 		System.out.println("Mac Addr : " + Integer.toHexString(test.getIntLocalMacAdderss()));
+		System.out.println("Mac Addr : " + test.getIntLocalMacAdderss());
 	}
 
 }
