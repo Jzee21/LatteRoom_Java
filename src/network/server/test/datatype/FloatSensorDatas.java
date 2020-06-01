@@ -58,6 +58,8 @@ public class FloatSensorDatas {
 					val = list.get(i+1) - list.get(i);
 					if(max < val) {
 						max = val;
+					} else if (max < -val) {
+						max = -val;
 					}
 					if(val == 0.0f) {
 						pw.append(String.format("%3.2f\t", list.get(i)) + String.format("%3.2f", val) + "\n");
