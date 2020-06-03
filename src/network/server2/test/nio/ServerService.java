@@ -17,8 +17,6 @@ import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import network.server2.dao.Device;
-
 public class ServerService {
 	
 	// =========================================================
