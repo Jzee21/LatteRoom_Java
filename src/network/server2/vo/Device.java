@@ -8,13 +8,10 @@ import java.net.Socket;
 
 import network.server2.controller.ServerController;
 
-public class Guest implements Client {
-
-	private String userID;
-	private String loginID;
-	private String loginPW;
-	private String userRole;
-	private String authCode;
+public class Device implements Client {
+	
+	private String deviceID;
+	private String roomID;
 	
 	private Socket socket;
 	private BufferedReader input;
@@ -22,13 +19,11 @@ public class Guest implements Client {
 	
 	private ServerController controller = ServerController.getInstance();
 	
-	public Guest(String id, Socket socket) {
-		this.userID = id;
+	public Device(String id, Socket socket) {
+		this.deviceID = id;
 		this.socket = socket;
 	}
 	
-	
-	// =================================================
 	@Override
 	public void run() {
 		try {
@@ -37,7 +32,7 @@ public class Guest implements Client {
 		} catch (IOException e) {
 			this.close();
 		} // try
-		System.out.println("[" + socket.getInetAddress().toString() + "][" + userID + "] connected");
+		System.out.println("[" + socket.getInetAddress().toString() + "][" + deviceID + "] connected");
 		
 		String line = "";
 		while(true) {
@@ -46,7 +41,7 @@ public class Guest implements Client {
 				if(line == null) {
 					throw new IOException();
 				} else {
-					System.out.println("[" + userID + "] " + line);
+					System.out.println("[" + deviceID + "] " + line);
 //						service.dataHandler(this, line);
 					controller.broadcast(line);
 				}
@@ -79,7 +74,6 @@ public class Guest implements Client {
 	
 	@Override
 	public void send(String data) {
-		// TODO Auto-generated method stub
 		try {
 			this.output.println(data);
 			this.output.flush();
@@ -96,11 +90,7 @@ public class Guest implements Client {
 	
 	@Override
 	public String getId() {
-		return this.userID;
+		return this.deviceID;
 	}
-	
-	
-	// =================================================
-	// get, set
 	
 }
