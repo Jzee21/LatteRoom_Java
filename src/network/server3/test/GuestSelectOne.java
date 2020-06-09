@@ -14,7 +14,7 @@ public class GuestSelectOne {
 		
 		// 2. 조회할 데이터
 		Guest input = new Guest();
-		input.setLoginID("latte");
+		input.setLoginID("latte1");
 		System.out.println("input : " + input.toString());
 		
 		// 3. 데이터 조회
