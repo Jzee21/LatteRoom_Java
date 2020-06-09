@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="GuestMapper">
+
+	<!-- Beans 클래스의 객체이름(id)과 클래스이름(type)을 명시한다. -->
+    <resultMap id="guestMap" type="study.java.vo.Guest">
+        <!-- Beans의 멤버변수(property)이름과 대상 테이블의 컬럼(column)을 연결한다. -->
+        <result property="userNo" 		column="userno" />
+        <result property="loginID" 		column="loginid" />
+        <result property="loginPW" 		column="loginpw" />
+        <result property="role" 		column="role" />
+        <result property="authCode" 	column="authcode" />
+    </resultMap>
+    
+    <select id="selectItem" 
+    		parameterType="study.java.vo.Guest" 
+    		resultMap="guestMap">
+    	SELECT * FROM guest WHERE loginid=#{loginID}
+    </select>
+
+</mapper>
