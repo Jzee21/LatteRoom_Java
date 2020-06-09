@@ -19,7 +19,7 @@ public class MyBatisConnectionFactory {
         // 접속 정보를 명시하고 있는 XML의 경로 읽기
         try {
             // mybatis_config.xml 파일의 경로 지정
-            Reader reader = Resources.getResourceAsReader("study/java/mybatis/mybatis_config.xml");
+            Reader reader = Resources.getResourceAsReader("network/server3/mybatis/mybatis_config.xml");
 
             // sqlSessionFactory가 존재하지 않는다면 생성한다.
             if (sqlSessionFactory == null) {
