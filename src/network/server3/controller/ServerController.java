@@ -121,8 +121,9 @@ public class ServerController {
         try {
 			int count = channel.read(byteBuffer);	// Reading data from the socket
 			if(count < 0) {							// Socket closed from client
-				System.out.println(channel.getRemoteAddress().toString() + "] closed");
-				channel.close();
+//				System.out.println(channel.getRemoteAddress().toString() + "] closed");
+//				channel.close();
+				closeChannel(channel);
 				key.cancel();
 				return;
 			}
@@ -132,13 +133,24 @@ public class ServerController {
 			
 		} catch (IOException e) {
 //			e.printStackTrace();
-			try {
-				System.out.println(channel.getRemoteAddress().toString() + "] closed");
-				channel.close();
-				key.cancel();
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
+//			try {
+//				System.out.println(channel.getRemoteAddress().toString() + "] closed");
+//				channel.close();
+//				key.cancel();
+//			} catch (IOException e1) {
+//				e1.printStackTrace();
+//			}
+			closeChannel(channel);
+			key.cancel();
+		}
+	}
+	
+	private void closeChannel(SocketChannel channel) {
+		try {
+			System.out.println(channel.getRemoteAddress().toString() + "] closed");
+			channel.close();
+		} catch (IOException e1) {
+			e1.printStackTrace();
 		}
 	}
 	
