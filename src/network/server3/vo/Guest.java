@@ -7,6 +7,7 @@ public class Guest {
 	private String role;
 	private String authCode;
 	
+	
 	public String getUserNo() {
 		return userNo;
 	}
