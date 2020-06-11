@@ -30,7 +30,7 @@ CREATE TABLE ROOM (
     roomno 	varchar2(12 char) CONSTRAINT ROOM_PK PRIMARY KEY,
     roomname 	varchar2(15 char) NOT NULL,
     roomssid 	varchar2(15 char) NOT NULL,
-    roomimg 	varchar2(128 char)
+    imgurl      varchar2(128 char)
 );
 
 CREATE TABLE RESERVATION (
@@ -87,7 +87,7 @@ CREATE TABLE ALARM (
 CREATE TABLE ALARMDATA (
     datano 	varchar2(12 char) CONSTRAINT ALARMDATA_PK PRIMARY KEY,
     alarmno 	varchar2(12 char) NOT NULL,
-    sensorno 	varchar2(12 char) NOT NULL,
+    sensortype 	varchar2(12 char) NOT NULL,
     states 	varchar2(12 char),
     stateDetail 	varchar2(12 char),
     CONSTRAINT ALARMDATA_FK_ALARM FOREIGN KEY(alarmno) REFERENCES ALARM(alarmno) ON DELETE CASCADE
@@ -116,8 +116,8 @@ INSERT INTO HOPE (hopeno) VALUES ('GU1000000002');
 INSERT INTO ALARM (alarmno) VALUES ('GU1000000002');
 
 -- ROOM
-INSERT INTO ROOM (roomno, roomname, roomssid, roomimg) VALUES ('RM0000000001', '101', 'MULTI_GUEST', 'https://i.imgur.com/4LQp6RH.jpg');
-INSERT INTO ROOM (roomno, roomname, roomssid, roomimg) VALUES ('RM0000000002', '102', 'M602', 'https://i.imgur.com/T7KCxZj.jpg');
+INSERT INTO ROOM (roomno, roomname, roomssid, imgurl) VALUES ('RM0000000001', '101', 'MULTI_GUEST', 'https://i.imgur.com/4LQp6RH.jpg');
+INSERT INTO ROOM (roomno, roomname, roomssid, imgurl) VALUES ('RM0000000002', '102', 'M602', 'https://i.imgur.com/T7KCxZj.jpg');
 
 -- RESERV
 INSERT INTO RESERVATION (reservno, userno, roomno, startdate, enddate) 
@@ -144,18 +144,3 @@ INSERT INTO SENSOR (sensorno, type, deviceno) VALUES ('SN0000000001', 'TEMP', 'D
 
 
 commit;
-
--- TEST Query ----------------------------------------------------------------------------------
-
--- Login
-SELECT * FROM guest WHERE loginid='latte1';
-
--- Reserv.startdate
-SELECT to_char(startdate, 'DD/MM/RR') FROM reservation WHERE reservno='RE0000000001';
-
--- Reserv list (Reserv + Room)
-SELECT r.reservno, r.userno, r.roomno, room.roomname, room.roomssid, room.roomimg, r.startdate, r.enddate 
-FROM reservation R, room WHERE r.roomno = room.roomno and r.userno = 'GU0000000002';
-
--- DeviceNo from SenserData.sensorNo
-SELECT s.deviceno FROM sensor S WHERE s.sensorno = 'SN0000000001';
