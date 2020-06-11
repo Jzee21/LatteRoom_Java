@@ -77,9 +77,9 @@ CREATE TABLE CONTROLDATA (
 
 CREATE TABLE ALARM (
     alarmno 	varchar2(12 char) CONSTRAINT ALARM_PK PRIMARY KEY,
-    hour 		number(2) DEFAULT 06,
-    min 		number(2) DEFAULT 00,
-    weeks 	varchar2(30 char) DEFAULT '',
+    hour 		varchar2(2 char) DEFAULT '06',
+    min 		varchar2(2 char) DEFAULT '00',
+    weeks 	    varchar2(30 char) DEFAULT '',
     flag 		char(1) DEFAULT 0,
     CONSTRAINT ALARM_FK_USER FOREIGN KEY(alarmno) REFERENCES GUEST(userno) ON DELETE CASCADE
 );
@@ -94,10 +94,12 @@ CREATE TABLE ALARMDATA (
 );
 
 --------------------------------------------------------------------------------------------------
--- USER
+--------------------------------------------------------------------------------------------------
+-- USER (admin)
 INSERT INTO GUEST (userno, loginid, loginpw, authcode, role) VALUES ('GU0000000001', 'admin', 'admin', 'BC5451FC5006', 'ADMIN');
 INSERT INTO HOPE (hopeno) VALUES ('GU0000000001');
 INSERT INTO ALARM (alarmno) VALUES ('GU0000000001');
+-- USER (user)
 INSERT INTO GUEST (userno, loginid, loginpw, authcode) VALUES ('GU0000000002', 'latte1', 'latte1', 'BC5451FC5006');
 INSERT INTO HOPE (hopeno) VALUES ('GU0000000002');
 INSERT INTO ALARM (alarmno) VALUES ('GU0000000002');
@@ -107,13 +109,6 @@ INSERT INTO ALARM (alarmno) VALUES ('GU0000000003');
 INSERT INTO GUEST (userno, loginid, loginpw, authcode) VALUES ('GU0000000004', 'latte3', 'latte3', 'BC5451FC5006');
 INSERT INTO HOPE (hopeno) VALUES ('GU0000000004');
 INSERT INTO ALARM (alarmno) VALUES ('GU0000000004');
--- USER for test
-INSERT INTO GUEST (userno, loginid, loginpw, authcode) VALUES ('GU1000000001', 'tester1', 'test', '24F5AAEC526C');
-INSERT INTO HOPE (hopeno) VALUES ('GU1000000001');
-INSERT INTO ALARM (alarmno) VALUES ('GU1000000001');
-INSERT INTO GUEST (userno, loginid, loginpw, authcode) VALUES ('GU1000000002', 'tester2', 'test', '88832211278D');
-INSERT INTO HOPE (hopeno) VALUES ('GU1000000002');
-INSERT INTO ALARM (alarmno) VALUES ('GU1000000002');
 
 -- ROOM
 INSERT INTO ROOM (roomno, roomname, roomssid, imgurl) VALUES ('RM0000000001', '101', 'MULTI_GUEST', 'https://i.imgur.com/4LQp6RH.jpg');
@@ -144,3 +139,52 @@ INSERT INTO SENSOR (sensorno, type, deviceno) VALUES ('SN0000000001', 'TEMP', 'D
 
 
 commit;
+
+------------------------------------------------------------------------------------------------
+-- USER (test)
+INSERT INTO GUEST (userno, loginid, loginpw, authcode) VALUES ('GU1000000001', 'tester1', 'test', '24F5AAEC526C');  -- 99
+INSERT INTO HOPE (hopeno) VALUES ('GU1000000001');
+INSERT INTO ALARM (alarmno) VALUES ('GU1000000001');
+INSERT INTO ALARMDATA VALUES ('AD0000000001', 'GU1000000001', 'LIGHT', '70', null);
+INSERT INTO ALARMDATA VALUES ('AD0000000002', 'GU1000000001', 'BED', '45', null);
+INSERT INTO ALARMDATA VALUES ('AD0000000003', 'GU1000000001', 'BLIND', 'OPEN', null);
+--INSERT INTO GUEST (userno, loginid, loginpw, authcode) VALUES ('GU1000000002', 'tester2', 'test', '88832211278D');
+--INSERT INTO HOPE (hopeno) VALUES ('GU1000000002');
+--INSERT INTO ALARM (alarmno) VALUES ('GU1000000002');
+
+-- Reserv
+INSERT INTO RESERVATION (reservno, userno, roomno, startdate, enddate) 
+VALUES ('RE1000000001', 'GU1000000001', 'RM0000000001', TO_DATE('2020-06-13', 'YYYY-MM-DD'), TO_DATE('2020-06-14', 'YYYY-MM-DD'));
+
+
+INSERT INTO SENSORDATA VALUES ('SD9000000001', 'SN0000000001', sysdate, '70', null);
+UPDATE sensor SET recentdata='SD9000000001' WHERE sensorno='SN0000000001';
+
+
+
+-- TEST Query ----------------------------------------------------------------------------------
+
+-- Login
+SELECT * FROM guest WHERE loginid='latte1';
+
+-- Reserv.startdate
+SELECT to_char(startdate, 'DD/MM/RR') FROM reservation WHERE reservno='RE0000000001';
+
+-- Reserv list (Reserv + Room)
+SELECT r.reservno, r.userno, r.roomno, room.roomname, room.roomssid, room.imgurl, r.startdate, r.enddate 
+FROM reservation R, room WHERE r.roomno = room.roomno and r.userno = 'GU0000000002';
+
+-- DeviceNo from SenserData.sensorNo
+SELECT s.deviceno FROM sensor S WHERE s.sensorno = 'SN0000000001';
+
+
+-------
+-- Hope
+SELECT * FROM hope WHERE hopeno='GU1000000001';
+-- Alarm
+SELECT * FROM alarm WHERE alarmno='GU1000000001';
+-- AlarmData
+SELECT * FROM alarmData WHERE alarmno='GU1000000001';
+
+SELECT * FROM sensor, sensordata WHERE sensor.sensorno='SN0000000001' and sensor.recentdata=sensordata.datano;
+SELECT s.sensorno, s.type, s.deviceno, sd.time, sd.states, sd.statedetail FROM sensor s, sensordata sd WHERE s.sensorno='SN0000000001' and s.recentdata=sd.datano;
