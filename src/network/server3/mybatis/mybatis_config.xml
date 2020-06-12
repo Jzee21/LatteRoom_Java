@@ -18,5 +18,6 @@
 	<mappers>
 		<mapper resource="network/server3/mybatis/mappers/GuestMapper.xml" />
 		<mapper resource="network/server3/mybatis/mappers/ReservMapper.xml" />
+		<mapper resource="network/server3/mybatis/mappers/DeviceMapper.xml" />
 	</mappers>
 </configuration>

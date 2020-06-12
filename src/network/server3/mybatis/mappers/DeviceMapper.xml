@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="DeviceMapper">
+    
+    <select id="selectTypeMap"
+    		parameterType="String"
+    		resultType="java.util.HashMap">
+    	<![CDATA[
+    	SELECT type, sensorno FROM device d, sensor s WHERE d.deviceno=#{value} and s.deviceno = d.deviceno
+    	]]>
+    </select>
+    
+    <!-- <select id="selectTypeMap"
+    		parameterType="String"
+    		resultType="java.util.HashMap">
+    	<![CDATA[
+    	SELECT s.type, s.sensorno FROM device d, sensor s WHERE d.deviceno=#{value} and s.deviceno = d.deviceno;
+    	]]>
+    </select> -->
+
+</mapper>
