@@ -154,7 +154,31 @@ UPDATE sensor SET recentdata='SD90005' WHERE sensorno='SN01201';
 INSERT INTO SENSORDATA VALUES ('SD90006', 'SN01202', sysdate, 'close', null);
 UPDATE sensor SET recentdata='SD90006' WHERE sensorno='SN01202';
 
+-- Trigger Test
+CREATE TRIGGER insert_sensorData AFTER INSERT on Latte.sensordata 
+REFERENCING NEW as NEW
+FOR EACH ROW 
+BEGIN 
+UPDATE Latte.sensor SET recentdata=:NEW.datano WHERE sensorno=:NEW.sensorno; 
+END;
+
 commit;
+
+-- Trigger result Test
+INSERT INTO SENSORDATA VALUES ('SD90007', 'SN01202', sysdate, 'close', null);
+SELECT * FROM sensor, sensordata WHERE sensor.recentdata=sensordata.datano;
+SELECT * FROM sensordata;
+
+-- Sequence, Insert Test
+CREATE SEQUENCE SD_SEQ 
+INCREMENT BY 1 
+START WITH 10 
+MAXVALUE 99999 
+CYCLE NOCACHE;
+
+INSERT INTO SENSORDATA VALUES ('SD'||LPAD(SD_SEQ.nextval, 5, 0), 'SN01202', sysdate, 'open', null);
+--'AAA' || board_seq.nextval
+--LPAD(DEPTNO, 5)
 
 ------------------------------------------------------------------------------------------------
 -- USER (test)
