@@ -87,7 +87,7 @@ CREATE TABLE ALARM (
 CREATE TABLE ALARMDATA (
     datano 	varchar2(12 char) CONSTRAINT ALARMDATA_PK PRIMARY KEY,
     alarmno 	varchar2(12 char) NOT NULL,
-    sensortype 	varchar2(12 char) NOT NULL,
+    type 	varchar2(12 char) NOT NULL,
     states 	varchar2(12 char),
     stateDetail 	varchar2(12 char),
     CONSTRAINT ALARMDATA_FK_ALARM FOREIGN KEY(alarmno) REFERENCES ALARM(alarmno) ON DELETE CASCADE
@@ -96,95 +96,134 @@ CREATE TABLE ALARMDATA (
 --------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------
 -- USER (admin)
-INSERT INTO GUEST (userno, loginid, loginpw, authcode, role) VALUES ('GU0000000001', 'admin', 'admin', 'BC5451FC5006', 'ADMIN');
-INSERT INTO HOPE (hopeno) VALUES ('GU0000000001');
-INSERT INTO ALARM (alarmno) VALUES ('GU0000000001');
+--INSERT INTO GUEST (userno, loginid, loginpw, authcode, role) VALUES ('GU0000000001', 'admin', 'admin', 'BC5451FC5006', 'ADMIN');
+INSERT INTO GUEST (userno, loginid, loginpw, authcode, role) VALUES ('ADMIN0001', 'admin', 'admin', 'BC5451FC5006', 'ADMIN');
+INSERT INTO HOPE (hopeno) VALUES ('ADMIN0001');
+INSERT INTO ALARM (alarmno) VALUES ('ADMIN0001');
 -- USER (user)
-INSERT INTO GUEST (userno, loginid, loginpw, authcode) VALUES ('GU0000000002', 'latte1', 'latte1', 'BC5451FC5006');
-INSERT INTO HOPE (hopeno) VALUES ('GU0000000002');
-INSERT INTO ALARM (alarmno) VALUES ('GU0000000002');
-INSERT INTO GUEST (userno, loginid, loginpw, authcode) VALUES ('GU0000000003', 'latte2', 'latte2', 'BC5451FC5006');
-INSERT INTO HOPE (hopeno) VALUES ('GU0000000003');
-INSERT INTO ALARM (alarmno) VALUES ('GU0000000003');
-INSERT INTO GUEST (userno, loginid, loginpw, authcode) VALUES ('GU0000000004', 'latte3', 'latte3', 'BC5451FC5006');
-INSERT INTO HOPE (hopeno) VALUES ('GU0000000004');
-INSERT INTO ALARM (alarmno) VALUES ('GU0000000004');
+INSERT INTO GUEST (userno, loginid, loginpw, authcode) VALUES ('GUEST0001', 'latte1', 'latte1', 'BC5451FC5006');
+INSERT INTO HOPE (hopeno) VALUES ('GUEST0001');
+INSERT INTO ALARM (alarmno) VALUES ('GUEST0001');
+INSERT INTO GUEST (userno, loginid, loginpw, authcode) VALUES ('GUEST0002', 'latte2', 'latte2', 'BC5451FC5006');
+INSERT INTO HOPE (hopeno) VALUES ('GUEST0002');
+INSERT INTO ALARM (alarmno) VALUES ('GUEST0002');
+INSERT INTO GUEST (userno, loginid, loginpw, authcode) VALUES ('GUEST0003', 'latte3', 'latte3', 'BC5451FC5006');
+INSERT INTO HOPE (hopeno) VALUES ('GUEST0003');
+INSERT INTO ALARM (alarmno) VALUES ('GUEST0003');
 
 -- ROOM
-INSERT INTO ROOM (roomno, roomname, roomssid, imgurl) VALUES ('RM0000000001', '101', 'MULTI_GUEST', 'https://i.imgur.com/4LQp6RH.jpg');
-INSERT INTO ROOM (roomno, roomname, roomssid, imgurl) VALUES ('RM0000000002', '102', 'M602', 'https://i.imgur.com/T7KCxZj.jpg');
+INSERT INTO ROOM (roomno, roomname, roomssid, imgurl) VALUES ('ROOM0001', '101', 'MULTI_GUEST', 'https://i.imgur.com/4LQp6RH.jpg');
+INSERT INTO ROOM (roomno, roomname, roomssid, imgurl) VALUES ('ROOM0002', '102', 'M602', 'https://i.imgur.com/T7KCxZj.jpg');
 
 -- RESERV
 INSERT INTO RESERVATION (reservno, userno, roomno, startdate, enddate) 
-VALUES ('RE0000000001', 'GU0000000002', 'RM0000000001', TO_DATE('2020-06-10', 'YYYY-MM-DD'), TO_DATE('2020-06-12', 'YYYY-MM-DD'));
+VALUES ('RESERV0001', 'GUEST0002', 'ROOM0001', TO_DATE('2020-06-10', 'YYYY-MM-DD'), TO_DATE('2020-06-11', 'YYYY-MM-DD'));
 INSERT INTO RESERVATION (reservno, userno, roomno, startdate, enddate) 
-VALUES ('RE0000000002', 'GU0000000002', 'RM0000000002', TO_DATE('2020-06-15', 'YYYY-MM-DD'), TO_DATE('2020-06-20', 'YYYY-MM-DD'));
+VALUES ('RESERV0002', 'GUEST0002', 'ROOM0002', TO_DATE('2020-06-15', 'YYYY-MM-DD'), TO_DATE('2020-06-20', 'YYYY-MM-DD'));
 INSERT INTO RESERVATION (reservno, userno, roomno, startdate, enddate) 
-VALUES ('RE0000000003', 'GU0000000003', 'RM0000000002', TO_DATE('2020-06-12', 'YYYY-MM-DD'), TO_DATE('2020-06-13', 'YYYY-MM-DD'));
+VALUES ('RESERV0003', 'GUEST0003', 'ROOM0002', TO_DATE('2020-06-12', 'YYYY-MM-DD'), TO_DATE('2020-06-13', 'YYYY-MM-DD'));
 
 -- DEVICE
-INSERT INTO DEVICE VALUES ('DEVICE001001', 'RM0000000001');
-INSERT INTO DEVICE VALUES ('DEVICE001002', 'RM0000000002');
-INSERT INTO DEVICE VALUES ('DEVICE002001', 'RM0000000001');
-INSERT INTO DEVICE VALUES ('DEVICE002002', 'RM0000000002');
-INSERT INTO DEVICE VALUES ('DEVICE003001', 'RM0000000001');
-INSERT INTO DEVICE VALUES ('DEVICE003002', 'RM0000000002');
-INSERT INTO DEVICE VALUES ('DEVICE004001', 'RM0000000001');
-INSERT INTO DEVICE VALUES ('DEVICE004002', 'RM0000000002');
+INSERT INTO DEVICE VALUES ('DEVICE011', 'ROOM0001');
+INSERT INTO DEVICE VALUES ('DEVICE012', 'ROOM0001');
+INSERT INTO DEVICE VALUES ('DEVICE013', 'ROOM0001');
+INSERT INTO DEVICE VALUES ('DEVICE014', 'ROOM0001');
+INSERT INTO DEVICE VALUES ('DEVICE021', 'ROOM0002');
+INSERT INTO DEVICE VALUES ('DEVICE022', 'ROOM0002');
+INSERT INTO DEVICE VALUES ('DEVICE023', 'ROOM0002');
+INSERT INTO DEVICE VALUES ('DEVICE024', 'ROOM0002');
 
 -- SENSOR
-INSERT INTO SENSOR (sensorno, type, deviceno) VALUES ('SN0000000001', 'TEMP', 'DEVICE001001');
---INSERT INTO SENSOR (sensorno, type, deviceno) VALUES ('SN0000000002', 'LIGHT', 'DEVICE001001');
+INSERT INTO SENSOR (sensorno, type, deviceno) VALUES ('SN01101', 'TEMP', 'DEVICE011');
+INSERT INTO SENSOR (sensorno, type, deviceno) VALUES ('SN01102', 'HUMI', 'DEVICE011');
+INSERT INTO SENSOR (sensorno, type, deviceno) VALUES ('SN01103', 'HEAT', 'DEVICE011');
+INSERT INTO SENSOR (sensorno, type, deviceno) VALUES ('SN01104', 'COOL', 'DEVICE011');
+INSERT INTO SENSOR (sensorno, type, deviceno) VALUES ('SN01201', 'LIGHT', 'DEVICE012');
+INSERT INTO SENSOR (sensorno, type, deviceno) VALUES ('SN01202', 'DOOR', 'DEVICE012');
 --.....
-
+INSERT INTO SENSORDATA VALUES ('SD90001', 'SN01101', sysdate, '70', null);
+UPDATE sensor SET recentdata='SD90001' WHERE sensorno='SN01101';
+INSERT INTO SENSORDATA VALUES ('SD90002', 'SN01102', sysdate, '45', null);
+UPDATE sensor SET recentdata='SD90002' WHERE sensorno='SN01102';
+INSERT INTO SENSORDATA VALUES ('SD90003', 'SN01103', sysdate, 'off', null);
+UPDATE sensor SET recentdata='SD90003' WHERE sensorno='SN01103';
+INSERT INTO SENSORDATA VALUES ('SD90004', 'SN01104', sysdate, 'on', null);
+UPDATE sensor SET recentdata='SD90004' WHERE sensorno='SN01104';
+INSERT INTO SENSORDATA VALUES ('SD90005', 'SN01201', sysdate, 'on', '70');
+UPDATE sensor SET recentdata='SD90005' WHERE sensorno='SN01201';
+INSERT INTO SENSORDATA VALUES ('SD90006', 'SN01202', sysdate, 'close', null);
+UPDATE sensor SET recentdata='SD90006' WHERE sensorno='SN01202';
 
 commit;
 
 ------------------------------------------------------------------------------------------------
 -- USER (test)
-INSERT INTO GUEST (userno, loginid, loginpw, authcode) VALUES ('GU1000000001', 'tester1', 'test', '24F5AAEC526C');  -- 99
-INSERT INTO HOPE (hopeno) VALUES ('GU1000000001');
-INSERT INTO ALARM (alarmno) VALUES ('GU1000000001');
-INSERT INTO ALARMDATA VALUES ('AD0000000001', 'GU1000000001', 'LIGHT', '70', null);
-INSERT INTO ALARMDATA VALUES ('AD0000000002', 'GU1000000001', 'BED', '45', null);
-INSERT INTO ALARMDATA VALUES ('AD0000000003', 'GU1000000001', 'BLIND', 'OPEN', null);
+INSERT INTO GUEST (userno, loginid, loginpw, authcode) VALUES ('TESTER0001', 'tester1', 'test', '24F5AAEC526C');  -- 99
+INSERT INTO HOPE (hopeno) VALUES ('TESTER0001');
+INSERT INTO ALARM (alarmno) VALUES ('TESTER0001');
+INSERT INTO ALARMDATA VALUES ('AD00001', 'TESTER0001', 'LIGHT', 'off', '70');
+INSERT INTO ALARMDATA VALUES ('AD00002', 'TESTER0001', 'BED', '45', null);
+INSERT INTO ALARMDATA VALUES ('AD00003', 'TESTER0001', 'BLIND', 'OPEN', null);
 --INSERT INTO GUEST (userno, loginid, loginpw, authcode) VALUES ('GU1000000002', 'tester2', 'test', '88832211278D');
 --INSERT INTO HOPE (hopeno) VALUES ('GU1000000002');
 --INSERT INTO ALARM (alarmno) VALUES ('GU1000000002');
 
 -- Reserv
 INSERT INTO RESERVATION (reservno, userno, roomno, startdate, enddate) 
-VALUES ('RE1000000001', 'GU1000000001', 'RM0000000001', TO_DATE('2020-06-13', 'YYYY-MM-DD'), TO_DATE('2020-06-14', 'YYYY-MM-DD'));
+VALUES ('RESERV9001', 'TESTER0001', 'ROOM0001', TO_DATE('2020-06-13', 'YYYY-MM-DD'), TO_DATE('2020-06-14', 'YYYY-MM-DD'));
+INSERT INTO RESERVATION (reservno, userno, roomno, startdate, enddate) 
+VALUES ('RESERV9002', 'TESTER0001', 'ROOM0002', TO_DATE('2020-06-14', 'YYYY-MM-DD'), TO_DATE('2020-06-15', 'YYYY-MM-DD'));
 
 
-INSERT INTO SENSORDATA VALUES ('SD9000000001', 'SN0000000001', sysdate, '70', null);
-UPDATE sensor SET recentdata='SD9000000001' WHERE sensorno='SN0000000001';
+
+
 
 
 
 -- TEST Query ----------------------------------------------------------------------------------
+SELECT * FROM guest;
 
 -- Login
 SELECT * FROM guest WHERE loginid='latte1';
 
 -- Reserv.startdate
-SELECT to_char(startdate, 'DD/MM/RR') FROM reservation WHERE reservno='RE0000000001';
+SELECT to_char(startdate, 'DD/MM/RR') FROM reservation WHERE reservno='RESERV0001';
 
 -- Reserv list (Reserv + Room)
 SELECT r.reservno, r.userno, r.roomno, room.roomname, room.roomssid, room.imgurl, r.startdate, r.enddate 
-FROM reservation R, room WHERE r.roomno = room.roomno and r.userno = 'GU0000000002';
+FROM reservation R, room WHERE r.roomno = room.roomno and r.userno = 'GUEST0002';
 
 -- DeviceNo from SenserData.sensorNo
-SELECT s.deviceno FROM sensor S WHERE s.sensorno = 'SN0000000001';
+SELECT s.deviceno FROM sensor S WHERE s.sensorno = 'SN01101';
 
 
 -------
 -- Hope
-SELECT * FROM hope WHERE hopeno='GU1000000001';
+SELECT * FROM hope WHERE hopeno='TESTER0001';
 -- Alarm
-SELECT * FROM alarm WHERE alarmno='GU1000000001';
+SELECT * FROM alarm WHERE alarmno='TESTER0001';
 -- AlarmData
-SELECT * FROM alarmData WHERE alarmno='GU1000000001';
+SELECT * FROM alarmData WHERE alarmno='TESTER0001';
 
-SELECT * FROM sensor, sensordata WHERE sensor.sensorno='SN0000000001' and sensor.recentdata=sensordata.datano;
-SELECT s.sensorno, s.type, s.deviceno, sd.time, sd.states, sd.statedetail FROM sensor s, sensordata sd WHERE s.sensorno='SN0000000001' and s.recentdata=sd.datano;
+SELECT * FROM sensor, sensordata WHERE sensor.sensorno='SN01101';
+SELECT * FROM sensor, sensordata WHERE sensor.sensorno='SN01101' and sensor.recentdata=sensordata.datano;
+SELECT s.sensorno, s.type, s.deviceno, sd.time, sd.states, sd.statedetail FROM sensor s, sensordata sd WHERE s.sensorno='SN01101' and s.recentdata=sd.datano;
+
+SELECT * FROM reservation;
+SELECT * FROM reservation WHERE startdate<=sysdate and enddate<sysdate+1;
+select to_char(sysdate-1, 'YYYY-MM-DD HH:MM') from dual;
+
+select to_char(r.enddate, 'YYYY-MM-DD HH24:MM') from reservation r;
+
+SELECT * FROM device, sensor WHERE sensor.deviceno = device.deviceno;
+SELECT * FROM device d, sensor s WHERE s.deviceno = d.deviceno and d.deviceno='DEVICE011';
+SELECT s.type, s.sensorno FROM device D, sensor S WHERE d.deviceno='DEVICE011' and s.deviceno = d.deviceno;
+
+SELECT d.deviceno, s.sensorno, s.type, sd.states, sd.statedetail FROM device d, sensor s, sensordata sd 
+WHERE d.deviceno=s.deviceno and s.recentdata=sd.datano;
+-- RoomDetail
+SELECT d.deviceno, s.sensorno, s.type, sd.states, sd.statedetail FROM device d, sensor s, sensordata sd 
+WHERE d.roomno='ROOM0001' and d.deviceno=s.deviceno and s.recentdata=sd.datano;
+
+SELECT d.deviceno, type FROM device d, sensor s
+WHERE s.deviceno = d.deviceno and s.type='TEMP' and d.roomno='ROOM0001';
