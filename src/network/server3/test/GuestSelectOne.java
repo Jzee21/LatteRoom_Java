@@ -13,18 +13,20 @@ public class GuestSelectOne {
 		SqlSession sqlSession = MyBatisConnectionFactory.getSqlSession();
 		
 		// 2. 조회할 데이터
-		Guest input = new Guest();
-		input.setLoginID("latte1");
-		System.out.println("input : " + input.toString());
+//		Guest input = new Guest();
+//		input.setLoginID("latte1");
+//		System.out.println("input : " + input.toString());
+		String input = "latte1";
 		
 		// 3. 데이터 조회
-		Guest output = sqlSession.selectOne("GuestMapper.selectItem", input);
+//		Guest output = sqlSession.selectOne("GuestMapper.selectItem", input);
+		Guest output = sqlSession.selectOne("GuestMapper.selectItemByString", input);
 		
 		// 4. 결과 확인
 		if(output == null) {
 			System.out.println("조회 결과 없음");
 		} else {
-			System.out.println(output.toString());
+			System.out.println("결과 : " + output.toString());
 		}
 		
 		sqlSession.close();

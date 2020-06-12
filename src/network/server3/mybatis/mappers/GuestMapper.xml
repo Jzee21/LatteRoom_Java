@@ -18,5 +18,11 @@
     		resultMap="result">
     	SELECT * FROM guest WHERE loginid=#{loginID}
     </select>
+    
+    <select id="selectItemByString" 
+    		parameterType="String" 
+    		resultMap="result">
+    	SELECT * FROM guest WHERE loginid=#{value}
+    </select>
 
 </mapper>
