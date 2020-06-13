@@ -24,6 +24,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
+import network.server3.vo.Guest;
 import network.server3.vo.Message;
 
 public class TestClient extends Application{
@@ -70,26 +71,31 @@ public class TestClient extends Application{
 		
 		// Bottom ----------------------------------------------
 		connBtn = new Button("conn");
-		connBtn.setPrefSize(150, 40);
+		connBtn.setPrefSize(100, 40);
 		connBtn.setOnAction((e) -> {
 			startClient();
 		});
 		
 		disconnBtn = new Button("disconn");
-		disconnBtn.setPrefSize(150, 40);
+		disconnBtn.setPrefSize(100, 40);
 		disconnBtn.setOnAction((e) -> {
 			stopClient();
 		});
 		
-		inputField = new TextField();
-		inputField.setPrefSize(400, 40);
-		inputField.setOnAction((e) -> {
-			send(inputField.getText());
-			inputField.clear();
+//		inputField = new TextField();
+//		inputField.setPrefSize(400, 40);
+//		inputField.setOnAction((e) -> {
+//			send(inputField.getText());
+//			inputField.clear();
+//		});
+		Button id1 = new Button("latte1");
+		id1.setPrefSize(100,  40);
+		id1.setOnAction((e) -> {
+			send(gson.toJson(new Message(null, "LOGIN", gson.toJson(new Guest("latte1", "latte1")))));
 		});
 		
 		bottom = new FlowPane();
-		bottom.getChildren().addAll(connBtn, disconnBtn, inputField);
+		bottom.getChildren().addAll(connBtn, disconnBtn, id1);
 		root.setBottom(bottom);
 		
 		Scene scene = new Scene(root);
@@ -134,7 +140,7 @@ public class TestClient extends Application{
 			while(true) {
 				try {
 					line = input.readLine();
-//					System.out.println(line);
+					displayText("뭔가 왔어 ");
 					if(line == null) {
 						displayText("server error. disconnected");
 						throw new IOException();
@@ -168,8 +174,8 @@ public class TestClient extends Application{
 	} // stopClient()
 	
 	public void send(String msg) {
-//		output.println(msg);
-		output.println(gson.toJson(new Message(this.deviceID, "MESSAGE", msg)));
+		output.println(msg);
+//		output.println(gson.toJson(new Message(this.deviceID, "MESSAGE", msg)));
 		output.flush();
 	}
 
