@@ -5,14 +5,14 @@ import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 
-import network.server3.mybatis.MyBatisConnectionFactory;
+import network.server3.mybatis.MyBatisFactory;
 
 public class DeviceSelect {
 
 	public static void main(String[] args) {
 		
 		// 1. DB 접속
-		SqlSession sqlSession = MyBatisConnectionFactory.getSqlSession();
+		SqlSession sqlSession = MyBatisFactory.getSqlSession();
 		
 		// 2. 조회할 데이터
 //		Guest input = new Guest();
