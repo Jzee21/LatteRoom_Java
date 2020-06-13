@@ -1,12 +1,29 @@
 package network.server3.vo;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 public class Message {
 	private String clientNo;
 	private String code1;
 	private String code2;
 	private String jsonData;
 	
+	private static Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").create();
 	
+	// constructor
+	public Message(String id, String code, String data) {
+		this.clientNo = id;
+		this.code1 = code;
+		this.jsonData = data;
+	}
+	
+	public Message(String id, String code, String subCode, String data) {
+		this(id, code, data);
+		this.code2 = subCode;
+	}
+	
+	// get, set
 	public String getClientNo() {
 		return clientNo;
 	}
