@@ -4,6 +4,20 @@
 	"http://mybatis.org/dtd/mybatis-3-config.dtd">
 	
 <configuration>
+	<typeAliases>
+		<!-- Device -->
+		<typeAlias alias="device" 		type="network.server3.vo.Device"/>
+		<typeAlias alias="sensor" 		type="network.server3.vo.Sensor"/>
+		<typeAlias alias="sensorData" 	type="network.server3.vo.SensorData"/>
+		<!-- Guest -->
+		<typeAlias alias="guest" 		type="network.server3.vo.Guest"/>
+		<typeAlias alias="Room" 		type="network.server3.vo.Room"/>
+		<typeAlias alias="roomDetail" 	type="network.server3.vo.RoomDetail"/>
+		<typeAlias alias="reservation" 	type="network.server3.vo.Reservation"/>
+		<typeAlias alias="hope" 		type="network.server3.vo.Hope"/>
+		<typeAlias alias="alarm" 		type="network.server3.vo.Alarm"/>
+		<typeAlias alias="alarmData" 	type="network.server3.vo.AlarmData"/>
+	</typeAliases>
 	<environments default="development">
 		<environment id="development">
 			<transactionManager type="JDBC" />
