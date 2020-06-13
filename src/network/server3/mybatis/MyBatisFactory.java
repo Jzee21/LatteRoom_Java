@@ -8,7 +8,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
-public class MyBatisConnectionFactory {
+public class MyBatisFactory {
 	/** 데이터베이스 접속 객체 */ 
     private static SqlSessionFactory sqlSessionFactory;
 
