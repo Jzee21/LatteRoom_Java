@@ -1,5 +1,8 @@
 package network.server4.vo;
 
+import org.apache.ibatis.type.Alias;
+
+@Alias("Guest")
 public class Guest {
 	private String userNo;
 	private String loginID;

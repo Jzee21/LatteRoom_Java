@@ -1,5 +1,8 @@
 package network.server4.vo;
 
+import org.apache.ibatis.type.Alias;
+
+@Alias("AlarmData")
 public class AlarmData {
 	private String dataNo;
 	private String userNo;

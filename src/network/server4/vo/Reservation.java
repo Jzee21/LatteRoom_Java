@@ -2,6 +2,9 @@ package network.server4.vo;
 
 import java.sql.Date;
 
+import org.apache.ibatis.type.Alias;
+
+@Alias("Reserv")
 public class Reservation {
 	private String 	reservNo;
 	private String 	roomNo;

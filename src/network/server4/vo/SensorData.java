@@ -2,6 +2,9 @@ package network.server4.vo;
 
 import java.sql.Date;
 
+import org.apache.ibatis.type.Alias;
+
+@Alias("SensorData")
 public class SensorData {
 	private String 	dataNo;
 	private String 	sensorNo;

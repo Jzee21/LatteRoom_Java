@@ -1,5 +1,8 @@
 package network.server4.vo;
 
+import org.apache.ibatis.type.Alias;
+
+@Alias("Alarm")
 public class Alarm {
 	private String 	alarmNo;
 	private String 	hour;

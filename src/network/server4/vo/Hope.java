@@ -1,5 +1,8 @@
 package network.server4.vo;
 
+import org.apache.ibatis.type.Alias;
+
+@Alias("Hope")
 public class Hope {
 	private String hopeNo;
 	private String temp;

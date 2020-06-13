@@ -1,5 +1,8 @@
 package network.server4.vo;
 
+import org.apache.ibatis.type.Alias;
+
+@Alias("Sensor")
 public class Sensor {
 	private String 	sensorNo;
 	private String 	type;

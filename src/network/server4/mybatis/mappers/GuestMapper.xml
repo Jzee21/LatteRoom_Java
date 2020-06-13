@@ -4,7 +4,7 @@
 <mapper namespace="GuestMapper">
 
 	<!-- Beans 클래스의 객체이름(id)과 클래스이름(type)을 명시한다. -->
-    <resultMap id="result" type="network.server3.vo.Guest">
+    <resultMap id="result" type="Guest">
         <!-- Beans의 멤버변수(property)이름과 대상 테이블의 컬럼(column)을 연결한다. -->
         <result property="userNo" 		column="userno" />
         <result property="loginID" 		column="loginid" />
@@ -14,7 +14,7 @@
     </resultMap>
     
     <select id="selectItem" 
-    		parameterType="network.server3.vo.Guest" 
+    		parameterType="Guest" 
     		resultMap="result">
     	SELECT * FROM guest WHERE loginid=#{loginID}
     </select>

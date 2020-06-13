@@ -4,7 +4,7 @@
 <mapper namespace="ReservMapper">
 
 	<!-- Beans 클래스의 객체이름(id)과 클래스이름(type)을 명시한다. -->
-    <resultMap id="result" type="network.server3.vo.Reservation">
+    <resultMap id="result" type="Reserv">
         <!-- Beans의 멤버변수(property)이름과 대상 테이블의 컬럼(column)을 연결한다. -->
         <result property="reservNo" 	column="reservno" />
         <result property="roomNo" 		column="roomno" />
@@ -16,7 +16,7 @@
     </resultMap>
     
     <select id="selectItem" 
-    		parameterType="network.server3.vo.Guest" 
+    		parameterType="Guest" 
     		resultMap="result">
     	<![CDATA[
     	SELECT r.reservno, r.roomno, room.roomname, room.roomssid, room.imgurl, r.startdate, r.enddate 
