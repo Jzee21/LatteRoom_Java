@@ -1,5 +1,7 @@
 package network.server3.controller;
 
+import network.server3.vo.Message;
+
 public class GuestController implements Controller {
 
 	// =================================================
@@ -23,6 +25,12 @@ public class GuestController implements Controller {
 	public void dataHandler(String jsonData) {
 		// TODO Auto-generated method stub
 
+	}
+	
+	@Override
+	public void dataHandler(Message data) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
