@@ -7,6 +7,25 @@ public class Message {
 	private String jsonData;
 	
 	
+	// =================================================
+	// Constructor
+	public Message() {
+		
+	}
+	
+	public Message(String clientNo, String code, String jsonData) {
+		this.clientNo = clientNo;
+		this.code1 = code;
+		this.jsonData = jsonData;
+	}
+	
+	public Message(String clientNo, String code, String subCode, String jsonData) {
+		this(clientNo, code, jsonData);
+		this.code2 = subCode;
+	}
+	
+	// =================================================
+	// get, set
 	public String getClientNo() {
 		return clientNo;
 	}

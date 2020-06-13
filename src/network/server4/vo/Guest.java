@@ -10,7 +10,15 @@ public class Guest {
 	private String role;
 	private String authCode;
 	
+	// =================================================
+	// Constructor
+	public Guest(String id, String pw) {
+		this.loginID = id;
+		this.loginPW = pw;
+	}
 	
+	// =================================================
+	// get, set
 	public String getUserNo() {
 		return userNo;
 	}
