@@ -7,6 +7,12 @@ public class Guest {
 	private String role;
 	private String authCode;
 	
+	public Guest() {}
+	public Guest(String id, String pw) {
+		this.loginID = id;
+		this.loginPW = pw;
+	}
+	
 	
 	public String getUserNo() {
 		return userNo;
