@@ -1,4 +1,4 @@
-package network.server.main;
+package network.server3.main;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -24,7 +24,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
-import network.server.vo.Message;
+import network.server3.vo.Message;
 
 public class TestClient extends Application{
 
