@@ -9,6 +9,10 @@ drop table ROOM;
 drop table HOPE;
 drop table GUEST;
 
+drop sequence SD_SEQ;
+drop sequence CD_SEQ;
+drop TRIGGER insert_sensorData;
+
 CREATE TABLE GUEST (
     userno 	varchar2(12 char) CONSTRAINT GUSET_PK PRIMARY KEY,
     loginid 	varchar2(15 char),
@@ -94,6 +98,29 @@ CREATE TABLE ALARMDATA (
 );
 
 --------------------------------------------------------------------------------------------------
+-- Sequence, Insert Test
+CREATE SEQUENCE SD_SEQ 
+INCREMENT BY 1 
+START WITH 10 
+MAXVALUE 99999 
+CYCLE NOCACHE;
+
+CREATE SEQUENCE CD_SEQ 
+INCREMENT BY 1 
+START WITH 10 
+MAXVALUE 99999 
+CYCLE NOCACHE;
+
+-- Trigger Test
+CREATE TRIGGER insert_sensorData AFTER INSERT on Latte.sensordata 
+REFERENCING NEW as NEW
+FOR EACH ROW 
+BEGIN 
+UPDATE Latte.sensor SET recentdata=:NEW.datano WHERE sensorno=:NEW.sensorno; 
+END;
+/
+
+--------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------
 -- USER (admin)
 --INSERT INTO GUEST (userno, loginid, loginpw, authcode, role) VALUES ('GU0000000001', 'admin', 'admin', 'BC5451FC5006', 'ADMIN');
@@ -134,52 +161,67 @@ INSERT INTO DEVICE VALUES ('DEVICE023', 'ROOM0002');
 INSERT INTO DEVICE VALUES ('DEVICE024', 'ROOM0002');
 
 -- SENSOR
+-- Room 1
 INSERT INTO SENSOR (sensorno, type, deviceno) VALUES ('SN01101', 'TEMP', 'DEVICE011');
 INSERT INTO SENSOR (sensorno, type, deviceno) VALUES ('SN01102', 'HUMI', 'DEVICE011');
 INSERT INTO SENSOR (sensorno, type, deviceno) VALUES ('SN01103', 'HEAT', 'DEVICE011');
 INSERT INTO SENSOR (sensorno, type, deviceno) VALUES ('SN01104', 'COOL', 'DEVICE011');
 INSERT INTO SENSOR (sensorno, type, deviceno) VALUES ('SN01201', 'LIGHT', 'DEVICE012');
 INSERT INTO SENSOR (sensorno, type, deviceno) VALUES ('SN01202', 'DOOR', 'DEVICE012');
+INSERT INTO SENSOR (sensorno, type, deviceno) VALUES ('SN01301', 'BED', 'DEVICE013');
+INSERT INTO SENSOR (sensorno, type, deviceno) VALUES ('SN01401', 'BLIND', 'DEVICE014');
+-- Room 1
+INSERT INTO SENSOR (sensorno, type, deviceno) VALUES ('SN02101', 'TEMP', 'DEVICE021');
+INSERT INTO SENSOR (sensorno, type, deviceno) VALUES ('SN02102', 'HUMI', 'DEVICE021');
+INSERT INTO SENSOR (sensorno, type, deviceno) VALUES ('SN02103', 'HEAT', 'DEVICE021');
+INSERT INTO SENSOR (sensorno, type, deviceno) VALUES ('SN02104', 'COOL', 'DEVICE021');
+INSERT INTO SENSOR (sensorno, type, deviceno) VALUES ('SN02201', 'LIGHT', 'DEVICE022');
+INSERT INTO SENSOR (sensorno, type, deviceno) VALUES ('SN02202', 'DOOR', 'DEVICE022');
+INSERT INTO SENSOR (sensorno, type, deviceno) VALUES ('SN02301', 'BED', 'DEVICE023');
+INSERT INTO SENSOR (sensorno, type, deviceno) VALUES ('SN02401', 'BLIND', 'DEVICE024');
 --.....
-INSERT INTO SENSORDATA VALUES ('SD90001', 'SN01101', sysdate, '70', null);
-UPDATE sensor SET recentdata='SD90001' WHERE sensorno='SN01101';
-INSERT INTO SENSORDATA VALUES ('SD90002', 'SN01102', sysdate, '45', null);
-UPDATE sensor SET recentdata='SD90002' WHERE sensorno='SN01102';
-INSERT INTO SENSORDATA VALUES ('SD90003', 'SN01103', sysdate, 'off', null);
-UPDATE sensor SET recentdata='SD90003' WHERE sensorno='SN01103';
-INSERT INTO SENSORDATA VALUES ('SD90004', 'SN01104', sysdate, 'on', null);
-UPDATE sensor SET recentdata='SD90004' WHERE sensorno='SN01104';
-INSERT INTO SENSORDATA VALUES ('SD90005', 'SN01201', sysdate, 'on', '70');
-UPDATE sensor SET recentdata='SD90005' WHERE sensorno='SN01201';
-INSERT INTO SENSORDATA VALUES ('SD90006', 'SN01202', sysdate, 'close', null);
-UPDATE sensor SET recentdata='SD90006' WHERE sensorno='SN01202';
+--INSERT INTO SENSORDATA VALUES ('SD90001', 'SN01101', sysdate, '70', null);
+--UPDATE sensor SET recentdata='SD90001' WHERE sensorno='SN01101';
+--INSERT INTO SENSORDATA VALUES ('SD90002', 'SN01102', sysdate, '45', null);
+--UPDATE sensor SET recentdata='SD90002' WHERE sensorno='SN01102';
+--INSERT INTO SENSORDATA VALUES ('SD90003', 'SN01103', sysdate, 'off', null);
+--UPDATE sensor SET recentdata='SD90003' WHERE sensorno='SN01103';
+--INSERT INTO SENSORDATA VALUES ('SD90004', 'SN01104', sysdate, 'on', null);
+--UPDATE sensor SET recentdata='SD90004' WHERE sensorno='SN01104';
+--INSERT INTO SENSORDATA VALUES ('SD90005', 'SN01201', sysdate, 'on', '70');
+--UPDATE sensor SET recentdata='SD90005' WHERE sensorno='SN01201';
+--INSERT INTO SENSORDATA VALUES ('SD90006', 'SN01202', sysdate, 'close', null);
+--UPDATE sensor SET recentdata='SD90006' WHERE sensorno='SN01202';
 
--- Trigger Test
-CREATE TRIGGER insert_sensorData AFTER INSERT on Latte.sensordata 
-REFERENCING NEW as NEW
-FOR EACH ROW 
-BEGIN 
-UPDATE Latte.sensor SET recentdata=:NEW.datano WHERE sensorno=:NEW.sensorno; 
-END;
-
-commit;
+--'AAA' || board_seq.nextval
+--LPAD(DEPTNO, 5)
+-- Room 1
+INSERT INTO SENSORDATA VALUES ('SD'||LPAD(SD_SEQ.nextval, 5, 0), 'SN01101', sysdate, '70', null);
+INSERT INTO SENSORDATA VALUES ('SD'||LPAD(SD_SEQ.nextval, 5, 0), 'SN01102', sysdate, '0', null);
+INSERT INTO SENSORDATA VALUES ('SD'||LPAD(SD_SEQ.nextval, 5, 0), 'SN01103', sysdate, 'off', null);
+INSERT INTO SENSORDATA VALUES ('SD'||LPAD(SD_SEQ.nextval, 5, 0), 'SN01104', sysdate, 'off', null);
+INSERT INTO SENSORDATA VALUES ('SD'||LPAD(SD_SEQ.nextval, 5, 0), 'SN01201', sysdate, 'on', null);
+INSERT INTO SENSORDATA VALUES ('SD'||LPAD(SD_SEQ.nextval, 5, 0), 'SN01202', sysdate, 'close', null);
+INSERT INTO SENSORDATA VALUES ('SD'||LPAD(SD_SEQ.nextval, 5, 0), 'SN01301', sysdate, '0', null);
+INSERT INTO SENSORDATA VALUES ('SD'||LPAD(SD_SEQ.nextval, 5, 0), 'SN01401', sysdate, '0', null);
+-- Room 2
+INSERT INTO SENSORDATA VALUES ('SD'||LPAD(SD_SEQ.nextval, 5, 0), 'SN02101', sysdate, '70', null);
+INSERT INTO SENSORDATA VALUES ('SD'||LPAD(SD_SEQ.nextval, 5, 0), 'SN02102', sysdate, '0', null);
+INSERT INTO SENSORDATA VALUES ('SD'||LPAD(SD_SEQ.nextval, 5, 0), 'SN02103', sysdate, 'off', null);
+INSERT INTO SENSORDATA VALUES ('SD'||LPAD(SD_SEQ.nextval, 5, 0), 'SN02104', sysdate, 'off', null);
+INSERT INTO SENSORDATA VALUES ('SD'||LPAD(SD_SEQ.nextval, 5, 0), 'SN02201', sysdate, 'on', null);
+INSERT INTO SENSORDATA VALUES ('SD'||LPAD(SD_SEQ.nextval, 5, 0), 'SN02202', sysdate, 'close', null);
+INSERT INTO SENSORDATA VALUES ('SD'||LPAD(SD_SEQ.nextval, 5, 0), 'SN02301', sysdate, '0', null);
+INSERT INTO SENSORDATA VALUES ('SD'||LPAD(SD_SEQ.nextval, 5, 0), 'SN02401', sysdate, '0', null);
 
 -- Trigger result Test
-INSERT INTO SENSORDATA VALUES ('SD90007', 'SN01202', sysdate, 'close', null);
+--INSERT INTO SENSORDATA VALUES ('SD90007', 'SN01202', sysdate, 'close', null);
 SELECT * FROM sensor, sensordata WHERE sensor.recentdata=sensordata.datano;
 SELECT * FROM sensordata;
 
--- Sequence, Insert Test
-CREATE SEQUENCE SD_SEQ 
-INCREMENT BY 1 
-START WITH 10 
-MAXVALUE 99999 
-CYCLE NOCACHE;
 
-INSERT INTO SENSORDATA VALUES ('SD'||LPAD(SD_SEQ.nextval, 5, 0), 'SN01202', sysdate, 'open', null);
---'AAA' || board_seq.nextval
---LPAD(DEPTNO, 5)
-
+------------------------------------------------------------------------------------------------
+-- Test
 ------------------------------------------------------------------------------------------------
 -- USER (test)
 INSERT INTO GUEST (userno, loginid, loginpw, authcode) VALUES ('TESTER0001', 'tester1', 'test', '24F5AAEC526C');  -- 99
@@ -202,8 +244,10 @@ VALUES ('RESERV9002', 'TESTER0001', 'ROOM0002', TO_DATE('2020-06-14', 'YYYY-MM-D
 
 
 
+commit;
 
-
+------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------
 -- TEST Query ----------------------------------------------------------------------------------
 SELECT * FROM guest;
 
