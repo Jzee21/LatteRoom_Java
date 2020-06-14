@@ -24,7 +24,7 @@ public class Connection implements Runnable {
 	private BufferedReader br;
 	private PrintWriter pw;
 	
-	private String clientNo;
+	private String clientNo;	// Guest.userNo or Device.deviceNo
 	private String type;		// Guest or Device (default : null)
 	
 	private Dispatcher dispatcher = Dispatcher.getInstance();
