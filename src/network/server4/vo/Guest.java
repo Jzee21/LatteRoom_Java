@@ -12,6 +12,8 @@ public class Guest {
 	
 	// =================================================
 	// Constructor
+	public Guest() {}
+	
 	public Guest(String id, String pw) {
 		this.loginID = id;
 		this.loginPW = pw;
