@@ -8,16 +8,14 @@ import network.server4.vo.*;
 public class GuestDAO {
 	
 	public Guest checkLogin(Guest input) {
-		System.out.println("checkLogin");
-		Guest result = null;
+		// Registration Information Search
+//		System.out.println("checkLogin");
 		try (SqlSession sqlSession = MyBatisFactory.getSqlSession()) {
-			result = sqlSession.selectOne("GuestMapper.isExist", input);
+			return sqlSession.selectOne("GuestMapper.isExist", input);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
 		}
-		System.out.println("checkLogin - " + result.toString());
-		return result;
 	}
 
 }

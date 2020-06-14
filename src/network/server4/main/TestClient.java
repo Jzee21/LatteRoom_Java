@@ -92,8 +92,14 @@ public class TestClient extends Application{
 			send(new Message(null, "LOGIN", null, gson.toJson(new Guest("latte1", "latte1"))));
 		});
 		
+		Button latte8 = new Button("latte8");
+		latte8.setPrefSize(70, 40);
+		latte8.setOnAction((e) -> {
+			send(new Message(null, "LOGIN", null, gson.toJson(new Guest("latte8", "latte1"))));
+		});
+		
 		bottom = new FlowPane();
-		bottom.getChildren().addAll(connBtn, disconnBtn, latte1, inputField);
+		bottom.getChildren().addAll(connBtn, disconnBtn, latte1, latte8, inputField);
 		root.setBottom(bottom);
 		
 		Scene scene = new Scene(root);
@@ -152,6 +158,8 @@ public class TestClient extends Application{
 					break;
 				}
 			} // while()
+			stopClient();
+			displayText("disconnected");
 		};
 		executor.submit(runnable);
 	} // startClient()

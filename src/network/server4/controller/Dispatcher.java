@@ -51,14 +51,13 @@ public class Dispatcher {
 	}
 	
 	public void read(Connection conn, String jsonData) {
-		System.out.println("read - broadcast");
-		broadcast(jsonData);
+//		broadcast(jsonData);
 		
 		try {
 			Message data = gson.fromJson(jsonData, Message.class);
 			switch (data.getCode1()) {
 			case "LOGIN":
-				System.out.println(gson.fromJson(data.getJsonData(), Guest.class));
+				System.out.println("LOGIN : " + gson.fromJson(data.getJsonData(), Guest.class));
 				addGuest(conn, data);
 				break;
 				
@@ -102,19 +101,24 @@ public class Dispatcher {
 	// private methods
 	private void addGuest(Connection conn, Message data) {
 		/** Member registration confirmation */
+		// Registration Information Search
 		Guest input = gson.fromJson(data.getJsonData(), Guest.class);
 		Guest result = gdao.checkLogin(input);
 		
+		
 		if(result != null) {
+			// Registered guest
 			conn.setClientNo(result.getUserNo());
-			conn.setType("USER");
+			conn.setType("GUEST");
 			guestList.put(conn.getClientNo(), conn);
 			
 			data = new Message(result.getUserNo(), "LOGIN", "SUCCESS", gson.toJson(result));
 		} else {
+			// No guest information
 			data = new Message(null, "LOGIN", "FAILE", null);
 		}
-		
+
+		// Send request results
 		conn.send(data);
 	} // addGuest()
 	
