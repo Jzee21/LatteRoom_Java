@@ -4,9 +4,11 @@
 	"http://mybatis.org/dtd/mybatis-3-config.dtd">
 	
 <configuration>
+
 	<typeAliases>
 		<package name="network.server4.vo"/>
 	</typeAliases>
+	
 	<environments default="development">
 		<environment id="development">
 			<transactionManager type="JDBC" />
@@ -18,9 +20,11 @@
 			</dataSource>
 		</environment>
 	</environments>
+	
 	<mappers>
 		<mapper resource="network/server4/mybatis/mappers/GuestMapper.xml" />
 		<mapper resource="network/server4/mybatis/mappers/ReservMapper.xml" />
 		<mapper resource="network/server4/mybatis/mappers/DeviceMapper.xml" />
+		<mapper resource="network/server4/mybatis/mappers/AlarmMapper.xml" />
 	</mappers>
 </configuration>
