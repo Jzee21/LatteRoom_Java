@@ -19,7 +19,8 @@
     		parameterType="Guest" 
     		resultMap="result">
     	<![CDATA[
-    	SELECT r.reservno, r.roomno, room.roomname, room.roomssid, room.imgurl, r.startdate, r.enddate 
+    	SELECT r.reservno, r.roomno, room.roomname, room.roomssid, room.imgurl, 
+    			to_date(startdate, 'yyyy-mm-dd hh24:mi:ss') as startdate, to_date(enddate, 'yyyy-mm-dd hh24:mi:ss') as enddate  
     	FROM reservation R, room 
     	WHERE r.userno=#{userNo} and r.roomno=room.roomno and sysdate-1 < r.endDate
     	]]>

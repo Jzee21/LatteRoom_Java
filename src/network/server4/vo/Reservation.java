@@ -1,6 +1,7 @@
 package network.server4.vo;
 
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 
 import org.apache.ibatis.type.Alias;
 
@@ -13,6 +14,8 @@ public class Reservation {
 	private String 	roomName;
 	private String 	roomSSID;
 	private String 	imgUrl;
+	
+	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 	
 	
 	public String getReservNo() {
@@ -73,8 +76,9 @@ public class Reservation {
 
 	@Override
 	public String toString() {
-		return "Reservation [reservNo=" + reservNo + ", roomNo=" + roomNo + ", startDate=" + startDate + ", endDate="
-				+ endDate + ", roomName=" + roomName + ", roomSSID=" + roomSSID + ", imgUrl=" + imgUrl + "]";
+		return "Reservation [reservNo=" + reservNo + ", roomNo=" + roomNo 
+				+ ", startDate=" + sdf.format(startDate) + ", endDate=" + sdf.format(endDate)
+				+ ", roomName=" + roomName + ", roomSSID=" + roomSSID + ", imgUrl=" + imgUrl + "]";
 	}
 	
 }

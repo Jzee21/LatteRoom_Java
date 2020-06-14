@@ -4,16 +4,16 @@ import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 
-import network.server3.mybatis.MyBatisConnectionFactory;
-import network.server3.vo.Guest;
-import network.server3.vo.Reservation;
+import network.server4.mybatis.MyBatisFactory;
+import network.server4.vo.Guest;
+import network.server4.vo.Reservation;
 
 public class ReservSelectOne {
 
 	public static void main(String[] args) {
 		
 		// 1. DB 접속
-		SqlSession sqlSession = MyBatisConnectionFactory.getSqlSession();
+		SqlSession sqlSession = MyBatisFactory.getSqlSession();
 		
 		// 2. 조회할 데이터
 		Guest input = new Guest();
