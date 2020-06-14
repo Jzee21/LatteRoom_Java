@@ -82,7 +82,7 @@ public class TestClient extends Application{
 		inputField = new TextField();
 		inputField.setPrefSize(250, 40);
 		inputField.setOnAction((e) -> {
-			send(inputField.getText());
+			send(new Message(null, null, null, inputField.getText()));
 			inputField.clear();
 		});
 		
