@@ -5,9 +5,13 @@ import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Vector;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import network.server4.controller.Connection;
 import network.server4.controller.Dispatcher;
@@ -21,7 +25,7 @@ public class LatteServer {
 	private static ServerSocket server;
 	private static Dispatcher dispatcher;
 	private static ExecutorService executor;
-	private static Vector<Connection> connections;
+	private static List<Connection> connections;
 	
 	
 	// =================================================
@@ -30,7 +34,7 @@ public class LatteServer {
 		
 		dispatcher = Dispatcher.getInstance();
 		executor = Executors.newCachedThreadPool();
-		connections = new Vector<Connection>();
+		connections = new CopyOnWriteArrayList<Connection>();
 		
 		server = new ServerSocket();
 		server.bind(new InetSocketAddress(PORT));
@@ -64,15 +68,27 @@ public class LatteServer {
 	private static void stopServer() {
 		
 		try {
-			if(connections != null) {
-				for(Connection conn : connections) {
+			
+			if(connections != null && connections.size()>0) {
+				Iterator<Connection> conns = connections.iterator();
+				while(conns.hasNext()) {
+					Connection conn = conns.next();
 					conn.close();
 				}
+				connections = null;
 			}
 			if(server != null && !server.isClosed())
 				server.close();
-			if(executor != null && !executor.isShutdown())
-				executor.shutdownNow();
+			if(executor != null && !executor.isShutdown()) {
+//				executor.shutdownNow();
+				executor.shutdown();
+				do {
+					if (executor.isTerminated()) {
+						List<Runnable> list = executor.shutdownNow();
+						System.out.println(list.size() + " job is alive...");
+					}
+				} while (!executor.awaitTermination(10, TimeUnit.SECONDS));
+			}
 			dispatcher.clear();
 			
 		} catch (Exception e) {
@@ -81,7 +97,7 @@ public class LatteServer {
 		
 	} // stopServer()
 	
-	public static Vector<Connection> getConnections() {
+	public static List<Connection> getConnections() {
 		return connections;
 	}
 	

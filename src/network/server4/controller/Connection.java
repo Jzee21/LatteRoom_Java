@@ -103,15 +103,15 @@ public class Connection implements Runnable {
 		send(gson.toJson(msg));
 	}
 	
-	public void close() {
+	public synchronized void close() {
 		/** Close the socket to close the connection */
 		if(socket != null) {
 			String addr = socket.getRemoteSocketAddress().toString();
 			try {
 				if(socket != null && !socket.isClosed()) {
 					socket.close();
-					if(br != null) br.close();
-					if(pw != null) pw.close();
+					br.close();
+					pw.close();
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -120,7 +120,7 @@ public class Connection implements Runnable {
 			this.br = null;
 			this.pw = null;
 			
-			dispatcher.removeConn(this);
+			dispatcher.removeOne(this);
 			System.out.println("[" + addr + "] closed");
 			System.out.println("=== 현재 연결 수 : " + LatteServer.getConnections().size() + " ===");
 		}
