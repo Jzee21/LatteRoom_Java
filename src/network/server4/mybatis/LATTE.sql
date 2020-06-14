@@ -11,7 +11,9 @@ drop table GUEST;
 
 drop sequence SD_SEQ;
 drop sequence CD_SEQ;
+drop sequence AD_SEQ;
 drop TRIGGER insert_sensorData;
+drop TRIGGER insert_guest;
 
 CREATE TABLE GUEST (
     userno 	varchar2(12 char) CONSTRAINT GUSET_PK PRIMARY KEY,
@@ -101,13 +103,19 @@ CREATE TABLE ALARMDATA (
 -- Sequence, Insert Test
 CREATE SEQUENCE SD_SEQ 
 INCREMENT BY 1 
-START WITH 10 
+START WITH 100 
 MAXVALUE 99999 
 CYCLE NOCACHE;
 
 CREATE SEQUENCE CD_SEQ 
 INCREMENT BY 1 
-START WITH 10 
+START WITH 100 
+MAXVALUE 99999 
+CYCLE NOCACHE;
+
+CREATE SEQUENCE AD_SEQ 
+INCREMENT BY 1 
+START WITH 100 
 MAXVALUE 99999 
 CYCLE NOCACHE;
 
@@ -120,23 +128,35 @@ UPDATE Latte.sensor SET recentdata=:NEW.datano WHERE sensorno=:NEW.sensorno;
 END;
 /
 
+CREATE TRIGGER insert_guest AFTER INSERT on Latte.guest 
+REFERENCING NEW as NEW 
+FOR EACH ROW 
+BEGIN 
+    INSERT INTO HOPE VALUES (:NEW.userno, '26', '70', '0', 'open');
+    INSERT INTO ALARM VALUES (:NEW.userno, '06', '00', '', 0);
+    INSERT INTO ALARMDATA VALUES ('AD'||LPAD(AD_SEQ.nextval, 5, 0), :NEW.userno, 'LIGHT', 'off', '70');
+    INSERT INTO ALARMDATA VALUES ('AD'||LPAD(AD_SEQ.nextval, 5, 0), :NEW.userno, 'BED', '0', null);
+    INSERT INTO ALARMDATA VALUES ('AD'||LPAD(AD_SEQ.nextval, 5, 0), :NEW.userno, 'BLIND', 'OPEN', null);
+END;
+/
+
 --------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------
 -- USER (admin)
 --INSERT INTO GUEST (userno, loginid, loginpw, authcode, role) VALUES ('GU0000000001', 'admin', 'admin', 'BC5451FC5006', 'ADMIN');
 INSERT INTO GUEST (userno, loginid, loginpw, authcode, role) VALUES ('ADMIN0001', 'admin', 'admin', 'BC5451FC5006', 'ADMIN');
-INSERT INTO HOPE (hopeno) VALUES ('ADMIN0001');
-INSERT INTO ALARM (alarmno) VALUES ('ADMIN0001');
+--INSERT INTO HOPE (hopeno) VALUES ('ADMIN0001');
+--INSERT INTO ALARM (alarmno) VALUES ('ADMIN0001');
 -- USER (user)
 INSERT INTO GUEST (userno, loginid, loginpw, authcode) VALUES ('GUEST0001', 'latte1', 'latte1', 'BC5451FC5006');
-INSERT INTO HOPE (hopeno) VALUES ('GUEST0001');
-INSERT INTO ALARM (alarmno) VALUES ('GUEST0001');
+--INSERT INTO HOPE (hopeno) VALUES ('GUEST0001');
+--INSERT INTO ALARM (alarmno) VALUES ('GUEST0001');
 INSERT INTO GUEST (userno, loginid, loginpw, authcode) VALUES ('GUEST0002', 'latte2', 'latte2', 'BC5451FC5006');
-INSERT INTO HOPE (hopeno) VALUES ('GUEST0002');
-INSERT INTO ALARM (alarmno) VALUES ('GUEST0002');
+--INSERT INTO HOPE (hopeno) VALUES ('GUEST0002');
+--INSERT INTO ALARM (alarmno) VALUES ('GUEST0002');
 INSERT INTO GUEST (userno, loginid, loginpw, authcode) VALUES ('GUEST0003', 'latte3', 'latte3', 'BC5451FC5006');
-INSERT INTO HOPE (hopeno) VALUES ('GUEST0003');
-INSERT INTO ALARM (alarmno) VALUES ('GUEST0003');
+--INSERT INTO HOPE (hopeno) VALUES ('GUEST0003');
+--INSERT INTO ALARM (alarmno) VALUES ('GUEST0003');
 
 -- ROOM
 INSERT INTO ROOM (roomno, roomname, roomssid, imgurl) VALUES ('ROOM0001', '101', 'MULTI_GUEST', 'https://i.imgur.com/4LQp6RH.jpg');
@@ -144,11 +164,11 @@ INSERT INTO ROOM (roomno, roomname, roomssid, imgurl) VALUES ('ROOM0002', '102',
 
 -- RESERV
 INSERT INTO RESERVATION (reservno, userno, roomno, startdate, enddate) 
-VALUES ('RESERV0001', 'GUEST0002', 'ROOM0001', TO_DATE('2020-06-10', 'YYYY-MM-DD'), TO_DATE('2020-06-11', 'YYYY-MM-DD'));
+VALUES ('RESERV0001', 'GUEST0002', 'ROOM0001', TO_DATE('2020-06-10 14:00:00', 'yyyy-mm-dd hh24:mi:ss'), TO_DATE('2020-06-11 11:00:00', 'yyyy-mm-dd hh24:mi:ss'));
 INSERT INTO RESERVATION (reservno, userno, roomno, startdate, enddate) 
-VALUES ('RESERV0002', 'GUEST0002', 'ROOM0002', TO_DATE('2020-06-15', 'YYYY-MM-DD'), TO_DATE('2020-06-20', 'YYYY-MM-DD'));
+VALUES ('RESERV0002', 'GUEST0002', 'ROOM0002', TO_DATE('2020-06-15 14:00:00', 'yyyy-mm-dd hh24:mi:ss'), TO_DATE('2020-06-20 11:00:00', 'yyyy-mm-dd hh24:mi:ss'));
 INSERT INTO RESERVATION (reservno, userno, roomno, startdate, enddate) 
-VALUES ('RESERV0003', 'GUEST0003', 'ROOM0002', TO_DATE('2020-06-12', 'YYYY-MM-DD'), TO_DATE('2020-06-13', 'YYYY-MM-DD'));
+VALUES ('RESERV0003', 'GUEST0003', 'ROOM0002', TO_DATE('2020-06-12 14:00:00', 'yyyy-mm-dd hh24:mi:ss'), TO_DATE('2020-06-13 11:00:00', 'yyyy-mm-dd hh24:mi:ss'));
 
 -- DEVICE
 INSERT INTO DEVICE VALUES ('DEVICE011', 'ROOM0001');
@@ -225,20 +245,21 @@ SELECT * FROM sensordata;
 ------------------------------------------------------------------------------------------------
 -- USER (test)
 INSERT INTO GUEST (userno, loginid, loginpw, authcode) VALUES ('TESTER0001', 'tester1', 'test', '24F5AAEC526C');  -- 99
-INSERT INTO HOPE (hopeno) VALUES ('TESTER0001');
-INSERT INTO ALARM (alarmno) VALUES ('TESTER0001');
-INSERT INTO ALARMDATA VALUES ('AD00001', 'TESTER0001', 'LIGHT', 'off', '70');
-INSERT INTO ALARMDATA VALUES ('AD00002', 'TESTER0001', 'BED', '45', null);
-INSERT INTO ALARMDATA VALUES ('AD00003', 'TESTER0001', 'BLIND', 'OPEN', null);
+--INSERT INTO HOPE (hopeno) VALUES ('TESTER0001');
+--INSERT INTO ALARM (alarmno) VALUES ('TESTER0001');
+--INSERT INTO ALARMDATA VALUES ('AD00001', 'TESTER0001', 'LIGHT', 'off', '70');
+--INSERT INTO ALARMDATA VALUES ('AD00002', 'TESTER0001', 'BED', '45', null);
+--INSERT INTO ALARMDATA VALUES ('AD00003', 'TESTER0001', 'BLIND', 'OPEN', null);
+
 --INSERT INTO GUEST (userno, loginid, loginpw, authcode) VALUES ('GU1000000002', 'tester2', 'test', '88832211278D');
 --INSERT INTO HOPE (hopeno) VALUES ('GU1000000002');
 --INSERT INTO ALARM (alarmno) VALUES ('GU1000000002');
 
 -- Reserv
 INSERT INTO RESERVATION (reservno, userno, roomno, startdate, enddate) 
-VALUES ('RESERV9001', 'TESTER0001', 'ROOM0001', TO_DATE('2020-06-13', 'YYYY-MM-DD'), TO_DATE('2020-06-14', 'YYYY-MM-DD'));
+VALUES ('RESERV9001', 'TESTER0001', 'ROOM0001', TO_DATE('2020-06-13 14:00:00', 'yyyy-mm-dd hh24:mi:ss'), TO_DATE('2020-06-14 11:00:00', 'yyyy-mm-dd hh24:mi:ss'));
 INSERT INTO RESERVATION (reservno, userno, roomno, startdate, enddate) 
-VALUES ('RESERV9002', 'TESTER0001', 'ROOM0002', TO_DATE('2020-06-14', 'YYYY-MM-DD'), TO_DATE('2020-06-15', 'YYYY-MM-DD'));
+VALUES ('RESERV9002', 'TESTER0001', 'ROOM0002', TO_DATE('2020-06-14 14:00:00', 'yyyy-mm-dd hh24:mi:ss'), TO_DATE('2020-06-15 11:00:00', 'yyyy-mm-dd hh24:mi:ss'));
 
 
 
@@ -295,3 +316,10 @@ WHERE d.roomno='ROOM0001' and d.deviceno=s.deviceno and s.recentdata=sd.datano;
 
 SELECT d.deviceno, type FROM device d, sensor s
 WHERE s.deviceno = d.deviceno and s.type='TEMP' and d.roomno='ROOM0001';
+
+
+
+SELECT r.reservno, r.roomno, room.roomname, room.roomssid, room.imgurl, 
+    to_date(startdate, 'yyyy-mm-dd hh24:mi:ss') as startdate, to_date(enddate, 'yyyy-mm-dd hh24:mi:ss') as enddate 
+FROM reservation R, room 
+WHERE r.userno='GUEST0002' and r.roomno=room.roomno and sysdate-1 < r.endDate;
