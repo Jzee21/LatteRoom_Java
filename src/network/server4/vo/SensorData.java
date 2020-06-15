@@ -13,6 +13,17 @@ public class SensorData {
 	private String 	stateDetail;
 	
 	
+	public SensorData() {}
+	public SensorData(String sensorNo, String states, String stateDetail) {
+		this.dataNo = "-";
+		this.sensorNo = sensorNo;
+		this.time = new Date(System.currentTimeMillis());
+		this.states = states;
+		if(stateDetail==null) stateDetail = "-";
+		this.stateDetail = stateDetail;
+	}
+	
+	
 	public String getDataNo() {
 		return dataNo;
 	}
