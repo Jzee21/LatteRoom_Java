@@ -31,6 +31,17 @@ public class SensorSelect {
 			System.out.println("결과 : " + output.toString());
 		}
 		
+		System.out.println("===");
+		
+		String input2 = "SN02101";
+		Sensor output2 = sqlSession.selectOne("SensorMapper.selectByNo", input2);
+		
+		if(output2 == null) {
+			System.out.println("조회 결과 없음");
+		} else {
+			System.out.println("결과 : " + output2.toString());
+		}
+		
 		sqlSession.close();
 
 	}

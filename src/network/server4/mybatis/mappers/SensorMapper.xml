@@ -19,5 +19,11 @@
 		FROM device d, sensor s, sensordata sd 
         WHERE d.roomno=#{roomno} and d.deviceno=s.deviceno and s.recentdata=sd.datano
 	</select>
+	
+	<select id="selectByNo" parameterType="String" resultMap="result">
+		SELECT d.deviceno, s.sensorno, s.type, sd.states, sd.statedetail 
+		FROM device d, sensor s, sensordata sd 
+        WHERE s.sensorno=#{sensorno} and d.deviceno=s.deviceno and s.recentdata=sd.datano
+	</select>
 
 </mapper>
