@@ -3,20 +3,27 @@
 
 <mapper namespace="AlarmMapper">
 
-	<!-- Beans 클래스의 객체이름(id)과 클래스이름(type)을 명시한다. -->
     <resultMap id="result" type="Alarm">
-        <!-- Beans의 멤버변수(property)이름과 대상 테이블의 컬럼(column)을 연결한다. -->
         <result property="alarmNo" 		column="alarmno" />
         <result property="hour" 		column="hour" />
         <result property="min" 			column="min" />
         <result property="weeks" 		column="weeks" />
-        <result property="flag" 		column="flag" 
-        		javaType="_boolean" />
+        <result property="flag" 		column="flag" />
     </resultMap>
     
+    
+    
+    <!-- ============================================================ -->
     <select id="selectItem" parameterType="String" resultMap="result">
     	SELECT * FROM alarm WHERE alarmno=#{value}
     </select>
+    
+    
+    <update id="updateItem" parameterType="Alarm" >
+    	UPDATE alarm 
+    	SET hour=#{hour}, min=#{min}, weeks=#{weeks}, flag=#{flag} 
+    	WHERE alarmno=#{alarmNo}
+    </update>
     
 
 </mapper>

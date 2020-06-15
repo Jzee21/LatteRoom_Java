@@ -8,7 +8,17 @@ public class Alarm {
 	private String 	hour;
 	private String 	min;
 	private String 	weeks;
-	private boolean flag;
+	private char flag;
+	
+	
+	public Alarm() {}
+	public Alarm(String alarmNo, String hour, String min, String weeks, char flag) {
+		this.alarmNo = alarmNo;
+		this.hour = hour;
+		this.min = min;
+		this.weeks = weeks;
+		this.flag = flag;
+	}
 	
 	
 	public String getAlarmNo() {
@@ -43,11 +53,11 @@ public class Alarm {
 		this.weeks = weeks;
 	}
 	
-	public boolean isFlag() {
+	public char isFlag() {
 		return flag;
 	}
 	
-	public void setFlag(boolean flag) {
+	public void setFlag(char flag) {
 		this.flag = flag;
 	}
 
