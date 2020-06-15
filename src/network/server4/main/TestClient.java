@@ -98,6 +98,12 @@ public class TestClient extends Application{
 			send(new Message(null, "LOGIN", null, gson.toJson(new Guest("latte8", "latte1"))));
 		});
 		
+		Button DEVICE011 = new Button("DEVICE011");
+		DEVICE011.setPrefSize(70, 40);
+		DEVICE011.setOnAction((e) -> {
+			send(new Message("DEVICE011", "CONNECT", null, null));
+		});
+		
 		bottom = new FlowPane();
 		bottom.getChildren().addAll(connBtn, disconnBtn, latte1, latte8, inputField);
 		root.setBottom(bottom);
