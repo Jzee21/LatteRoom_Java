@@ -25,12 +25,12 @@
 	
 	
 	<update id="updateLight" parameterType="Hope" >
-		UPDATE hope SET temp=#{light} WHERE hopeno=#{hopeNo}
+		UPDATE hope SET light=#{light} WHERE hopeno=#{hopeNo}
 	</update>
 	
 	
 	<update id="updateBlind" parameterType="Hope" >
-		UPDATE hope SET temp=#{blind} WHERE hopeno=#{hopeNo}
+		UPDATE hope SET blind=#{blind} WHERE hopeno=#{hopeNo}
 	</update>
 	
 
