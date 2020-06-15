@@ -11,6 +11,16 @@ public class AlarmData {
 	private String stateDetail;
 	
 	
+	public AlarmData() {}
+	public AlarmData(String userNo, String type, String states, String stateDetail) {
+		this.userNo = userNo;
+		this.type = type;
+		this.states = states;
+		if(stateDetail==null) stateDetail = "-";
+		this.stateDetail = stateDetail;
+	}
+	
+	
 	public String getDataNo() {
 		return dataNo;
 	}
