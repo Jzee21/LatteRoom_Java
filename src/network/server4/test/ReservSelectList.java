@@ -8,7 +8,7 @@ import network.server4.mybatis.MyBatisFactory;
 import network.server4.vo.Guest;
 import network.server4.vo.Reservation;
 
-public class ReservSelectOne {
+public class ReservSelectList {
 
 	public static void main(String[] args) {
 		
