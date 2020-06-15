@@ -5,7 +5,7 @@ import org.apache.ibatis.type.Alias;
 @Alias("AlarmData")
 public class AlarmData {
 	private String dataNo;
-	private String userNo;
+	private String alarmNo;
 	private String type;
 	private String states;
 	private String stateDetail;
@@ -13,7 +13,7 @@ public class AlarmData {
 	
 	public AlarmData() {}
 	public AlarmData(String userNo, String type, String states, String stateDetail) {
-		this.userNo = userNo;
+		this.alarmNo = userNo;
 		this.type = type;
 		this.states = states;
 		if(stateDetail==null) stateDetail = "-";
@@ -24,7 +24,7 @@ public class AlarmData {
 	
 	public void nullCheck() {
 		if(this.dataNo == null) this.dataNo = "-";
-		if(this.userNo == null) this.userNo = "-";
+		if(this.alarmNo == null) this.alarmNo = "-";
 		if(this.type == null) this.type = "-";
 		if(this.states == null) this.states = "-";
 		if(this.stateDetail == null) this.stateDetail = "-";
@@ -40,12 +40,12 @@ public class AlarmData {
 		this.dataNo = dataNo;
 	}
 	
-	public String getUserNo() {
-		return userNo;
+	public String getAlarmNo() {
+		return alarmNo;
 	}
 	
-	public void setUserNo(String userNo) {
-		this.userNo = userNo;
+	public void setAlarmNo(String alarmNo) {
+		this.alarmNo = alarmNo;
 	}
 	
 	public String getType() {
@@ -74,7 +74,7 @@ public class AlarmData {
 
 	@Override
 	public String toString() {
-		return "AlarmData [dataNo=" + dataNo + ", userNo=" + userNo + ", type=" + type + ", states=" + states
+		return "AlarmData [dataNo=" + dataNo + ", userNo=" + alarmNo + ", type=" + type + ", states=" + states
 				+ ", stateDetail=" + stateDetail + "]";
 	}
 	

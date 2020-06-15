@@ -5,7 +5,7 @@
 
 	<resultMap id="result" type="AlarmData">
 		<result property="dataNo" 		column="datano" />
-		<result property="userNo" 		column="alarmno" />
+		<result property="alarmNo" 		column="alarmno" />
 		<result property="type" 		column="type" />
 		<result property="states" 		column="states" />
 		<result property="stateDetail" 	column="statedetail" />
@@ -22,7 +22,7 @@
 	<update id="updateItem" parameterType="AlarmData" >
     	UPDATE alarmdata 
     	SET states=#{states}, statedetail=#{stateDetail} 
-    	WHERE alarmno=#{userNo} and type=#{type}
+    	WHERE alarmno=#{alarmNo} and type=#{type}
     </update>
 	
 
