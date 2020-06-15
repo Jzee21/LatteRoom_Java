@@ -86,7 +86,7 @@ CREATE TABLE ALARM (
     hour 		varchar2(2 char) DEFAULT '06',
     min 		varchar2(2 char) DEFAULT '00',
     weeks 	    varchar2(30 char) DEFAULT '',
-    flag 		char(1) DEFAULT 0,
+    flag 		varchar2(1 char) DEFAULT 'N' CHECK(flag IN ('Y', 'N')),
     CONSTRAINT ALARM_FK_USER FOREIGN KEY(alarmno) REFERENCES GUEST(userno) ON DELETE CASCADE
 );
 
@@ -132,9 +132,9 @@ CREATE TRIGGER insert_guest AFTER INSERT on Latte.guest
 REFERENCING NEW as NEW 
 FOR EACH ROW 
 BEGIN 
-    INSERT INTO HOPE VALUES (:NEW.userno, '26', '70', '0', 'open');
-    INSERT INTO ALARM VALUES (:NEW.userno, '06', '00', '', 0);
-    INSERT INTO ALARMDATA VALUES ('AD'||LPAD(AD_SEQ.nextval, 5, 0), :NEW.userno, 'LIGHT', 'off', '70');
+    INSERT INTO HOPE VALUES (:NEW.userno, '26', '70', '0', 'OPEN');
+    INSERT INTO ALARM VALUES (:NEW.userno, '06', '00', '', 'N');
+    INSERT INTO ALARMDATA VALUES ('AD'||LPAD(AD_SEQ.nextval, 5, 0), :NEW.userno, 'LIGHT', 'OFF', '70');
     INSERT INTO ALARMDATA VALUES ('AD'||LPAD(AD_SEQ.nextval, 5, 0), :NEW.userno, 'BED', '0', null);
     INSERT INTO ALARMDATA VALUES ('AD'||LPAD(AD_SEQ.nextval, 5, 0), :NEW.userno, 'BLIND', 'OPEN', null);
 END;
@@ -166,7 +166,7 @@ INSERT INTO ROOM (roomno, roomname, roomssid, imgurl) VALUES ('ROOM0002', '102',
 INSERT INTO RESERVATION (reservno, userno, roomno, startdate, enddate) 
 VALUES ('RESERV0001', 'GUEST0002', 'ROOM0001', TO_DATE('2020-06-10 14:00:00', 'yyyy-mm-dd hh24:mi:ss'), TO_DATE('2020-06-11 11:00:00', 'yyyy-mm-dd hh24:mi:ss'));
 INSERT INTO RESERVATION (reservno, userno, roomno, startdate, enddate) 
-VALUES ('RESERV0002', 'GUEST0002', 'ROOM0002', TO_DATE('2020-06-15 14:00:00', 'yyyy-mm-dd hh24:mi:ss'), TO_DATE('2020-06-20 11:00:00', 'yyyy-mm-dd hh24:mi:ss'));
+VALUES ('RESERV0002', 'GUEST0002', 'ROOM0002', TO_DATE('2020-06-14 14:00:00', 'yyyy-mm-dd hh24:mi:ss'), TO_DATE('2020-06-15 11:00:00', 'yyyy-mm-dd hh24:mi:ss'));
 INSERT INTO RESERVATION (reservno, userno, roomno, startdate, enddate) 
 VALUES ('RESERV0003', 'GUEST0003', 'ROOM0002', TO_DATE('2020-06-12 14:00:00', 'yyyy-mm-dd hh24:mi:ss'), TO_DATE('2020-06-13 11:00:00', 'yyyy-mm-dd hh24:mi:ss'));
 
@@ -244,7 +244,8 @@ SELECT * FROM sensordata;
 -- Test
 ------------------------------------------------------------------------------------------------
 -- USER (test)
-INSERT INTO GUEST (userno, loginid, loginpw, authcode) VALUES ('TESTER0001', 'tester1', 'test', '24F5AAEC526C');  -- 99
+INSERT INTO GUEST (userno, loginid, loginpw, authcode) VALUES ('TESTER0001', 'A', '1', 'BC5451FC5006');  -- 99
+INSERT INTO GUEST (userno, loginid, loginpw, authcode) VALUES ('TESTER0002', 'B', '1', '24F5AAEC526C');  -- 99
 --INSERT INTO HOPE (hopeno) VALUES ('TESTER0001');
 --INSERT INTO ALARM (alarmno) VALUES ('TESTER0001');
 --INSERT INTO ALARMDATA VALUES ('AD00001', 'TESTER0001', 'LIGHT', 'off', '70');
@@ -282,6 +283,10 @@ SELECT to_char(startdate, 'DD/MM/RR') FROM reservation WHERE reservno='RESERV000
 SELECT r.reservno, r.userno, r.roomno, room.roomname, room.roomssid, room.imgurl, r.startdate, r.enddate 
 FROM reservation R, room WHERE r.roomno = room.roomno and r.userno = 'GUEST0002';
 
+SELECT r.reservno, r.userno, r.roomno, room.roomname, room.roomssid, room.imgurl, r.startdate, r.enddate 
+FROM reservation R, room WHERE r.roomno = room.roomno and r.userno = 'GUEST0002' and r.enddate>sysdate-1;
+
+
 -- DeviceNo from SenserData.sensorNo
 SELECT s.deviceno FROM sensor S WHERE s.sensorno = 'SN01101';
 
@@ -313,6 +318,8 @@ WHERE d.deviceno=s.deviceno and s.recentdata=sd.datano;
 -- RoomDetail
 SELECT d.deviceno, s.sensorno, s.type, sd.states, sd.statedetail FROM device d, sensor s, sensordata sd 
 WHERE d.roomno='ROOM0001' and d.deviceno=s.deviceno and s.recentdata=sd.datano;
+SELECT * FROM hope WHERE hopeno='GUEST0002';
+SELECT * FROM alarm WHERE alarmno='GUEST0002';
 
 SELECT d.deviceno, type FROM device d, sensor s
 WHERE s.deviceno = d.deviceno and s.type='TEMP' and d.roomno='ROOM0001';
@@ -323,3 +330,30 @@ SELECT r.reservno, r.roomno, room.roomname, room.roomssid, room.imgurl,
     to_date(startdate, 'yyyy-mm-dd hh24:mi:ss') as startdate, to_date(enddate, 'yyyy-mm-dd hh24:mi:ss') as enddate 
 FROM reservation R, room 
 WHERE r.userno='GUEST0002' and r.roomno=room.roomno and sysdate-1 < r.endDate;
+
+select * from sensordata where sensorno='SN01101';
+select datano, to_char(time, 'yyyy-mm-dd hh24:mi:ss') from sensordata where sensorno='SN01101';
+select * from sensor where sensorno='SN01101';
+
+select * from hope where hopeno='GUEST0002';
+
+select * from alarm;
+select * from alarm where alarmno='GUEST0002';
+--update alarm set hour='7', min='30' where alarmno='GUEST0002';
+
+
+
+--
+-- instead boolean
+--drop table test;
+--create table test (
+--    no      varchar2(2 char),
+--    flag    char(1) DEFAULT 'N' CHECK(flag IN ('Y', 'N'))
+--);
+--
+--insert into test(no) values('a');
+--insert into test values('a', 'Y');
+--
+--select * from test;
+
+select * from alarmdata where alarmno='GUEST0002';
