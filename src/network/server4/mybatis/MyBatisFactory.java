@@ -32,6 +32,6 @@ public class MyBatisFactory {
 
     /** 데이터베이스 접속 객체를 통해 DATABASE에 접속한 세션를 리턴한다. */
     public static SqlSession getSqlSession() {
-        return sqlSessionFactory.openSession();
+        return sqlSessionFactory.openSession(true);
     }
 }
