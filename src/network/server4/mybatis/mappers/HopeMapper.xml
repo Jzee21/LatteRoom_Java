@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="HopeMapper">
+	
+	<resultMap id="result" type="Hope">
+		<result property="hopeNo" 		column="hopeno" />
+		<result property="temp" 		column="temp" />
+		<result property="light" 		column="light" />
+		<result property="bed" 			column="bed" />
+		<result property="blind" 		column="blind" />
+	</resultMap>
+
+	
+	
+	<!-- ============================================================ -->
+	<select id="selectItem" parameterType="String" resultMap="result">
+		SELECT * FROM hope WHERE hopeno=#{value}
+	</select>
+	
+	
+	<update id="updateTemp" parameterType="Hope" >
+		UPDATE hope SET temp=#{temp} WHERE hopeno=#{hopeNo}
+	</update>
+	
+	
+	<update id="updateLight" parameterType="Hope" >
+		UPDATE hope SET temp=#{light} WHERE hopeno=#{hopeNo}
+	</update>
+	
+	
+	<update id="updateBlind" parameterType="Hope" >
+		UPDATE hope SET temp=#{blind} WHERE hopeno=#{hopeNo}
+	</update>
+	
+
+</mapper>

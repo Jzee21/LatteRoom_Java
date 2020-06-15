@@ -11,6 +11,15 @@ public class Hope {
 	private String blind;
 	
 	
+	public Hope() {}
+	public Hope(String hopeNo, String temp, String light, String blind) {
+		this.hopeNo = hopeNo;
+		this.temp = temp;
+		this.light = light;
+		this.blind = blind;
+	}
+	
+	
 	public String getHopeNo() {
 		return hopeNo;
 	}
