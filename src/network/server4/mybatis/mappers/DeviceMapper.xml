@@ -3,14 +3,19 @@
 
 <mapper namespace="DeviceMapper">
     
-    <select id="selectTypeMap"
-    		parameterType="String"
-    		resultType="java.util.HashMap">
+    <!-- ============================================================ -->    
+    <select id="isExist" parameterType="String" resultType="int">
+    	SELECT COUNT(*) FROM device WHERE deviceno=#{value}
+    </select>
+    
+    
+    
+    <!-- for Test -->
+    <select id="selectTypeMap" parameterType="String" resultType="java.util.HashMap">
     	<![CDATA[
     	SELECT type, sensorno FROM device d, sensor s WHERE d.deviceno=#{value} and s.deviceno = d.deviceno
     	]]>
     </select>
-    
     <!-- <select id="selectTypeMap"
     		parameterType="String"
     		resultType="java.util.HashMap">
