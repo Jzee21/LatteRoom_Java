@@ -9,7 +9,6 @@ public class GuestDAO {
 	
 	public Guest checkLogin(Guest input) {
 		// Registration Information Search
-//		System.out.println("checkLogin");
 		try (SqlSession sqlSession = MyBatisFactory.getSqlSession()) {
 			return sqlSession.selectOne("GuestMapper.isExist", input);
 		} catch (Exception e) {
