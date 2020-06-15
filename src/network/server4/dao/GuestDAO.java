@@ -7,7 +7,7 @@ import network.server4.vo.*;
 
 public class GuestDAO {
 	
-	public Guest checkLogin(Guest input) {
+	public Guest getGuest(Guest input) {
 		// Registration Information Search
 		try (SqlSession sqlSession = MyBatisFactory.getSqlSession()) {
 			return sqlSession.selectOne("GuestMapper.isExist", input);
