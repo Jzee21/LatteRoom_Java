@@ -21,6 +21,17 @@ public class Alarm {
 	}
 	
 	
+	
+	public void nullCheck() {
+		if(this.alarmNo == null) this.alarmNo = "-";
+		if(this.hour == null) this.hour = "-";
+		if(this.min == null) this.min = "-";
+		if(this.weeks == null) this.weeks = "-";
+		if((int)this.flag == 0) this.flag = '-';
+	}
+	
+	
+	
 	public String getAlarmNo() {
 		return alarmNo;
 	}

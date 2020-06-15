@@ -11,6 +11,17 @@ public class Sensor {
 	private String 	stateDetail;
 	
 	
+	
+	public void nullCheck() {
+		if(this.sensorNo == null) this.sensorNo = "-";
+		if(this.type == null) this.type = "-";
+		if(this.deviceNo == null) this.deviceNo = "-";
+		if(this.states == null) this.states = "-";
+		if(this.stateDetail == null) this.stateDetail = "-";
+	}
+	
+	
+	
 	public String getSensorNo() {
 		return sensorNo;
 	}

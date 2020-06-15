@@ -19,6 +19,18 @@ public class Guest {
 		this.loginPW = pw;
 	}
 	
+	
+	
+	public void nullCheck() {
+		if(this.userNo == null) this.userNo = "-";
+		if(this.loginID == null) this.loginID = "-";
+		if(this.loginPW == null) this.loginPW = "-";
+		if(this.role == null) this.role = "-";
+		if(this.authCode == null) this.authCode = "-";
+	}
+	
+	
+	
 	// =================================================
 	// get, set
 	public String getUserNo() {

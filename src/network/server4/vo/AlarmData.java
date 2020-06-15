@@ -21,6 +21,17 @@ public class AlarmData {
 	}
 	
 	
+	
+	public void nullCheck() {
+		if(this.dataNo == null) this.dataNo = "-";
+		if(this.userNo == null) this.userNo = "-";
+		if(this.type == null) this.type = "-";
+		if(this.states == null) this.states = "-";
+		if(this.stateDetail == null) this.stateDetail = "-";
+	}
+	
+	
+	
 	public String getDataNo() {
 		return dataNo;
 	}

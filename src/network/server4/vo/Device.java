@@ -9,6 +9,14 @@ public class Device {
 	//			type,	sensorNo
 	
 	
+	
+	public void nullCheck() {
+		if(this.deviceNo == null) this.deviceNo = "-";
+		if(this.roomNo == null) this.roomNo = "-";
+	}
+	
+	
+	
 	public String getDeviceNo() {
 		return deviceNo;
 	}

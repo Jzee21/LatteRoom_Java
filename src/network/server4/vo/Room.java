@@ -10,6 +10,16 @@ public class Room {
 	private String imgUrl;
 	
 	
+	
+	public void nullCheck() {
+		if(this.roomNo == null) this.roomNo = "-";
+		if(this.roomName == null) this.roomName = "-";
+		if(this.roomSSID == null) this.roomSSID = "-";
+		if(this.imgUrl == null) this.imgUrl = "-";
+	}
+	
+	
+	
 	public String getRoomNo() {
 		return roomNo;
 	}

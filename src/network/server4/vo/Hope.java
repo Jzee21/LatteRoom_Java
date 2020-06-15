@@ -20,6 +20,17 @@ public class Hope {
 	}
 	
 	
+	
+	public void nullCheck() {
+		if(this.hopeNo == null) this.hopeNo = "-";
+		if(this.temp == null) this.temp = "-";
+		if(this.light == null) this.light = "-";
+		if(this.bed == null) this.bed = "-";
+		if(this.blind == null) this.blind = "-";
+	}
+	
+	
+	
 	public String getHopeNo() {
 		return hopeNo;
 	}
