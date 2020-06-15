@@ -2,6 +2,7 @@ package network.server4.test;
 
 import org.apache.ibatis.session.SqlSession;
 
+import network.server4.dao.AlarmDAO;
 import network.server4.mybatis.MyBatisFactory;
 import network.server4.vo.*;
 
@@ -10,7 +11,7 @@ public class AlarmDataUpdateOne {
 	public static void main(String[] args) {
 		
 		// 1. DB 접속
-		SqlSession sqlSession = MyBatisFactory.getSqlSession();
+//		SqlSession sqlSession = MyBatisFactory.getSqlSession();
 		
 		// 2. 조회할 데이터
 //		Guest input = new Guest();
@@ -21,8 +22,11 @@ public class AlarmDataUpdateOne {
 		AlarmData input = new AlarmData("GUEST0002", "LIGHT", "65", null);
 		
 		// 3. 데이터 조회
-		int output = sqlSession.update("AlarmDataMapper.updateItem", input);
+//		int output = sqlSession.update("AlarmDataMapper.updateItem", input);
 //		Guest output = sqlSession.selectOne("GuestMapper.selectItemByString", input);
+		
+		AlarmDAO adao = new AlarmDAO();
+		int output = adao.updateAlarmDataOne(input);
 		
 		// 4. 결과 확인
 		if(output == 0) {
@@ -31,7 +35,7 @@ public class AlarmDataUpdateOne {
 			System.out.println("결과 : " + output);
 		}
 		
-		sqlSession.close();
+//		sqlSession.close();
 
 	}
 
