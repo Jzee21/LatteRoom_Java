@@ -17,5 +17,9 @@
 	<insert id="insertSD" parameterType="SensorData">
 		INSERT INTO SENSORDATA VALUES ('SD'||LPAD(SD_SEQ.nextval, 5, 0), #{sensorNo}, #{time}, #{states}, #{stateDetail})
 	</insert>
+	
+	<insert id="insertCD" parameterType="SensorData">
+		INSERT INTO CONTROLDATA VALUES ('CD'||LPAD(CD_SEQ.nextval, 5, 0), #{sensorNo}, #{time}, #{states}, #{stateDetail})
+	</insert>
 
 </mapper>
