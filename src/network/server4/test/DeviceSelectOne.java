@@ -9,7 +9,7 @@ public class DeviceSelectOne {
 		DeviceDAO ddao = new DeviceDAO();
 		
 		String input = "DEVICE014";
-		int result = ddao.getDevice(input);
+		int result = ddao.selectDevice(input);
 		
 		System.out.println("result : " + result);
 		

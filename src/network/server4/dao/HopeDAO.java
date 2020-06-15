@@ -7,7 +7,7 @@ import network.server4.vo.Hope;
 
 public class HopeDAO {
 	
-	public Hope getHope(String userNo) {
+	public Hope selectHope(String userNo) {
 		try (SqlSession sqlSession = MyBatisFactory.getSqlSession()) {
 			return sqlSession.selectOne("HopeMapper.selectItem", userNo);
 		} catch (Exception e) {

@@ -12,7 +12,7 @@ import network.server4.vo.Hope;
 
 public class AlarmDAO {
 	
-	public Alarm getAlarm(String userNo) {
+	public Alarm selectAlarm(String userNo) {
 		try (SqlSession sqlSession = MyBatisFactory.getSqlSession()) {
 			return sqlSession.selectOne("AlarmMapper.selectItem", userNo);
 		} catch (Exception e) {
@@ -30,7 +30,7 @@ public class AlarmDAO {
 		}
 	}
 	
-	public List<AlarmData> getAlarmData(String userNo) {
+	public List<AlarmData> selectAlarmData(String userNo) {
 		try (SqlSession sqlSession = MyBatisFactory.getSqlSession()) {
 			return sqlSession.selectList("AlarmDataMapper.selectItem", userNo);
 		} catch (Exception e) {

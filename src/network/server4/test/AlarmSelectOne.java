@@ -24,7 +24,7 @@ public class AlarmSelectOne {
 		// 3. 데이터 조회
 //		Alarm output = sqlSession.selectOne("AlarmMapper.selectItem", input);
 //		Guest output = sqlSession.selectOne("GuestMapper.selectItemByString", input);
-		Alarm output = adao.getAlarm(input);
+		Alarm output = adao.selectAlarm(input);
 		
 		// 4. 결과 확인
 		if(output == null) {

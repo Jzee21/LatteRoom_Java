@@ -6,7 +6,7 @@ import network.server4.mybatis.MyBatisFactory;
 
 public class DeviceDAO {
 
-	public int getDevice(String input) {
+	public int selectDevice(String input) {
 		try (SqlSession sqlSession = MyBatisFactory.getSqlSession()) {
 			return sqlSession.selectOne("DeviceMapper.isExist", input);
 		} catch (Exception e) {

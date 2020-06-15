@@ -10,7 +10,7 @@ import network.server4.vo.Reservation;
 
 public class ReservDAO {
 	
-	public List<Reservation> getReserv(Guest guest) {
+	public List<Reservation> selectReserv(Guest guest) {
 		try (SqlSession sqlSession = MyBatisFactory.getSqlSession()) {
 			return sqlSession.selectList("ReservMapper.selectItem", guest);
 		} catch (Exception e) {

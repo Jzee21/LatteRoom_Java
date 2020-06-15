@@ -175,7 +175,7 @@ public class Dispatcher {
 		
 		// Registration Information Search
 		Guest input = gson.fromJson(data.getJsonData(), Guest.class);
-		Guest result = gdao.getGuest(input);
+		Guest result = gdao.selectGuest(input);
 		
 		if(result != null) {
 			// Registered guest

@@ -10,7 +10,7 @@ import network.server4.vo.SensorData;
 
 public class SensorDAO {
 	
-	public Sensor getSensorOne(String sensorNo) {
+	public Sensor selectSensorOne(String sensorNo) {
 		try (SqlSession sqlSession = MyBatisFactory.getSqlSession()) {
 			return sqlSession.selectOne("SensorMapper.selectByNo", sensorNo);
 		} catch (Exception e) {
@@ -19,7 +19,7 @@ public class SensorDAO {
 		}
 	}
 	
-	public List<Sensor> getSensorAll(String roomNo) {
+	public List<Sensor> selectSensorAll(String roomNo) {
 		try (SqlSession sqlSession = MyBatisFactory.getSqlSession()) {
 			return sqlSession.selectList("SensorMapper.selectByRoom", roomNo);
 		} catch (Exception e) {

@@ -26,7 +26,7 @@ public class AlarmDataSelect {
 //		Guest output = sqlSession.selectOne("GuestMapper.selectItemByString", input);
 		
 		AlarmDAO adao = new AlarmDAO();
-		List<AlarmData> output = adao.getAlarmData(input);
+		List<AlarmData> output = adao.selectAlarmData(input);
 				
 		// 4. 결과 확인
 		if(output == null) {

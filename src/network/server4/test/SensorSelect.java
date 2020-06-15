@@ -26,7 +26,7 @@ public class SensorSelect {
 		// 3. 데이터 조회
 //		List<Sensor> output = sqlSession.selectList("SensorMapper.selectByRoom", input);
 //		Guest output = sqlSession.selectOne("GuestMapper.selectItemByString", input);
-		List<Sensor> output = sdao.getSensorAll(input);
+		List<Sensor> output = sdao.selectSensorAll(input);
 		
 		// 4. 결과 확인
 		if(output == null) {
@@ -40,7 +40,7 @@ public class SensorSelect {
 		
 		String input2 = "SN02101";
 //		Sensor output2 = sqlSession.selectOne("SensorMapper.selectByNo", input2);
-		Sensor output2 = sdao.getSensorOne(input2);
+		Sensor output2 = sdao.selectSensorOne(input2);
 		
 		if(output2 == null) {
 			System.out.println("조회 결과 없음");

@@ -37,7 +37,7 @@ public class ReservSelectList {
 		Guest input = new Guest();
 		input.setUserNo("GUEST0002");
 		
-		List<Reservation> output = rdao.getReserv(input);
+		List<Reservation> output = rdao.selectReserv(input);
 
 		if (output == null) {
 			System.out.println("조회 결과 없음");
