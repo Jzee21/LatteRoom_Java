@@ -8,11 +8,11 @@ public class Alarm {
 	private String 	hour;
 	private String 	min;
 	private String 	weeks;
-	private char flag;
+	private String flag;
 	
 	
 	public Alarm() {}
-	public Alarm(String alarmNo, String hour, String min, String weeks, char flag) {
+	public Alarm(String alarmNo, String hour, String min, String weeks, String flag) {
 		this.alarmNo = alarmNo;
 		this.hour = hour;
 		this.min = min;
@@ -27,7 +27,7 @@ public class Alarm {
 		if(this.hour == null) this.hour = "-";
 		if(this.min == null) this.min = "-";
 		if(this.weeks == null) this.weeks = "-";
-		if((int)this.flag == 0) this.flag = '-';
+		if(this.flag == null) this.flag = "-";
 	}
 	
 	
@@ -64,11 +64,11 @@ public class Alarm {
 		this.weeks = weeks;
 	}
 	
-	public char isFlag() {
+	public String isFlag() {
 		return flag;
 	}
 	
-	public void setFlag(char flag) {
+	public void setFlag(String flag) {
 		this.flag = flag;
 	}
 

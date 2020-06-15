@@ -17,7 +17,7 @@ public class AlarmUpdateOne {
 //		input.setLoginID("latte1");
 //		System.out.println("input : " + input.toString());
 //		String input = "GUEST0002";
-		Alarm input = new Alarm("GUEST0002", "6", "20", "MON", 'N');
+		Alarm input = new Alarm("GUEST0002", "6", "20", "MON", "N");
 		
 		// 3. 데이터 조회
 		int output = sqlSession.update("AlarmMapper.updateItem", input);

@@ -20,7 +20,7 @@ CREATE TABLE GUEST (
     loginid 	varchar2(15 char),
     loginpw 	varchar2(15 char) NOT NULL,
     authcode 	varchar2(12 char) NOT NULL,
-    role 	varchar2(8 char) DEFAULT 'USER'
+    role 	varchar2(8 char) DEFAULT 'USER' CHECK(flag IN ('ADMIN', 'USER'))
 );
 
 CREATE TABLE HOPE (
@@ -28,7 +28,7 @@ CREATE TABLE HOPE (
     temp 	varchar2(8 char) DEFAULT '26',
     light 	varchar2(8 char) DEFAULT '70',
     bed 	varchar2(8 char) DEFAULT '0',
-    blind 	varchar2(8 char) DEFAULT 'open',
+    blind 	varchar2(8 char) DEFAULT 'OPEN' CHECK(flag IN ('OPEN', 'CLOSE')),
     CONSTRAINT HOPE_FK_USER FOREIGN KEY(hopeno) REFERENCES GUEST(userno) ON DELETE CASCADE
 );
 
@@ -83,7 +83,7 @@ CREATE TABLE CONTROLDATA (
 
 CREATE TABLE ALARM (
     alarmno 	varchar2(12 char) CONSTRAINT ALARM_PK PRIMARY KEY,
-    hour 		varchar2(2 char) DEFAULT '06',
+    hour 		varchar2(2 char) DEFAULT '6',
     min 		varchar2(2 char) DEFAULT '00',
     weeks 	    varchar2(30 char) DEFAULT '',
     flag 		varchar2(1 char) DEFAULT 'N' CHECK(flag IN ('Y', 'N')),
