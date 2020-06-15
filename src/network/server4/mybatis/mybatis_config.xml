@@ -24,7 +24,11 @@
 	<mappers>
 		<mapper resource="network/server4/mybatis/mappers/GuestMapper.xml" />
 		<mapper resource="network/server4/mybatis/mappers/ReservMapper.xml" />
-		<mapper resource="network/server4/mybatis/mappers/DeviceMapper.xml" />
+		<mapper resource="network/server4/mybatis/mappers/HopeMapper.xml" />
 		<mapper resource="network/server4/mybatis/mappers/AlarmMapper.xml" />
+		<mapper resource="network/server4/mybatis/mappers/AlarmDataMapper.xml" />
+		<mapper resource="network/server4/mybatis/mappers/DeviceMapper.xml" />
+		<mapper resource="network/server4/mybatis/mappers/SensorMapper.xml" />
+		<mapper resource="network/server4/mybatis/mappers/SensorDataMapper.xml" />
 	</mappers>
 </configuration>
