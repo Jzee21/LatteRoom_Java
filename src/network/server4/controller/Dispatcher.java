@@ -56,14 +56,46 @@ public class Dispatcher {
 		try {
 			Message data = gson.fromJson(jsonData, Message.class);
 			switch (data.getCode1()) {
+			/** Device */
+			// Device Connect
+			case "CONNECT":
+				addDevice(conn, data);
+				break;
+			// Device status changes
+			case "UPDATE":
+//				deviceController.dataHandler(data);
+				break;
+			
+			/** Guest */
+			// Guest Login
 			case "LOGIN":
 				System.out.println("LOGIN : " + gson.fromJson(data.getJsonData(), Guest.class));
 				addGuest(conn, data);
 				break;
+			// Change channel
+			case "RECONNECT":
+				reconnGuest(conn, data);
+				break;
+			// Guest requests device control
+			case "CONTROL":
 				
+				break;
+			//
+			case "RESERVLIST":
+				
+				break;
+			//
+			case "ROOMDETAIL":
+				
+				break;
+			//
+			case "ALARM":
+				
+				break;
 			default:
 				break;
 			}
+			
 		} catch (Exception e) {
 //			e.printStackTrace();
 		}
@@ -105,7 +137,6 @@ public class Dispatcher {
 		Guest input = gson.fromJson(data.getJsonData(), Guest.class);
 		Guest result = gdao.checkLogin(input);
 		
-		
 		if(result != null) {
 			// Registered guest
 			conn.setClientNo(result.getUserNo());
@@ -115,11 +146,41 @@ public class Dispatcher {
 			data = new Message(result.getUserNo(), "LOGIN", "SUCCESS", gson.toJson(result));
 		} else {
 			// No guest information
-			data = new Message(null, "LOGIN", "FAILE", null);
+			data = new Message(null, "LOGIN", "FAIL", null);
 		}
 
 		// Send request results
 		conn.send(data);
 	} // addGuest()
+	
+	private void reconnGuest(Connection conn, Message data) {
+		Connection prev = guestList.get(data.getClientNo());
+		if(prev != null) {
+			prev.close();
+			guestList.remove(data.getClientNo());
+		}
+		conn.setClientNo(data.getClientNo());
+		conn.setType("GUEST");
+		guestList.put(conn.getClientNo(), conn);
+		
+	}
+	
+	private void addDevice(Connection conn, Message data) {
+		String input = data.getClientNo();
+		int count = 1;	// dao
+		
+		if(count == 1) {
+			// 기존 연결 확인, 제거
+			Connection prev = deviceList.get(data.getClientNo());
+			if(prev != null) {
+				prev.close();
+				deviceList.remove(data.getClientNo());
+			}
+			// 신규 연결 등록
+			conn.setClientNo(data.getClientNo());
+			conn.setType("DEVICE");
+			deviceList.put(conn.getClientNo(), conn);
+		}
+	}
 	
 }

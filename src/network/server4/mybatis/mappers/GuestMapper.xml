@@ -13,19 +13,22 @@
         <result property="authCode" 	column="authcode" />
     </resultMap>
     
+    
+    
+    <!-- ============================================================ -->
     <select id="isExist" parameterType="Guest" resultMap="result">
     	SELECT * FROM guest WHERE loginid=#{loginID} and loginpw=#{loginPW}
     </select>
     
-    <select id="selectItem" 
-    		parameterType="Guest" 
-    		resultMap="result">
+    
+    
+    <!-- for Test -->
+    <select id="selectItem" parameterType="Guest" resultMap="result">
     	SELECT * FROM guest WHERE loginid=#{loginID}
     </select>
     
-    <select id="selectItemByString" 
-    		parameterType="String" 
-    		resultMap="result">
+    
+    <select id="selectItemByString" parameterType="String" resultMap="result">
     	SELECT * FROM guest WHERE loginid=#{value}
     </select>
 
