@@ -43,7 +43,7 @@ public class TestClient extends Application{
 	private PrintWriter output;
 	private ExecutorService executor;
 	
-	private Gson gson=  new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").create();
+	private Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
 	
 	
 	// ======================================================
