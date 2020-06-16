@@ -41,6 +41,7 @@ public class SensorDAO {
 	
 	public int insertSensorData(SensorData data) {
 		try (SqlSession sqlSession = MyBatisFactory.getSqlSession()) {
+			data.nullCheck();
 			return sqlSession.insert("SensorDataMapper.insertSD", data);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -50,6 +51,7 @@ public class SensorDAO {
 
 	public int insertControlData(SensorData data) {
 		try (SqlSession sqlSession = MyBatisFactory.getSqlSession()) {
+			data.nullCheck();
 			return sqlSession.insert("SensorDataMapper.insertCD", data);
 		} catch (Exception e) {
 			e.printStackTrace();

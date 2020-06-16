@@ -18,7 +18,9 @@ public class HopeDAO {
 	
 	public int updateTemp(String userNo, String states) {
 		try (SqlSession sqlSession = MyBatisFactory.getSqlSession()) {
-			return sqlSession.update("HopeMapper.updateTemp", new Hope(userNo, states, null, null));
+			Hope input = new Hope(userNo, states, null, null);
+			input.nullCheck();
+			return sqlSession.update("HopeMapper.updateTemp", input);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return 0;
@@ -27,7 +29,9 @@ public class HopeDAO {
 	
 	public int updateLight(String userNo, String states) {
 		try (SqlSession sqlSession = MyBatisFactory.getSqlSession()) {
-			return sqlSession.update("HopeMapper.updateLight", new Hope(userNo, null, states, null));
+			Hope input = new Hope(userNo, states, null, null);
+			input.nullCheck();
+			return sqlSession.update("HopeMapper.updateLight", input);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return 0;
@@ -36,7 +40,9 @@ public class HopeDAO {
 	
 	public int updateBlind(String userNo, String states) {
 		try (SqlSession sqlSession = MyBatisFactory.getSqlSession()) {
-			return sqlSession.update("HopeMapper.updateBlind", new Hope(userNo, null, null, states));
+			Hope input = new Hope(userNo, states, null, null);
+			input.nullCheck();
+			return sqlSession.update("HopeMapper.updateBlind", input);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return 0;

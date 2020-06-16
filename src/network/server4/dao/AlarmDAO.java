@@ -22,6 +22,7 @@ public class AlarmDAO {
 	
 	public int updateAlarm(Alarm data) {
 		try (SqlSession sqlSession = MyBatisFactory.getSqlSession()) {
+			data.nullCheck();
 			return sqlSession.update("AlarmMapper.updateItem", data);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -40,6 +41,7 @@ public class AlarmDAO {
 	
 	public int updateAlarmDataOne(AlarmData data) {
 		try (SqlSession sqlSession = MyBatisFactory.getSqlSession()) {
+			data.nullCheck();
 			return sqlSession.update("AlarmDataMapper.updateItem", data);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -56,6 +58,7 @@ public class AlarmDAO {
 			
 			while(iterator.hasNext()) {
 				AlarmData data = iterator.next();
+				data.nullCheck();
 				result += sqlSession.update("AlarmDataMapper.updateItem", data);
 			}
 			
