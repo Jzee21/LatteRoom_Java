@@ -34,8 +34,9 @@ public class ReservSelectList {
 //		sqlSession.close();
 		ReservDAO rdao = new ReservDAO();
 		
-		Guest input = new Guest();
-		input.setUserNo("GUEST0002");
+//		Guest input = new Guest();
+//		input.setUserNo("GUEST0002");
+		String input = "GUEST0002";
 		
 		List<Reservation> output = rdao.selectReserv(input);
 
