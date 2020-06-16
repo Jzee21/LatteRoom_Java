@@ -79,13 +79,6 @@ public class TestClient extends Application{
 			stopClient();
 		});
 		
-		inputField = new TextField();
-		inputField.setPrefSize(350, 40);
-		inputField.setOnAction((e) -> {
-			send(new Message(null, null, null, inputField.getText()));
-			inputField.clear();
-		});
-		
 		Button latte1 = new Button("latte1");
 		latte1.setPrefSize(70, 40);
 		latte1.setOnAction((e) -> {
@@ -98,33 +91,8 @@ public class TestClient extends Application{
 			send(new Message(null, "LOGIN", null, gson.toJson(new Guest("latte8", "latte1"))));
 		});
 		
-		Button DEVICE011 = new Button("DEVICE011");
-		DEVICE011.setPrefSize(100, 40);
-		DEVICE011.setOnAction((e) -> {
-			send(new Message("DEVICE011", "CONNECT", null, null));
-			displayText("DEVICE011");
-		});
-		Button DEVICE012 = new Button("DEVICE012");
-		DEVICE012.setPrefSize(100, 40);
-		DEVICE012.setOnAction((e) -> {
-			send(new Message("DEVICE012", "CONNECT", null, null));
-			displayText("DEVICE012");
-		});
-		Button DEVICE021 = new Button("DEVICE021");
-		DEVICE021.setPrefSize(100, 40);
-		DEVICE021.setOnAction((e) -> {
-			send(new Message("DEVICE021", "CONNECT", null, null));
-			displayText("DEVICE021");
-		});
-		Button DEVICE022 = new Button("DEVICE022");
-		DEVICE022.setPrefSize(100, 40);
-		DEVICE022.setOnAction((e) -> {
-			send(new Message("DEVICE022", "CONNECT", null, null));
-			displayText("DEVICE022");
-		});
-		
 		bottom = new FlowPane();
-		bottom.getChildren().addAll(connBtn, disconnBtn, latte1, latte8, inputField, DEVICE011, DEVICE012, DEVICE021, DEVICE022);
+		bottom.getChildren().addAll(connBtn, disconnBtn, latte1, latte8);
 		root.setBottom(bottom);
 		
 		Scene scene = new Scene(root);

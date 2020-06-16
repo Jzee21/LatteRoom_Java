@@ -79,25 +79,6 @@ public class TestDevice extends Application{
 			stopClient();
 		});
 		
-		inputField = new TextField();
-		inputField.setPrefSize(350, 40);
-		inputField.setOnAction((e) -> {
-			send(new Message(null, null, null, inputField.getText()));
-			inputField.clear();
-		});
-		
-		Button latte1 = new Button("latte1");
-		latte1.setPrefSize(70, 40);
-		latte1.setOnAction((e) -> {
-			send(new Message(null, "LOGIN", null, gson.toJson(new Guest("latte1", "latte1"))));
-		});
-		
-		Button latte8 = new Button("latte8");
-		latte8.setPrefSize(70, 40);
-		latte8.setOnAction((e) -> {
-			send(new Message(null, "LOGIN", null, gson.toJson(new Guest("latte8", "latte1"))));
-		});
-		
 		Button DEVICE011 = new Button("DEVICE011");
 		DEVICE011.setPrefSize(100, 40);
 		DEVICE011.setOnAction((e) -> {
@@ -124,7 +105,7 @@ public class TestDevice extends Application{
 		});
 		
 		bottom = new FlowPane();
-		bottom.getChildren().addAll(connBtn, disconnBtn, latte1, latte8, inputField, DEVICE011, DEVICE012, DEVICE021, DEVICE022);
+		bottom.getChildren().addAll(connBtn, disconnBtn, DEVICE011, DEVICE012, DEVICE021, DEVICE022);
 		root.setBottom(bottom);
 		
 		Scene scene = new Scene(root);
