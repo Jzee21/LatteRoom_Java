@@ -24,6 +24,16 @@ public class SensorData {
 	}
 	
 	
+	
+	public void nullCheck() {
+		if(this.dataNo == null) this.dataNo = "-";
+		if(this.sensorNo == null) this.sensorNo = "-";
+		if(this.states == null) this.states = "-";
+		if(this.stateDetail == null) this.stateDetail = "-";
+	}
+	
+	
+	
 	public String getDataNo() {
 		return dataNo;
 	}

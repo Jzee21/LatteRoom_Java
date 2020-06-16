@@ -9,6 +9,18 @@
     </select>
     
     
+    <select id="selectNoByRoom" parameterType="NoKey" resultType="String">
+		SELECT d.deviceno 
+		FROM room r, device d, sensor s 
+		WHERE r.roomno=#{roomNo} and d.roomno=r.roomno and d.deviceno=s.deviceno and s.type=#{type}
+	</select>
+	
+	
+	<select id="selectNoBySensor" parameterType="String" resultType="String">
+		SELECT deviceno FROM sensor
+		WHERE sensorno=#{value}
+	</select>
+    
     
     <!-- for Test -->
     <select id="selectTypeMap" parameterType="String" resultType="java.util.HashMap">

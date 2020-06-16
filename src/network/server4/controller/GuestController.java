@@ -47,9 +47,9 @@ public class GuestController {
 		
 		Message response = 
 				new Message(data.getClientNo(), 
-						data.getCode1(), 
-						Integer.toString(reservInfo.size()), 
-						gson.toJson(reservInfo));
+							data.getCode1(), 
+							Integer.toString(reservInfo.size()), 
+							gson.toJson(reservInfo));
 		
 		conn.send(response);
 	}

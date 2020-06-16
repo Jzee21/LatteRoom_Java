@@ -4,6 +4,7 @@ import org.apache.ibatis.session.SqlSession;
 
 import network.server4.dao.SensorDAO;
 import network.server4.mybatis.MyBatisFactory;
+import network.server4.service.DeviceService;
 import network.server4.vo.SensorData;
 
 public class SensorDataInsert {
@@ -33,6 +34,12 @@ public class SensorDataInsert {
 		} else {
 			System.out.println("결과 : " + output);
 		}
+		
+		DeviceService dService = new DeviceService();
+		
+		SensorData data = new SensorData("SN02201", "off", "65");
+		
+		dService.insertSensorData(data);
 		
 //		sqlSession.close();
 

@@ -14,6 +14,12 @@
 	
 	
 	<!-- ============================================================ -->
+	<select id="selectSensorNo" parameterType="NoKey" resultType="String">
+		SELECT sensorno 
+		FROM room r, device d, sensor s 
+		WHERE r.roomno=#{roomNo} and d.roomno=r.roomno and d.deviceno=s.deviceno and s.type=#{type}
+	</select>
+	
 	<select id="selectByRoom" parameterType="String" resultMap="result">
 		SELECT d.deviceno, s.sensorno, s.type, sd.states, sd.statedetail 
 		FROM device d, sensor s, sensordata sd 
