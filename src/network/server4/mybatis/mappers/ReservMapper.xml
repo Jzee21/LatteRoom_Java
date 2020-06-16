@@ -18,13 +18,21 @@
     
     
     <!-- ============================================================ -->
-    <select id="selectItem" parameterType="Guest" resultMap="result">
+    <select id="selectItem" parameterType="String" resultMap="result">
    	<![CDATA[
     	SELECT r.reservno, r.roomno, room.roomname, room.roomssid, room.imgurl, 
-    			to_date(startdate, 'yyyy-mm-dd hh24:mi:ss') as startdate, to_date(enddate, 'yyyy-mm-dd hh24:mi:ss') as enddate  
+    			startdate, enddate  
     	FROM reservation R, room 
-    	WHERE r.userno=#{userNo} and r.roomno=room.roomno and sysdate-1<r.endDate
+    	WHERE r.userno=#{value} and r.roomno=room.roomno and sysdate-1<r.endDate
    	]]>
     </select>
+    <!-- <select id="selectItem" parameterType="String" resultMap="result">
+   	<![CDATA[
+    	SELECT r.reservno, r.roomno, room.roomname, room.roomssid, room.imgurl, 
+    			to_date(startdate, 'YYYY-MM-DD') as startdate, to_date(enddate, 'YYYY-MM-DD') as enddate  
+    	FROM reservation R, room 
+    	WHERE r.userno=#{value} and r.roomno=room.roomno and sysdate-1<r.endDate
+   	]]>
+    </select> -->
 
 </mapper>
