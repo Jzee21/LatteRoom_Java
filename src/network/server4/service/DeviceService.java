@@ -60,7 +60,6 @@ public class DeviceService {
 				System.out.println("[DeviceService] Success : Update Hope");
 			}
 			
-			
 			return data;
 		} else
 			return null;

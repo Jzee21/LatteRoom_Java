@@ -17,8 +17,7 @@ public class DeviceController {
 	private Gson gson;
 //	private Dispatcher dispatcher = Dispatcher.getInstance();
 //	private Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
-	
-	// =================================================
+
 	public DeviceController() {
 		dispatcher = Dispatcher.getInstance();
 		gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
@@ -102,7 +101,6 @@ public class DeviceController {
 //				System.out.println(dispatcher.hashCode());
 //				dispatcher.sendOneDevice(deviceNo, response);
 //				System.out.println("[DeviceController][response][finish] " + response.toString());
-				
 			} // if
 		} catch (Exception e) {
 			e.printStackTrace();
