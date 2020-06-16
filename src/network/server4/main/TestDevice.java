@@ -24,7 +24,7 @@ import javafx.stage.Stage;
 import network.server4.vo.Guest;
 import network.server4.vo.Message;
 
-public class TestClient extends Application{
+public class TestDevice extends Application{
 
 	private BorderPane root;
 	private FlowPane bottom, right;
