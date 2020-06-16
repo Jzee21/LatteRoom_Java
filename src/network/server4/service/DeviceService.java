@@ -1,7 +1,9 @@
 package network.server4.service;
 
 import network.server4.dao.DeviceDAO;
+import network.server4.dao.HopeDAO;
 import network.server4.dao.SensorDAO;
+import network.server4.vo.Message;
 import network.server4.vo.Sensor;
 import network.server4.vo.SensorData;
 
@@ -22,7 +24,7 @@ public class DeviceService {
 		return result;
 	}
 	
-	public SensorData insertControlData(SensorData data) {
+	public SensorData insertControlData(Message message, SensorData data) {
 		SensorData result = null;
 		
 		SensorDAO sdao = new SensorDAO();
@@ -31,6 +33,34 @@ public class DeviceService {
 		int row = sdao.insertControlData(data);
 		
 		if(row == 1) {
+			// Hope update
+			// Message {roomNo, CONTROL, TYPE, SensorData{time, states, stateDetail}}
+			
+			HopeDAO hdao = new HopeDAO();
+			int hopeResult = 0;
+			
+			switch(message.getCode2()) {
+			case "TEMP" :
+				hdao.updateTemp(message.getClientNo(), data.getStates());
+				break;
+				
+			case "LIGHT" :
+				hdao.updateLight(message.getClientNo(), data.getStateDetail());
+				break;
+				
+			case "BLIND" :
+				hdao.updateBlind(message.getClientNo(), data.getStates());
+				break;
+				
+			default :
+				break;
+			}
+			
+			if(hopeResult == 1) {
+				System.out.println("[DeviceService] Success : Update Hope");
+			}
+			
+			
 			return data;
 		} else
 			return null;
