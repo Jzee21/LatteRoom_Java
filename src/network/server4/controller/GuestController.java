@@ -19,12 +19,14 @@ public class GuestController {
 	// =================================================
 	// field
 	private Dispatcher dispatcher;
-	private Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+	private Gson gson;
+//	private Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
 	
 	// =================================================
 	// Singleton
 	private GuestController() {
 		dispatcher = Dispatcher.getInstance();
+		gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
 	}
 	
 	private static class InstanceHandler {
@@ -47,9 +49,9 @@ public class GuestController {
 		
 		Message response = 
 				new Message(data.getClientNo(), 
-						data.getCode1(), 
-						Integer.toString(reservInfo.size()), 
-						gson.toJson(reservInfo));
+							data.getCode1(), 
+							Integer.toString(reservInfo.size()), 
+							gson.toJson(reservInfo));
 		
 		conn.send(response);
 	}

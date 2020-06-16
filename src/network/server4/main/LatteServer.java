@@ -22,7 +22,7 @@ public class LatteServer {
 	private static int PORT = 55566;
 	
 	private static ServerSocket server;
-	private static Dispatcher dispatcher;
+	private static Dispatcher dispatcher = Dispatcher.getInstance();
 	private static ExecutorService executor;
 	private static List<Connection> connections;
 	
@@ -31,7 +31,7 @@ public class LatteServer {
 	// methods
 	private static void startServer() throws Exception {
 		
-		dispatcher = Dispatcher.getInstance();
+//		dispatcher = Dispatcher.getInstance();
 		executor = Executors.newCachedThreadPool();
 		connections = new CopyOnWriteArrayList<Connection>();
 		
