@@ -6,12 +6,15 @@ import network.server4.dao.ReservDAO;
 import network.server4.vo.Reservation;
 
 public class ReservService {
-
-	public void getReservInfo() {
+	
+	public List<Reservation> getReservInfo(String userNo) {
 		
 		ReservDAO rdao = new ReservDAO();
 		
-//		List<Reservation> reservInfo = rdao.getReserv(guest)
+		List<Reservation> reservInfo = rdao.selectReserv(userNo);
+
+		return reservInfo;
+		
 	}
 	
 }
