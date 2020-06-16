@@ -3,7 +3,7 @@ package network.server4.dao;
 import org.apache.ibatis.session.SqlSession;
 
 import network.server4.mybatis.MyBatisFactory;
-import network.server4.vo.*;
+import network.server4.vo.Guest;
 
 public class GuestDAO {
 	

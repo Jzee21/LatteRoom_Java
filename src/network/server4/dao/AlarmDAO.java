@@ -8,7 +8,6 @@ import org.apache.ibatis.session.SqlSession;
 import network.server4.mybatis.MyBatisFactory;
 import network.server4.vo.Alarm;
 import network.server4.vo.AlarmData;
-import network.server4.vo.Hope;
 
 public class AlarmDAO {
 	
