@@ -20,7 +20,7 @@ CREATE TABLE GUEST (
     loginid 	varchar2(15 char),
     loginpw 	varchar2(15 char) NOT NULL,
     authcode 	varchar2(12 char) NOT NULL,
-    role 	varchar2(8 char) DEFAULT 'USER' CHECK(flag IN ('ADMIN', 'USER'))
+    role 	varchar2(8 char) DEFAULT 'USER' CHECK(role IN ('ADMIN', 'USER'))
 );
 
 CREATE TABLE HOPE (
@@ -28,7 +28,7 @@ CREATE TABLE HOPE (
     temp 	varchar2(8 char) DEFAULT '26',
     light 	varchar2(8 char) DEFAULT '70',
     bed 	varchar2(8 char) DEFAULT '0',
-    blind 	varchar2(8 char) DEFAULT 'OPEN' CHECK(flag IN ('OPEN', 'CLOSE')),
+    blind 	varchar2(8 char) DEFAULT 'OPEN' CHECK(blind IN ('OPEN', 'CLOSE')),
     CONSTRAINT HOPE_FK_USER FOREIGN KEY(hopeno) REFERENCES GUEST(userno) ON DELETE CASCADE
 );
 
@@ -164,11 +164,11 @@ INSERT INTO ROOM (roomno, roomname, roomssid, imgurl) VALUES ('ROOM0002', '102',
 
 -- RESERV
 INSERT INTO RESERVATION (reservno, userno, roomno, startdate, enddate) 
-VALUES ('RESERV0001', 'GUEST0002', 'ROOM0001', TO_DATE('2020-06-10 14:00:00', 'yyyy-mm-dd hh24:mi:ss'), TO_DATE('2020-06-11 11:00:00', 'yyyy-mm-dd hh24:mi:ss'));
+VALUES ('RESERV0001', 'GUEST0002', 'ROOM0001', TO_DATE('2020-06-10'), TO_DATE('2020-06-11'));
 INSERT INTO RESERVATION (reservno, userno, roomno, startdate, enddate) 
-VALUES ('RESERV0002', 'GUEST0002', 'ROOM0002', TO_DATE('2020-06-14 14:00:00', 'yyyy-mm-dd hh24:mi:ss'), TO_DATE('2020-06-15 11:00:00', 'yyyy-mm-dd hh24:mi:ss'));
+VALUES ('RESERV0002', 'GUEST0002', 'ROOM0002', TO_DATE('2020-06-14'), TO_DATE('2020-06-15'));
 INSERT INTO RESERVATION (reservno, userno, roomno, startdate, enddate) 
-VALUES ('RESERV0003', 'GUEST0003', 'ROOM0002', TO_DATE('2020-06-12 14:00:00', 'yyyy-mm-dd hh24:mi:ss'), TO_DATE('2020-06-13 11:00:00', 'yyyy-mm-dd hh24:mi:ss'));
+VALUES ('RESERV0003', 'GUEST0003', 'ROOM0002', TO_DATE('2020-06-12'), TO_DATE('2020-06-13'));
 
 -- DEVICE
 INSERT INTO DEVICE VALUES ('DEVICE011', 'ROOM0001');
@@ -220,7 +220,7 @@ INSERT INTO SENSORDATA VALUES ('SD'||LPAD(SD_SEQ.nextval, 5, 0), 'SN01101', sysd
 INSERT INTO SENSORDATA VALUES ('SD'||LPAD(SD_SEQ.nextval, 5, 0), 'SN01102', sysdate, '0', null);
 INSERT INTO SENSORDATA VALUES ('SD'||LPAD(SD_SEQ.nextval, 5, 0), 'SN01103', sysdate, 'off', null);
 INSERT INTO SENSORDATA VALUES ('SD'||LPAD(SD_SEQ.nextval, 5, 0), 'SN01104', sysdate, 'off', null);
-INSERT INTO SENSORDATA VALUES ('SD'||LPAD(SD_SEQ.nextval, 5, 0), 'SN01201', sysdate, 'on', null);
+INSERT INTO SENSORDATA VALUES ('SD'||LPAD(SD_SEQ.nextval, 5, 0), 'SN01201', sysdate, 'on', '70');
 INSERT INTO SENSORDATA VALUES ('SD'||LPAD(SD_SEQ.nextval, 5, 0), 'SN01202', sysdate, 'close', null);
 INSERT INTO SENSORDATA VALUES ('SD'||LPAD(SD_SEQ.nextval, 5, 0), 'SN01301', sysdate, '0', null);
 INSERT INTO SENSORDATA VALUES ('SD'||LPAD(SD_SEQ.nextval, 5, 0), 'SN01401', sysdate, '0', null);
@@ -229,7 +229,7 @@ INSERT INTO SENSORDATA VALUES ('SD'||LPAD(SD_SEQ.nextval, 5, 0), 'SN02101', sysd
 INSERT INTO SENSORDATA VALUES ('SD'||LPAD(SD_SEQ.nextval, 5, 0), 'SN02102', sysdate, '0', null);
 INSERT INTO SENSORDATA VALUES ('SD'||LPAD(SD_SEQ.nextval, 5, 0), 'SN02103', sysdate, 'off', null);
 INSERT INTO SENSORDATA VALUES ('SD'||LPAD(SD_SEQ.nextval, 5, 0), 'SN02104', sysdate, 'off', null);
-INSERT INTO SENSORDATA VALUES ('SD'||LPAD(SD_SEQ.nextval, 5, 0), 'SN02201', sysdate, 'on', null);
+INSERT INTO SENSORDATA VALUES ('SD'||LPAD(SD_SEQ.nextval, 5, 0), 'SN02201', sysdate, 'on', '70');
 INSERT INTO SENSORDATA VALUES ('SD'||LPAD(SD_SEQ.nextval, 5, 0), 'SN02202', sysdate, 'close', null);
 INSERT INTO SENSORDATA VALUES ('SD'||LPAD(SD_SEQ.nextval, 5, 0), 'SN02301', sysdate, '0', null);
 INSERT INTO SENSORDATA VALUES ('SD'||LPAD(SD_SEQ.nextval, 5, 0), 'SN02401', sysdate, '0', null);
@@ -258,9 +258,9 @@ INSERT INTO GUEST (userno, loginid, loginpw, authcode) VALUES ('TESTER0002', 'B'
 
 -- Reserv
 INSERT INTO RESERVATION (reservno, userno, roomno, startdate, enddate) 
-VALUES ('RESERV9001', 'TESTER0001', 'ROOM0001', TO_DATE('2020-06-13 14:00:00', 'yyyy-mm-dd hh24:mi:ss'), TO_DATE('2020-06-14 11:00:00', 'yyyy-mm-dd hh24:mi:ss'));
+VALUES ('RESERV9001', 'TESTER0001', 'ROOM0001', TO_DATE('2020-06-15'), TO_DATE('2020-06-17'));
 INSERT INTO RESERVATION (reservno, userno, roomno, startdate, enddate) 
-VALUES ('RESERV9002', 'TESTER0001', 'ROOM0002', TO_DATE('2020-06-14 14:00:00', 'yyyy-mm-dd hh24:mi:ss'), TO_DATE('2020-06-15 11:00:00', 'yyyy-mm-dd hh24:mi:ss'));
+VALUES ('RESERV9002', 'TESTER0001', 'ROOM0002', TO_DATE('2020-06-17'), TO_DATE('2020-06-19'));
 
 
 
