@@ -39,7 +39,7 @@ public class Connection implements Runnable {
 	
 	
 	// =================================================
-	// Constructor
+	// get, set
 	public String getClientNo() {
 		return clientNo;
 	}
@@ -76,7 +76,7 @@ public class Connection implements Runnable {
 		while(true) {
 			try {
 				line = br.readLine();
-				System.out.println("line = " + line);
+//				System.out.println("line = " + line);
 				if(line == null) {
 					throw new IOException();
 				} else {
@@ -125,4 +125,16 @@ public class Connection implements Runnable {
 			System.out.println("=== 현재 연결 수 : " + LatteServer.getConnections().size() + " ===");
 		}
 	} // close()
+	
+	public String getConnAddr() {
+		return socket.getRemoteSocketAddress().toString();
+	}
+
+
+	@Override
+	public String toString() {
+		return "Connection [" + getConnAddr() + "][clientNo=" + clientNo + ", type=" + type + "]";
+	}
+	
+	
 }
