@@ -9,7 +9,8 @@ import com.google.gson.GsonBuilder;
 
 import network.server4.dao.GuestDAO;
 import network.server4.main.LatteServer;
-import network.server4.vo.*;
+import network.server4.vo.Guest;
+import network.server4.vo.Message;
 
 public class Dispatcher {
 	/*
@@ -26,7 +27,7 @@ public class Dispatcher {
 	
 	private Map<String, Connection> guestList = new ConcurrentHashMap<String, Connection>();
 	private Map<String, Connection> deviceList = new ConcurrentHashMap<String, Connection>();
-	private Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").create();
+	private Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
 	
 
 	// =================================================
@@ -63,7 +64,7 @@ public class Dispatcher {
 			/** Device */
 			// Device Connect
 			case "CONNECT":
-				deviceAuth(conn, data);
+				this.deviceAuth(conn, data);
 				break;
 				
 			// Device status changes
@@ -77,12 +78,12 @@ public class Dispatcher {
 			// Guest Login
 			case "LOGIN":
 				System.out.println("LOGIN : " + gson.fromJson(data.getJsonData(), Guest.class));
-				guestAuth(conn, data);
+				this.guestAuth(conn, data);
 				break;
 				
 			// Connection renewal
 			case "RECONNECT":
-				guestReconn(conn, data);
+				this.guestReconn(conn, data);
 				break;
 				
 			// Guest requests device control
@@ -91,7 +92,7 @@ public class Dispatcher {
 				break;
 				
 			// Guest requests reservation list
-			case "RESERVLIST":
+			case "RESERVELIST":
 				gController.requestReserv(conn, data);
 				break;
 				
@@ -105,7 +106,7 @@ public class Dispatcher {
 				if(data.getCode2().equals("GET"))
 					gController.requestAlarmInfo(conn, data);
 				else
-					gController.requestAlarmSet(conn, data);
+					gController.requestAlarmUpdate(conn, data);
 				break;
 				
 			// Guest requests detail alarm infos
@@ -113,7 +114,7 @@ public class Dispatcher {
 				if(data.getCode2().equals("GET"))
 					gController.requestAlarmJobInfo(conn, data);
 				else
-					gController.requestAlarmJobSet(conn, data);
+					gController.requestAlarmJobUpdate(conn, data);
 				break;
 				
 			default:
@@ -188,6 +189,8 @@ public class Dispatcher {
 			// No guest information
 			data = new Message(null, "LOGIN", "FAIL", null);
 		}
+		
+		System.out.println("[LOGIN] " + gson.toJson(data));
 
 		// Send request results
 		conn.send(data);

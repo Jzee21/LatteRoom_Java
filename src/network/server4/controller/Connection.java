@@ -28,7 +28,7 @@ public class Connection implements Runnable {
 	private String type;		// Guest or Device (default : null)
 	
 	private Dispatcher dispatcher = Dispatcher.getInstance();
-	private Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").create();
+	private Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
 	
 	
 	// =================================================
