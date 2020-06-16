@@ -26,6 +26,17 @@
     	WHERE r.userno=#{value} and r.roomno=room.roomno and sysdate-1<r.endDate
    	]]>
     </select>
+    
+    <select id="selectUserNo" parameterType="String">
+    <![CDATA[
+    	SELECT userno FROM reservation 
+    	WHERE roomno IN (SELECT roomno FROM device WHERE deviceno=#{value}) 
+    		and startdate<sysdate and sysdate-1<enddate 
+    	ORDER BY startdate
+    ]]>
+    </select>
+    
+    
     <!-- <select id="selectItem" parameterType="String" resultMap="result">
    	<![CDATA[
     	SELECT r.reservno, r.roomno, room.roomname, room.roomssid, room.imgurl, 
