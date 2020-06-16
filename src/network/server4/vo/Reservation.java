@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat;
 
 import org.apache.ibatis.type.Alias;
 
-@Alias("Reserv")
+//@Alias("Reserv")
 public class Reservation {
 	private String 	reservNo;
 	private String 	roomNo;
@@ -15,7 +15,7 @@ public class Reservation {
 	private String 	roomSSID;
 	private String 	imgUrl;
 	
-	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+	private transient SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 	
 	
 	public String getReservNo() {

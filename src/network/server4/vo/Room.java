@@ -2,12 +2,19 @@ package network.server4.vo;
 
 import org.apache.ibatis.type.Alias;
 
-@Alias("Room")
+//@Alias("Room")
 public class Room {
 	private String roomNo;
 	private String roomName;
 	private String roomSSID;
 	private String imgUrl;
+	
+	
+	
+	// test
+	public Room (String roomNo) {
+		this.roomNo = roomNo;
+	}
 	
 	
 	

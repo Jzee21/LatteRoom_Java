@@ -6,7 +6,17 @@
 <configuration>
 
 	<typeAliases>
-		<package name="network.server4.vo"/>
+		<!-- <package name="network.server4.vo"/> -->
+		<typeAlias type="network.server4.vo.Alarm" alias="Alarm"/>
+		<typeAlias type="network.server4.vo.AlarmData" alias="AlarmData"/>
+		<typeAlias type="network.server4.vo.Device" alias="Device"/>
+		<typeAlias type="network.server4.vo.Guest" alias="Guest"/>
+		<typeAlias type="network.server4.vo.Hope" alias="Hope"/>
+		<typeAlias type="network.server4.vo.Reservation" alias="Reserv"/>
+		<typeAlias type="network.server4.vo.Room" alias="Room"/>
+		<typeAlias type="network.server4.vo.RoomDetail" alias="RoomDetail"/>
+		<typeAlias type="network.server4.vo.Sensor" alias="Sensor"/>
+		<typeAlias type="network.server4.vo.SensorData" alias="SensorData"/>
 	</typeAliases>
 	
 	<environments default="development">

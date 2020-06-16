@@ -5,7 +5,7 @@ import java.util.Map;
 public class Device {
 	private String deviceNo;
 	private String roomNo;
-	private Map<String, String> sensorList;
+	private transient Map<String, String> sensorList;
 	//			type,	sensorNo
 	
 	

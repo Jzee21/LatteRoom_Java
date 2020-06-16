@@ -2,13 +2,13 @@ package network.server4.vo;
 
 import org.apache.ibatis.type.Alias;
 
-@Alias("Alarm")
+//@Alias("Alarm")
 public class Alarm {
 	private String 	alarmNo;
 	private String 	hour;
 	private String 	min;
 	private String 	weeks;
-	private String flag;
+	private String	flag;
 	
 	
 	public Alarm() {}

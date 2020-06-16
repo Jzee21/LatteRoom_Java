@@ -4,7 +4,7 @@ import java.sql.Date;
 
 import org.apache.ibatis.type.Alias;
 
-@Alias("SensorData")
+//@Alias("SensorData")
 public class SensorData {
 	private String 	dataNo;
 	private String 	sensorNo;
