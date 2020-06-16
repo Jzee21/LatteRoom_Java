@@ -32,6 +32,7 @@ public class LatteServer {
 	private static void startServer() throws Exception {
 		
 //		dispatcher = Dispatcher.getInstance();
+		dispatcher.setController();
 		executor = Executors.newCachedThreadPool();
 		connections = new CopyOnWriteArrayList<Connection>();
 		

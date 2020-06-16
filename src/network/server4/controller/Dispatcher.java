@@ -42,9 +42,6 @@ public class Dispatcher {
 	// =================================================
 	// Singleton
 	private Dispatcher() {
-		gController = GuestController.getInstance();
-		dController = DeviceController.getInstance();
-		
 		guestList = new ConcurrentHashMap<String, Connection>();
 		deviceList = new ConcurrentHashMap<String, Connection>();
 		gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
@@ -60,6 +57,11 @@ public class Dispatcher {
 	
 	// =================================================
 	// public methods
+	public void setController() {
+		this.gController = new GuestController();
+		this.dController = new DeviceController();
+	}
+	
 	public Connection accept(Socket socket) {
 		Connection conn = null;
 		conn = new Connection(socket);

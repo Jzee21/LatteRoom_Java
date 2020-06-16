@@ -23,18 +23,9 @@ public class GuestController {
 //	private Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
 	
 	// =================================================
-	// Singleton
-	private GuestController() {
+	public GuestController() {
 		dispatcher = Dispatcher.getInstance();
 		gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
-	}
-	
-	private static class InstanceHandler {
-		public static final GuestController INSTANCE = new GuestController();
-	}
-	
-	public static GuestController getInstance() {
-		return InstanceHandler.INSTANCE;
 	}
 	
 	
