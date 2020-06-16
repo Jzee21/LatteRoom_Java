@@ -17,6 +17,7 @@
 		<typeAlias type="network.server4.vo.RoomDetail" alias="RoomDetail"/>
 		<typeAlias type="network.server4.vo.Sensor" alias="Sensor"/>
 		<typeAlias type="network.server4.vo.SensorData" alias="SensorData"/>
+		<typeAlias type="network.server4.vo.NoKey" alias="NoKey"/>
 	</typeAliases>
 	
 	<environments default="development">
