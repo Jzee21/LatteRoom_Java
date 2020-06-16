@@ -65,6 +65,7 @@ public class DeviceController {
 		SensorData input = gson.fromJson(data.getJsonData(), SensorData.class);
 		
 		// Insert new ControlData
+		data.setClientNo(conn.getClientNo());
 		SensorData result = service.insertControlData(data, input);
 		
 		// Deliver information to device

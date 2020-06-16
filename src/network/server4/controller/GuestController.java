@@ -1,14 +1,18 @@
 package network.server4.controller;
 
 import java.lang.reflect.Type;
+import java.util.Arrays;
 import java.util.List;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
+import network.server4.service.GuestService;
 import network.server4.service.ReservService;
 import network.server4.service.RoomService;
+import network.server4.vo.Alarm;
+import network.server4.vo.AlarmData;
 import network.server4.vo.Message;
 import network.server4.vo.Reservation;
 import network.server4.vo.Room;
@@ -67,21 +71,48 @@ public class GuestController {
 	
 	public void requestAlarmInfo(Connection conn, Message data) {
 		// Message {userNo, ALARM, GET, null}
+		GuestService gService = new GuestService();
+		
+		Alarm result = gService.getAlarmInfo(data.getClientNo());
+		
+		data.setJsonData(gson.toJson(result));
+		
+		conn.send(data);
 		
 	}
 	
 	public void requestAlarmUpdate(Connection conn, Message data) {
 		// Message {userNo, ALARM, UPDATE, Alarm{alarmNo, hour, min, weeks, flag}}
+		GuestService gService = new GuestService();
+		
+		Alarm input = gson.fromJson(data.getJsonData(), Alarm.class);
+		
+		int result = gService.updateAlarmInfo(input);
+		if(result == 1) System.out.println(conn.getConnAddr() + "[Alarm] Updated");
 		
 	}
 	
 	public void requestAlarmJobInfo(Connection conn, Message data) {
 		// Message {userNo, ALARMJOB, GET, null}
+		GuestService gService = new GuestService();
+		
+		List<AlarmData> result = gService.getAlarmJobs(data.getClientNo());
+		
+		data.setJsonData(gson.toJson(result));
+		
+		conn.send(data);
 		
 	}
 	
 	public void requestAlarmJobUpdate(Connection conn, Message data) {
 		// Message {userNo, ALARMJOB, UPDATE, List[AlarmData{dataNo, alarmNo, type, states, stateDetial}]}
+		GuestService gService = new GuestService();
+		
+		AlarmData[] array = gson.fromJson(data.getJsonData(), AlarmData[].class);
+		List<AlarmData> input = Arrays.asList(array);
+		
+		int result = gService.updateAlarmJobs(input);
+		if(result == 1) System.out.println(conn.getConnAddr() + "[AlarmJobs] Updated");
 		
 	}
 	
