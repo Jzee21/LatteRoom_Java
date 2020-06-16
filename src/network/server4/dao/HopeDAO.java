@@ -29,7 +29,7 @@ public class HopeDAO {
 	
 	public int updateLight(String userNo, String states) {
 		try (SqlSession sqlSession = MyBatisFactory.getSqlSession()) {
-			Hope input = new Hope(userNo, states, null, null);
+			Hope input = new Hope(userNo, null, states, null);
 			input.nullCheck();
 			return sqlSession.update("HopeMapper.updateLight", input);
 		} catch (Exception e) {
@@ -40,7 +40,7 @@ public class HopeDAO {
 	
 	public int updateBlind(String userNo, String states) {
 		try (SqlSession sqlSession = MyBatisFactory.getSqlSession()) {
-			Hope input = new Hope(userNo, states, null, null);
+			Hope input = new Hope(userNo, null, null, states);
 			input.nullCheck();
 			return sqlSession.update("HopeMapper.updateBlind", input);
 		} catch (Exception e) {
