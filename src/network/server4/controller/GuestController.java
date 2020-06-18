@@ -79,6 +79,7 @@ public class GuestController {
 		
 		conn.send(data);
 		
+		System.out.println("[ALARM, GET] " + data.toString());
 	}
 	
 	public void requestAlarmUpdate(Connection conn, Message data) {
@@ -86,10 +87,21 @@ public class GuestController {
 		GuestService gService = new GuestService();
 		
 		Alarm input = gson.fromJson(data.getJsonData(), Alarm.class);
+		System.out.println("requestAlarmUpdate : " + input.toString());
+		System.out.println(input.getWeeks());
+//		String[] weeks = input.getWeeks();
+//		String weeks = input.getWeeks();
+//		weeks = weeks.replaceAll("[", "");
+//		weeks = weeks.replaceAll("]", "");
+//		weeks = weeks.replaceAll("\"", "");
+//		input.setWeeks(weeks.toUpperCase());
+//		System.out.println(input.getWeeks());
 		
 		int result = gService.updateAlarmInfo(input);
-		if(result == 1) System.out.println(conn.getConnAddr() + "[Alarm] Updated");
+		if(result == 1) System.out.println(conn.getConnAddr() + " [Alarm] Updated");
 		
+		System.out.println("[ALARM, UPDATE] end");
+//		System.out.println("[ALARM, UPDATE] " + data.toString());
 	}
 	
 	public void requestAlarmJobInfo(Connection conn, Message data) {

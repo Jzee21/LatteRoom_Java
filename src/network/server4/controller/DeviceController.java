@@ -75,7 +75,7 @@ public class DeviceController {
 				String deviceNo = dService.getDeviceNoBySensor(result.getSensorNo());
 				
 				// Check device access
-				dispatcher.getDeviceConn(deviceNo);
+//				dispatcher.getDeviceConn(deviceNo);
 				Connection targetDevice = dispatcher.getDeviceConn(deviceNo);
 				if(targetDevice != null) {
 					Message response = 
@@ -105,6 +105,7 @@ public class DeviceController {
 			} // if
 		} catch (Exception e) {
 			e.printStackTrace();
+			System.out.println("requestControl " + e);
 		}
 	} // requestControl
 	

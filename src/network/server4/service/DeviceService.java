@@ -28,9 +28,10 @@ public class DeviceService {
 		SensorData result = null;
 		
 		SensorDAO sdao = new SensorDAO();
-		data.nullCheck();
+		System.out.println("Service(CD) - " + data.toString());
 		
 		int row = sdao.insertControlData(data);
+		System.out.println("Service(CD)(row) - " + row);
 		
 		if(row == 1) {
 			// Hope update
@@ -41,15 +42,19 @@ public class DeviceService {
 			
 			switch(message.getCode2()) {
 			case "TEMP" :
-				hdao.updateTemp(message.getClientNo(), data.getStates());
+				hopeResult = hdao.updateTemp(message.getClientNo(), data.getStates());
 				break;
 				
 			case "LIGHT" :
-				hdao.updateLight(message.getClientNo(), data.getStateDetail());
+				hopeResult = hdao.updateLight(message.getClientNo(), data.getStateDetail());
 				break;
 				
 			case "BLIND" :
-				hdao.updateBlind(message.getClientNo(), data.getStates());
+				hopeResult = hdao.updateBlind(message.getClientNo(), data.getStates());
+				break;
+			
+			case "BED" :
+				hopeResult = 1;
 				break;
 				
 			default :

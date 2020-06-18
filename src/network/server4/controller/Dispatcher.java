@@ -122,9 +122,10 @@ public class Dispatcher {
 				
 			// Guest requests personal alarm info
 			case "ALARM":
+				System.out.println("Alram : " + jsonData);
 				if(data.getCode2().equals("GET"))
 					gController.requestAlarmInfo(conn, data);
-				else
+				else if(data.getCode2().equals("UPDATE"))
 					gController.requestAlarmUpdate(conn, data);
 				break;
 				
@@ -132,7 +133,7 @@ public class Dispatcher {
 			case "ALARMJOB":
 				if(data.getCode2().equals("GET"))
 					gController.requestAlarmJobInfo(conn, data);
-				else
+				else if(data.getCode2().equals("UPDATE"))
 					gController.requestAlarmJobUpdate(conn, data);
 				break;
 				
