@@ -121,7 +121,7 @@ public class TestClient extends Application{
 		Runnable runnable = () -> {
 			try {
 				socket = new Socket();
-				socket.connect(new InetSocketAddress("192.168.21.2", 55566));
+				socket.connect(new InetSocketAddress("70.12.60.99", 55566));
 				input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 				output = new PrintWriter(socket.getOutputStream());
 			} catch (IOException e) {

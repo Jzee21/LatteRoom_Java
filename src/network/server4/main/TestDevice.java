@@ -91,6 +91,18 @@ public class TestDevice extends Application{
 			send(new Message("DEVICE012", "CONNECT", null, null));
 			displayText("DEVICE012");
 		});
+		Button DEVICE013 = new Button("DEVICE013");
+		DEVICE013.setPrefSize(100, 40);
+		DEVICE013.setOnAction((e) -> {
+			send(new Message("DEVICE013", "CONNECT", null, null));
+			displayText("DEVICE013");
+		});
+		Button DEVICE014 = new Button("DEVICE014");
+		DEVICE014.setPrefSize(100, 40);
+		DEVICE014.setOnAction((e) -> {
+			send(new Message("DEVICE014", "CONNECT", null, null));
+			displayText("DEVICE014");
+		});
 		Button DEVICE021 = new Button("DEVICE021");
 		DEVICE021.setPrefSize(100, 40);
 		DEVICE021.setOnAction((e) -> {
@@ -103,9 +115,21 @@ public class TestDevice extends Application{
 			send(new Message("DEVICE022", "CONNECT", null, null));
 			displayText("DEVICE022");
 		});
+		Button DEVICE023 = new Button("DEVICE023");
+		DEVICE023.setPrefSize(100, 40);
+		DEVICE023.setOnAction((e) -> {
+			send(new Message("DEVICE023", "CONNECT", null, null));
+			displayText("DEVICE023");
+		});
+		Button DEVICE024 = new Button("DEVICE024");
+		DEVICE024.setPrefSize(100, 40);
+		DEVICE024.setOnAction((e) -> {
+			send(new Message("DEVICE024", "CONNECT", null, null));
+			displayText("DEVICE024");
+		});
 		
 		bottom = new FlowPane();
-		bottom.getChildren().addAll(connBtn, disconnBtn, DEVICE011, DEVICE012, DEVICE021, DEVICE022);
+		bottom.getChildren().addAll(connBtn, disconnBtn, DEVICE011, DEVICE012, DEVICE013, DEVICE014, DEVICE021, DEVICE022, DEVICE023, DEVICE024);
 		root.setBottom(bottom);
 		
 		Scene scene = new Scene(root);
@@ -134,7 +158,7 @@ public class TestDevice extends Application{
 		Runnable runnable = () -> {
 			try {
 				socket = new Socket();
-				socket.connect(new InetSocketAddress("192.168.21.2", 55566));
+				socket.connect(new InetSocketAddress("70.12.60.99", 55566));
 				input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 				output = new PrintWriter(socket.getOutputStream());
 			} catch (IOException e) {
