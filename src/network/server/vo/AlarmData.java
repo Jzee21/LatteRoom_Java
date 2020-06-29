@@ -1,23 +1,20 @@
 package network.server.vo;
 
-import java.sql.Date;
-
 import org.apache.ibatis.type.Alias;
 
-//@Alias("SensorData")
-public class SensorData {
-	private String 	dataNo;
-	private String 	sensorNo;
-	private Date 	time;
-	private String 	states;
-	private String 	stateDetail;
+//@Alias("AlarmData")
+public class AlarmData {
+	private String dataNo;
+	private String alarmNo;
+	private String type;
+	private String states;
+	private String stateDetail;
 	
 	
-	public SensorData() {}
-	public SensorData(String sensorNo, String states, String stateDetail) {
-		this.dataNo = "-";
-		this.sensorNo = sensorNo;
-		this.time = new Date(System.currentTimeMillis());
+	public AlarmData() {}
+	public AlarmData(String userNo, String type, String states, String stateDetail) {
+		this.alarmNo = userNo;
+		this.type = type;
 		this.states = states;
 		if(stateDetail==null) stateDetail = "-";
 		this.stateDetail = stateDetail;
@@ -27,7 +24,8 @@ public class SensorData {
 	
 	public void nullCheck() {
 		if(this.dataNo == null) this.dataNo = "-";
-		if(this.sensorNo == null) this.sensorNo = "-";
+		if(this.alarmNo == null) this.alarmNo = "-";
+		if(this.type == null) this.type = "-";
 		if(this.states == null) this.states = "-";
 		if(this.stateDetail == null) this.stateDetail = "-";
 	}
@@ -42,20 +40,20 @@ public class SensorData {
 		this.dataNo = dataNo;
 	}
 	
-	public String getSensorNo() {
-		return sensorNo;
+	public String getAlarmNo() {
+		return alarmNo;
 	}
 	
-	public void setSensorNo(String sensorNo) {
-		this.sensorNo = sensorNo;
+	public void setAlarmNo(String alarmNo) {
+		this.alarmNo = alarmNo;
 	}
 	
-	public Date getTime() {
-		return time;
+	public String getType() {
+		return type;
 	}
 	
-	public void setTime(Date time) {
-		this.time = time;
+	public void setType(String type) {
+		this.type = type;
 	}
 	
 	public String getStates() {
@@ -76,7 +74,7 @@ public class SensorData {
 
 	@Override
 	public String toString() {
-		return "SensorData [dataNo=" + dataNo + ", sensorNo=" + sensorNo + ", time=" + time + ", states=" + states
+		return "AlarmData [dataNo=" + dataNo + ", userNo=" + alarmNo + ", type=" + type + ", states=" + states
 				+ ", stateDetail=" + stateDetail + "]";
 	}
 	

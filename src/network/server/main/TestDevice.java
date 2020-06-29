@@ -24,7 +24,7 @@ import javafx.stage.Stage;
 import network.server.vo.Guest;
 import network.server.vo.Message;
 
-public class TestClient extends Application{
+public class TestDevice extends Application{
 
 	private BorderPane root;
 	private FlowPane bottom, right;
@@ -79,20 +79,57 @@ public class TestClient extends Application{
 			stopClient();
 		});
 		
-		Button latte1 = new Button("latte1");
-		latte1.setPrefSize(70, 40);
-		latte1.setOnAction((e) -> {
-			send(new Message(null, "LOGIN", null, gson.toJson(new Guest("latte1", "latte1"))));
+		Button DEVICE011 = new Button("DEVICE011");
+		DEVICE011.setPrefSize(100, 40);
+		DEVICE011.setOnAction((e) -> {
+			send(new Message("DEVICE011", "CONNECT", null, null));
+			displayText("DEVICE011");
 		});
-		
-		Button latte8 = new Button("latte8");
-		latte8.setPrefSize(70, 40);
-		latte8.setOnAction((e) -> {
-			send(new Message(null, "LOGIN", null, gson.toJson(new Guest("latte8", "latte1"))));
+		Button DEVICE012 = new Button("DEVICE012");
+		DEVICE012.setPrefSize(100, 40);
+		DEVICE012.setOnAction((e) -> {
+			send(new Message("DEVICE012", "CONNECT", null, null));
+			displayText("DEVICE012");
+		});
+		Button DEVICE013 = new Button("DEVICE013");
+		DEVICE013.setPrefSize(100, 40);
+		DEVICE013.setOnAction((e) -> {
+			send(new Message("DEVICE013", "CONNECT", null, null));
+			displayText("DEVICE013");
+		});
+		Button DEVICE014 = new Button("DEVICE014");
+		DEVICE014.setPrefSize(100, 40);
+		DEVICE014.setOnAction((e) -> {
+			send(new Message("DEVICE014", "CONNECT", null, null));
+			displayText("DEVICE014");
+		});
+		Button DEVICE021 = new Button("DEVICE021");
+		DEVICE021.setPrefSize(100, 40);
+		DEVICE021.setOnAction((e) -> {
+			send(new Message("DEVICE021", "CONNECT", null, null));
+			displayText("DEVICE021");
+		});
+		Button DEVICE022 = new Button("DEVICE022");
+		DEVICE022.setPrefSize(100, 40);
+		DEVICE022.setOnAction((e) -> {
+			send(new Message("DEVICE022", "CONNECT", null, null));
+			displayText("DEVICE022");
+		});
+		Button DEVICE023 = new Button("DEVICE023");
+		DEVICE023.setPrefSize(100, 40);
+		DEVICE023.setOnAction((e) -> {
+			send(new Message("DEVICE023", "CONNECT", null, null));
+			displayText("DEVICE023");
+		});
+		Button DEVICE024 = new Button("DEVICE024");
+		DEVICE024.setPrefSize(100, 40);
+		DEVICE024.setOnAction((e) -> {
+			send(new Message("DEVICE024", "CONNECT", null, null));
+			displayText("DEVICE024");
 		});
 		
 		bottom = new FlowPane();
-		bottom.getChildren().addAll(connBtn, disconnBtn, latte1, latte8);
+		bottom.getChildren().addAll(connBtn, disconnBtn, DEVICE011, DEVICE012, DEVICE013, DEVICE014, DEVICE021, DEVICE022, DEVICE023, DEVICE024);
 		root.setBottom(bottom);
 		
 		Scene scene = new Scene(root);

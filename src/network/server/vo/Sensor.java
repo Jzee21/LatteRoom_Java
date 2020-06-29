@@ -1,114 +1,71 @@
 package network.server.vo;
 
-import network.server.dao.Device;
+import org.apache.ibatis.type.Alias;
 
-public class Sensor implements Cloneable {
-	private String deviceID;
-	private String sensorID;
-	private String sensorType;
-	private SensorData recentData;
+//@Alias("Sensor")
+public class Sensor {
+	private String 	sensorNo;
+	private String 	type;
+	private String  deviceNo;
+	private String 	states;
+	private String 	stateDetail;
 	
 	
-	// constructor
-	public Sensor() {
-	}
 	
-	public Sensor(String sensorType) {
-		this.sensorType = sensorType;
-	}
-	
-	public Sensor(Device device, String sensorType) {
-		this.deviceID = device.getDeviceID();
-		this.sensorType = sensorType;
-	}
-	
-	public Sensor(String deviceID, String sensorID, String sensorType) {
-		this();
-		this.deviceID = deviceID;
-		this.sensorID = sensorID;
-		this.sensorType = sensorType;
-	}
-	
-	// get, set
-	public String getDeviceID() {
-		return deviceID;
-	}
-	
-	public void setDeviceID(String deviceID) {
-		this.deviceID = deviceID;
-	}
-	
-	public String getSensorID() {
-		return sensorID;
-	}
-	
-	public void setSensorID(String sensorID) {
-		this.sensorID = sensorID;
-	}
-	
-	public String getSensorType() {
-		return sensorType;
-	}
-	
-	public void setSensorType(String sensorType) {
-		this.sensorType = sensorType;
-	}
-	
-	public SensorData getRecentData() {
-		if(this.recentData == null)
-			this.recentData = new SensorData(this.sensorID);
-		return recentData;
-	}
-	
-	public SensorData setRecentData(SensorData recentData) {
-		this.recentData = recentData;
-		return this.recentData;
+	public void nullCheck() {
+		if(this.sensorNo == null) this.sensorNo = "-";
+		if(this.type == null) this.type = "-";
+		if(this.deviceNo == null) this.deviceNo = "-";
+		if(this.states == null) this.states = "-";
+		if(this.stateDetail == null) this.stateDetail = "-";
 	}
 	
 	
 	
-	// custom method
+	public String getSensorNo() {
+		return sensorNo;
+	}
+	
+	public void setSensorNo(String sensorNo) {
+		this.sensorNo = sensorNo;
+	}
+	
+	public String getType() {
+		return type;
+	}
+	
+	public void setType(String type) {
+		this.type = type;
+	}
+	
+	public String getDeviceNo() {
+		return deviceNo;
+	}
+	
+	public void setDeviceNo(String deviceNo) {
+		this.deviceNo = deviceNo;
+	}
+	
 	public String getStates() {
-        return this.recentData.getStates();
-    }
-
-
+		return states;
+	}
+	
+	public void setStates(String states) {
+		this.states = states;
+	}
+	
 	public String getStateDetail() {
-        return this.recentData.getStateDetail();
-    }
-    
-    // 지정된 센서에 최신 데이터 업데이트 (states)
-    public SensorData setRecentData(String states) {
-//        this.recentData = new SensorData(this.sensorID, states);
-    	if(this.recentData == null)
-    		this.recentData = new SensorData(this.sensorID);
-    	this.recentData.update(states);
-        return this.recentData;
-    }
-
-    // 지정된 센서에 최신 데이터 업데이트 (states, stateDetail)
-    public SensorData setRecentData(String states, String stateDetail) {
-//        this.recentData = new SensorData(this.sensorID, states, stateDetail);
-    	if(this.recentData == null)
-    		this.recentData = new SensorData(this.sensorID);
-        this.recentData.update(states, stateDetail);
-        return this.recentData;
-    }
-
+		return stateDetail;
+	}
+	
+	public void setStateDetail(String stateDetail) {
+		this.stateDetail = stateDetail;
+	}
+	
 	@Override
 	public String toString() {
-		return "Sensor [deviceID=" + deviceID + ", sensorID=" + sensorID + ", sensorType=" + sensorType
-				+ ", recentData=" + recentData + "]";
-	}
-	
-	public Sensor clone() {
-		Sensor copy = null;
-		try {
-			copy = (Sensor) super.clone();
-		} catch (CloneNotSupportedException e) {
-			e.printStackTrace();
-		}
-		return copy;
+		return "Sensor [sensorNo=" + sensorNo + ", type=" + type + ", deviceNo=" + deviceNo + ", states=" + states
+				+ ", stateDetail=" + stateDetail + "]";
 	}
 	
 }

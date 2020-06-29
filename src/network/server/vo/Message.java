@@ -1,86 +1,53 @@
 package network.server.vo;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import network.server.service.ServerService;
-
 public class Message {
-	private String deviceID;
-	private String deviceType;
-	private String dataType;
+	private String clientNo;
+	private String code1;
+	private String code2;
 	private String jsonData;
-	private static Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").create();
 	
 	
-	// constructor
-	private Message() {
-        this.deviceID = ServerService.getDeviceId();
-        this.deviceType = ServerService.getDeviceType();
-    }
-	
-	public Message(SensorData data) {
-        this();
-        this.dataType = "SensorData";
-        this.jsonData = Message.gson.toJson(data);
-    }
-	
-	public Message(Alert data) {
-        this();
-        this.dataType = "Alert";
-        this.jsonData = Message.gson.toJson(data);
-    }
-	
-	public Message(String sensorID) {
-		this();
-		this.dataType = "Request";
-		this.jsonData = sensorID;
+	// =================================================
+	// Constructor
+	public Message() {
+		
 	}
 	
-	public Message(String id, String type, String data) {
-		this.deviceID = id;
-		this.dataType = type;
-		this.jsonData = data;
+	public Message(String clientNo, String code, String jsonData) {
+		this.clientNo = clientNo;
+		this.code1 = code;
+		this.jsonData = jsonData;
 	}
 	
-	
-	// custom method
-	public SensorData getSensorData() {
-		return Message.gson.fromJson(this.jsonData, SensorData.class);
+	public Message(String clientNo, String code, String subCode, String jsonData) {
+		this(clientNo, code, jsonData);
+		this.code2 = subCode;
 	}
 	
-	public Alert getAlertData() {
-		return Message.gson.fromJson(this.jsonData, Alert.class);
+	// =================================================
+	// get, set
+	public String getClientNo() {
+		return clientNo;
 	}
 	
-	public String getRequestData() {
-		return this.jsonData;
+	public void setClientNo(String clientNo) {
+		this.clientNo = clientNo;
 	}
 	
-	
-	// get, set method
-	public String getDeviceID() {
-		return deviceID;
+	public String getCode1() {
+		return code1;
 	}
 	
-	public void setDeviceID(String deviceID) {
-		this.deviceID = deviceID;
+	public void setCode1(String code1) {
+		this.code1 = code1;
 	}
 	
-	public String getDeviceType() {
-		return deviceType;
-	}
-
-	public void setDeviceType(String deviceType) {
-		this.deviceType = deviceType;
-	}
-
-	public String getDataType() {
-		return dataType;
+	public String getCode2() {
+		return code2;
 	}
 	
-	public void setDataType(String dataType) {
-		this.dataType = dataType;
+	public void setCode2(String code2) {
+		this.code2 = code2;
 	}
 	
 	public String getJsonData() {
@@ -90,11 +57,11 @@ public class Message {
 	public void setJsonData(String jsonData) {
 		this.jsonData = jsonData;
 	}
-	
-	
+
 	@Override
 	public String toString() {
-		return "Message [deviceID=" + deviceID + ", dataType=" + dataType + ", jsonData=" + jsonData + "]";
+		return "Message [clientNo=" + clientNo + ", code1=" + code1 + ", code2=" + code2 + ", jsonData=" + jsonData
+				+ "]";
 	}
 	
 }
