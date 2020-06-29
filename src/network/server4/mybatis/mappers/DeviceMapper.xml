@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="DeviceMapper">
+    
+    <!-- ============================================================ -->    
+    <select id="isExist" parameterType="String" resultType="int">
+    	SELECT COUNT(*) FROM device WHERE deviceno=#{value}
+    </select>
+    
+    
+    <select id="selectNoByRoom" parameterType="NoKey" resultType="String">
+		SELECT d.deviceno 
+		FROM room r, device d, sensor s 
+		WHERE r.roomno=#{roomNo} and d.roomno=r.roomno and d.deviceno=s.deviceno and s.type=#{type}
+	</select>
+	
+	
+	<select id="selectNoBySensor" parameterType="String" resultType="String">
+		SELECT deviceno FROM sensor
+		WHERE sensorno=#{value}
+	</select>
+    
+    
+    <!-- for Test -->
+    <select id="selectTypeMap" parameterType="String" resultType="java.util.HashMap">
+    	<![CDATA[
+    	SELECT type, sensorno FROM device d, sensor s WHERE d.deviceno=#{value} and s.deviceno = d.deviceno
+    	]]>
+    </select>
+    <!-- <select id="selectTypeMap"
+    		parameterType="String"
+    		resultType="java.util.HashMap">
+    	<![CDATA[
+    	SELECT s.type, s.sensorno FROM device d, sensor s WHERE d.deviceno=#{value} and s.deviceno = d.deviceno;
+    	]]>
+    </select> -->
+
+</mapper>

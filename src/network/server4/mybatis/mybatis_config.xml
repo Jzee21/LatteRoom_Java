@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+	PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-config.dtd">
+	
+<configuration>
+
+	<typeAliases>
+		<!-- <package name="network.server4.vo"/> -->
+		<typeAlias type="network.server4.vo.Alarm" alias="Alarm"/>
+		<typeAlias type="network.server4.vo.AlarmData" alias="AlarmData"/>
+		<typeAlias type="network.server4.vo.Device" alias="Device"/>
+		<typeAlias type="network.server4.vo.Guest" alias="Guest"/>
+		<typeAlias type="network.server4.vo.Hope" alias="Hope"/>
+		<typeAlias type="network.server4.vo.Reservation" alias="Reserv"/>
+		<typeAlias type="network.server4.vo.Room" alias="Room"/>
+		<typeAlias type="network.server4.vo.RoomDetail" alias="RoomDetail"/>
+		<typeAlias type="network.server4.vo.Sensor" alias="Sensor"/>
+		<typeAlias type="network.server4.vo.SensorData" alias="SensorData"/>
+		<typeAlias type="network.server4.vo.NoKey" alias="NoKey"/>
+	</typeAliases>
+	
+	<environments default="development">
+		<environment id="development">
+			<transactionManager type="JDBC" />
+			<dataSource type="POOLED">
+				<property name="driver" value="oracle.jdbc.driver.OracleDriver" />
+				<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe" />
+				<property name="username" value="LATTE" />
+				<property name="password" value="latte" />
+			</dataSource>
+		</environment>
+	</environments>
+	
+	<mappers>
+		<mapper resource="network/server4/mybatis/mappers/GuestMapper.xml" />
+		<mapper resource="network/server4/mybatis/mappers/ReservMapper.xml" />
+		<mapper resource="network/server4/mybatis/mappers/HopeMapper.xml" />
+		<mapper resource="network/server4/mybatis/mappers/AlarmMapper.xml" />
+		<mapper resource="network/server4/mybatis/mappers/AlarmDataMapper.xml" />
+		<mapper resource="network/server4/mybatis/mappers/DeviceMapper.xml" />
+		<mapper resource="network/server4/mybatis/mappers/SensorMapper.xml" />
+		<mapper resource="network/server4/mybatis/mappers/SensorDataMapper.xml" />
+	</mappers>
+</configuration>

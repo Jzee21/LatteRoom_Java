@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="SensorDataMapper">
+
+	<resultMap id="result" type="SensorData" >
+		<result property="dataNo" 		column="datano" />
+		<result property="sensorNo" 	column="sensorno" />
+		<result property="time" 		column="time" />
+		<result property="states" 		column="states" />
+		<result property="stateDetail" 	column="stateDetail" />
+	</resultMap>
+	
+	
+	
+	<!-- ============================================================ -->
+	<insert id="insertSD" parameterType="SensorData">
+		INSERT INTO SENSORDATA VALUES ('SD'||LPAD(SD_SEQ.nextval, 5, 0), #{sensorNo}, #{time}, #{states}, #{stateDetail})
+	</insert>
+	
+	<insert id="insertCD" parameterType="SensorData">
+		INSERT INTO CONTROLDATA VALUES ('CD'||LPAD(CD_SEQ.nextval, 5, 0), #{sensorNo}, #{time}, #{states}, #{stateDetail})
+	</insert>
+
+</mapper>

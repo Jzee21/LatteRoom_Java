@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="SensorMapper">
+
+	<resultMap id="result" type="Sensor">
+		<result property="sensorNo" 		column="sensorno" />
+		<result property="type" 			column="type" />
+		<result property="deviceNo" 		column="deviceno" />
+		<result property="states" 			column="states" />
+		<result property="stateDetail" 		column="statedetail" />
+	</resultMap>
+	
+	
+	
+	<!-- ============================================================ -->
+	<select id="selectSensorNo" parameterType="NoKey" resultType="String">
+		SELECT sensorno 
+		FROM room r, device d, sensor s 
+		WHERE r.roomno=#{roomNo} and d.roomno=r.roomno and d.deviceno=s.deviceno and s.type=#{type}
+	</select>
+	
+	<select id="selectByRoom" parameterType="String" resultMap="result">
+		SELECT d.deviceno, s.sensorno, s.type, sd.states, sd.statedetail 
+		FROM device d, sensor s, sensordata sd 
+        WHERE d.roomno=#{roomno} and d.deviceno=s.deviceno and s.recentdata=sd.datano
+	</select>
+	
+	<select id="selectByNo" parameterType="String" resultMap="result">
+		SELECT d.deviceno, s.sensorno, s.type, sd.states, sd.statedetail 
+		FROM device d, sensor s, sensordata sd 
+        WHERE s.sensorno=#{sensorno} and d.deviceno=s.deviceno and s.recentdata=sd.datano
+	</select>
+
+</mapper>
