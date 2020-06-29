@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="AlarmDataMapper">
+
+	<resultMap id="result" type="AlarmData">
+		<result property="dataNo" 		column="datano" />
+		<result property="alarmNo" 		column="alarmno" />
+		<result property="type" 		column="type" />
+		<result property="states" 		column="states" />
+		<result property="stateDetail" 	column="statedetail" />
+	</resultMap>
+	
+	
+	
+	<!-- ============================================================ -->
+	<select id="selectItem" parameterType="String" resultMap="result">
+		SELECT * FROM alarmdata WHERE alarmno=#{value}
+	</select>
+	
+	
+	<update id="updateItem" parameterType="AlarmData" >
+    	UPDATE alarmdata 
+    	SET states=#{states}, statedetail=#{stateDetail} 
+    	WHERE alarmno=#{alarmNo} and type=#{type}
+    </update>
+	
+
+</mapper>

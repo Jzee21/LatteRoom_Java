@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ReservMapper">
+
+	<!-- Beans 클래스의 객체이름(id)과 클래스이름(type)을 명시한다. -->
+    <resultMap id="result" type="Reserv">
+        <!-- Beans의 멤버변수(property)이름과 대상 테이블의 컬럼(column)을 연결한다. -->
+        <result property="reservNo" 	column="reservno" />
+        <result property="roomNo" 		column="roomno" />
+        <result property="startDate" 	column="startdate" />
+        <result property="endDate" 		column="enddate" />
+        <result property="roomName" 	column="roomname" />
+        <result property="roomSSID" 	column="roomssid" />
+        <result property="imgUrl" 		column="imgurl" />
+    </resultMap>
+    
+    
+    
+    <!-- ============================================================ -->
+    <select id="selectItem" parameterType="String" resultMap="result">
+   	<![CDATA[
+    	SELECT r.reservno, r.roomno, room.roomname, room.roomssid, room.imgurl, 
+    			startdate, enddate  
+    	FROM reservation R, room 
+    	WHERE r.userno=#{value} and r.roomno=room.roomno and sysdate-1<r.endDate
+   	]]>
+    </select>
+    
+    <select id="selectUserNo" parameterType="String">
+    <![CDATA[
+    	SELECT userno FROM reservation 
+    	WHERE roomno IN (SELECT roomno FROM device WHERE deviceno=#{value}) 
+    		and startdate<sysdate and sysdate-1<enddate 
+    	ORDER BY startdate
+    ]]>
+    </select>
+    
+    
+    <!-- <select id="selectItem" parameterType="String" resultMap="result">
+   	<![CDATA[
+    	SELECT r.reservno, r.roomno, room.roomname, room.roomssid, room.imgurl, 
+    			to_date(startdate, 'YYYY-MM-DD') as startdate, to_date(enddate, 'YYYY-MM-DD') as enddate  
+    	FROM reservation R, room 
+    	WHERE r.userno=#{value} and r.roomno=room.roomno and sysdate-1<r.endDate
+   	]]>
+    </select> -->
+
+</mapper>

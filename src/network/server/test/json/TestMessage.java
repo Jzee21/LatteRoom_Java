@@ -43,18 +43,21 @@ public class TestMessage {
 		String jsonData = gson.toJson(list);
 		System.out.println(jsonData);
 		
+		Map<String, Sensor> result = gson.fromJson(jsonData, Map.class);
+		System.out.println(result.toString());
+		
 		// error
 //		Map<String, Sensor> map = gson.fromJson(jsonData, HashMap.class);
 //		System.out.println(map.toString());
 		
-		String test = gson.toJson(s1);
-		System.out.println(test);
-		
-		Sensor sss = gson.fromJson(test, Sensor.class);
-		System.out.println(sss.toString());
-		System.out.println(sss.getDeviceID());
-		System.out.println(sss.getSensorID());
-		System.out.println(sss.getSensorType());
+//		String test = gson.toJson(s1);
+//		System.out.println(test);
+//		
+//		Sensor sss = gson.fromJson(test, Sensor.class);
+//		System.out.println(sss.toString());
+//		System.out.println(sss.getDeviceID());
+//		System.out.println(sss.getSensorID());
+//		System.out.println(sss.getSensorType());
 		
 	}
 
