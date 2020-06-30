@@ -2,20 +2,24 @@
 
 Packege
 
-1. arduino
+> - network.server
+>
+>   통신이 가능한 디바이스(라떼판다)와 통신하는 Java Project 기반 Server
 
-   LattePanda 내부의 Arduino Leonardo를 이용하고 서버와 통신하는 Java Client
 
-   - arduino.device
 
-     - 하나의 디바이스(하나의 라떼판다)에서 작동할 Client 코드
 
-   - arduino.function
 
-     - 작은 단위의 실행 가능한 코드
+개발환경
 
-     
+> - 개발 툴
+>   - Eclipse 2019-03
+> - Language
+>   - Java 1.8.0_231
+> - DB
+>   - Oracle XE 11.2
+> - Library
+>   - Gson 2.8.5
+>   - Mybatis 3.5.4
+>   - Quartz 2.3.0
 
-2. network.server
-
-   통신이 가능한 디바이스(라떼판다)와 통신하는 Java Server
